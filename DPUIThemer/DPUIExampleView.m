@@ -57,7 +57,7 @@
     } else {
         path = [NSBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)];
     }
-
+    [NSGraphicsContext saveGraphicsState];
         [path addClip];
 	//CGContextTranslateCTM(context, 0.0f, size.height);
 	//CGContextScaleCTM(context, 1.0f, -1.0f);
@@ -161,8 +161,8 @@
             }
         }
         
-        
-    
+
+    [NSGraphicsContext restoreGraphicsState];
     
     if (self.style.shadow.opacity > 0) {
 		self.shadow = nil;
