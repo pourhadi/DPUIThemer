@@ -30,11 +30,35 @@
 	return CGSizeMake(self.xOffset, self.yOffset);
 }
 
+- (void)setYOffsetDisplay:(CGFloat)yOffsetDisplay
+{
+    [self willChangeValueForKey:@"yOffsetDisplay"];
+    self.yOffset = oppositeSign(yOffsetDisplay);
+    [self didChangeValueForKey:@"yOffsetDisplay"];
+}
+
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *set = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    if ([key isEqualToString:@"yOffsetDisplay"]) {
+    NSMutableSet *new = [set mutableCopy];
+    [new addObject:@"yOffset"];
+        set = new;
+    }
+    return set;
+}
+
+- (CGFloat)yOffsetDisplay
+{
+    return oppositeSign(self.yOffset);
+}
+
 - (void)drawShadow
 {
 	NSShadow* shadow = [[NSShadow alloc] init];
 	[shadow setShadowColor: [self.color colorWithAlphaComponent:self.opacity]];
-	[shadow setShadowOffset: NSMakeSize(oppositeSign(self.xOffset), oppositeSign(self.yOffset))];
+	[shadow setShadowOffset: NSMakeSize(self.xOffset, self.yOffset)];
 	[shadow setShadowBlurRadius: self.radius];
 	[shadow set];
 }
@@ -60,8 +84,10 @@
 - (id)jsonValue
 {
 	NSMutableDictionary *dict = [NSMutableDictionary new];
-	CGFloat xoff = (self.xOffset > 0 ? -self.xOffset : fabs(self.xOffset));
-	CGFloat yoff = (self.yOffset > 0 ? -self.yOffset : fabs(self.yOffset));
+	//CGFloat xoff = (self.xOffset > 0 ? -self.xOffset : fabs(self.xOffset));
+	
+    CGFloat xoff = self.xOffset;
+    CGFloat yoff = (self.yOffset > 0 ? -self.yOffset : fabs(self.yOffset));
 
 	[dict setObject:@(xoff) forKey:@"xOffset"];
 	[dict setObject:@(yoff) forKey:@"yOffset"];
@@ -78,7 +104,7 @@
 	if (self) {
 		
 		self.xOffset = [[dictionary objectForKey:@"xOffset"] floatValue];
-		self.xOffset = (self.xOffset > 0 ? -self.xOffset : fabs(self.xOffset));
+	//	self.xOffset = (self.xOffset > 0 ? -self.xOffset : fabs(self.xOffset));
 		
 		self.yOffset = [[dictionary objectForKey:@"yOffset"] floatValue];
 		self.yOffset = (self.yOffset > 0 ? -self.yOffset : fabs(self.yOffset));

@@ -11,6 +11,8 @@
 #import "DPUIExampleView.h"
 #import "NSBezierPath+GTMBezierPathRoundRectAdditions.h"
 #import "DPUITextStyleExampleView.h"
+#import "DPStyleManager.h"
+#import "DPUIControlStyle.h"
 static NSString *kBackgroundTransparent = @"Transparent";
 static NSString *kBackgroundPreviewColor = @"Use preview background color";
 static NSString *kBackgroundCustomColor = @"Custom color:";
@@ -35,6 +37,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic) CGSize cornerRadii;
 @property (nonatomic) CGFloat cornerRadius;
 @property (nonatomic) UIRectCorner roundedCorners;
+@property (nonatomic) BOOL maskToCorners;
 
 @property (nonatomic, strong) NSString *canvasBackgroundType;
 @property (nonatomic, strong) NSColor *canvasBackgroundColor;
@@ -47,6 +50,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) DPStyleColor *strokeColor;
 @property (nonatomic) CGFloat strokeWidth;
 
+
 // Navigation bar
 
 @property (nonatomic, strong) DPUITextStyle *navBarTitleTextStyle;
@@ -58,12 +62,14 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 // UIBarButtonItem
 
-@property (nonatomic, strong) DPUITextStyle *barButtonItemTextStyle;
 @property (nonatomic, strong) NSString *barButtonItemStyleName;
 
+// controls
+
+@property (nonatomic, strong) DPUIControlStyle *controlStyle;
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate>
 {
 }
 @property (nonatomic, weak) IBOutlet DPUIExampleView *exampleView;
@@ -88,6 +94,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSArray *viewCanvasBackgroundValues;
 
 @property (nonatomic, strong) NSMutableArray *styles;
+@property (nonatomic, strong) NSMutableArray *controlStyles;
 
 @property (nonatomic, strong) NSMutableArray *textStyles;
 

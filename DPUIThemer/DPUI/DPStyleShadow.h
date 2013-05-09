@@ -18,7 +18,7 @@
 
 @property (nonatomic) CGFloat xOffset;
 @property (nonatomic) CGFloat yOffset;
-
+@property (nonatomic) CGFloat yOffsetDisplay;
 - (void)addShadowToView:(NSView*)view;
 
 - (id)jsonValue;

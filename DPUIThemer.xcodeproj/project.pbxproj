@@ -25,6 +25,7 @@
 		D779DFAA173045A5007AC130 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D779DF87173045A4007AC130 /* Cocoa.framework */; };
 		D779DFB2173045A5007AC130 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D779DFB0173045A5007AC130 /* InfoPlist.strings */; };
 		D779DFB5173045A5007AC130 /* DPUIThemerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D779DFB4173045A5007AC130 /* DPUIThemerTests.m */; };
+		D78A6144173C240F003F8CA8 /* DPUIControlStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D78A6143173C240F003F8CA8 /* DPUIControlStyle.m */; };
 		D7B02D1817305F1200330394 /* DPImageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0417305F1200330394 /* DPImageStyle.m */; };
 		D7B02D1917305F1200330394 /* DPStyleBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0717305F1200330394 /* DPStyleBackground.m */; };
 		D7B02D1A17305F1200330394 /* DPStyleInnerBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0917305F1200330394 /* DPStyleInnerBorder.m */; };
@@ -82,6 +83,8 @@
 		D779DFB1173045A5007AC130 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D779DFB3173045A5007AC130 /* DPUIThemerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DPUIThemerTests.h; sourceTree = "<group>"; };
 		D779DFB4173045A5007AC130 /* DPUIThemerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DPUIThemerTests.m; sourceTree = "<group>"; };
+		D78A6142173C240F003F8CA8 /* DPUIControlStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUIControlStyle.h; sourceTree = "<group>"; };
+		D78A6143173C240F003F8CA8 /* DPUIControlStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUIControlStyle.m; sourceTree = "<group>"; };
 		D7B02D0317305F1200330394 /* DPImageStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPImageStyle.h; sourceTree = "<group>"; };
 		D7B02D0417305F1200330394 /* DPImageStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPImageStyle.m; sourceTree = "<group>"; };
 		D7B02D0517305F1200330394 /* DPStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPStyle.h; sourceTree = "<group>"; };
@@ -248,6 +251,8 @@
 				44E94CAF1735F5CE0064D41D /* DPUITextStyle.h */,
 				44E94CB01735F5CF0064D41D /* DPUITextStyle.m */,
 				44737CD7173A2D0E00EF9672 /* DPUIDefines.h */,
+				D78A6142173C240F003F8CA8 /* DPUIControlStyle.h */,
+				D78A6143173C240F003F8CA8 /* DPUIControlStyle.m */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				44E94CAB1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m in Sources */,
 				44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */,
 				44E94CB4173602580064D41D /* DPUITextStyleExampleView.m in Sources */,
+				D78A6144173C240F003F8CA8 /* DPUIControlStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

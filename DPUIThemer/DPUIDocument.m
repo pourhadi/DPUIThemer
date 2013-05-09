@@ -29,11 +29,22 @@
 		self.canvasBackgroundColor = [NSColor clearColor];
 		self.strokeWidth = 0;
 		self.strokeColor = [[DPStyleColor alloc] init];
+        self.controlStyle = [[DPUIControlStyle alloc] init];
+        self.controlStyle.superStyleName = self.styleName;
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
 	}
 	return self;
+}
+
+- (void)setStyleName:(NSString *)styleName
+{
+    [self willChangeValueForKey:@"styleName"];
+    _styleName = styleName;
+    [self didChangeValueForKey:@"styleName"];
+    
+    self.controlStyle.superStyleName = styleName;
 }
 
 - (void)setStrokeWidth:(CGFloat)strokeWidth
@@ -121,6 +132,8 @@
 
 @property (nonatomic, weak) IBOutlet NSView *customView;
 @property (nonatomic, weak) IBOutlet NSView *mainView;
+
+@property (nonatomic, strong) DPUIStyle *flippedStyle;
 @end
 
 @implementation DPUIDocument
@@ -129,17 +142,27 @@
 {
     self = [super init];
     if (self) {
+        
 		[[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
 		[[NSColorPanel sharedColorPanel] setContinuous:YES];
 		[NSColor setIgnoresAlpha:NO];
 		[NSValueTransformer setValueTransformer:[[ColorTransformer alloc] init] forName: @"ColorTransformer"];
 		self.styles = [NSMutableArray new];
 		self.exampleContainerBgColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.2 alpha:1];
-		self.colorVars = [NSMutableArray new];        
+		self.colorVars = [NSMutableArray new];
+        
+        [[DPStyleManager sharedInstance] setDelegate:self];
 		self.textStyles = [NSMutableArray new];
 		self.textExampleContainerBgColor = [NSColor whiteColor];
+        self.flippedStyle = [[DPUIStyle alloc] init];
+        self.flippedStyle.styleName = @"Current w/Flipped Gradient";
 	}
     return self;
+}
+
+- (NSArray*)colorVarArray
+{
+    return self.colorVars;
 }
 
 - (NSString *)windowNibName
@@ -300,10 +323,6 @@
 			new.navBarTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"navBarTitleTextStyle"]];
 		}
 		
-		if ([style objectForKey:@"barButtonItemTextStyle"]) {
-			new.barButtonItemTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"barButtonItemTextStyle"]];
-		}
-		
 		if ([style objectForKey:@"barButtonItemStyleName"]) {
 			new.barButtonItemStyleName = [style objectForKey:@"barButtonItemStyleName"];
 		}
@@ -312,6 +331,14 @@
 			new.strokeColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"strokeColor"]];
 			new.strokeWidth = [[style objectForKey:@"strokeWidth"] floatValue];
 		}
+        
+        if ([style objectForKey:@"controlStyle"]) {
+            new.controlStyle = [[DPUIControlStyle alloc] initWithDictionary:[style objectForKey:@"controlStyle"]];
+        }
+        
+        if ([style objectForKey:@"maskToCorners"]) {
+            new.maskToCorners = [[style objectForKey:@"maskToCorners"] boolValue];
+        }
 		
         [newStyles addObject:new];
 	}
@@ -322,12 +349,30 @@
 	[self.styleTable reloadData];
 }
 
+- (NSMutableArray*)controlStyles
+{
+    NSMutableArray *tmp = [[self.styles valueForKeyPath:@"styleName"] mutableCopy];
+    [tmp insertObject:@"Current - Flipped Gradient" atIndex:0];
+    [tmp insertObject:@"Current - 50% Opacity" atIndex:1];
+    return tmp;
+}
+
 - (DPUIStyle*)currentStyle
 {
 	if (self.stylesController.selectedObjects && self.stylesController.selectedObjects.count > 0) {
 		return self.stylesController.selectedObjects[0];
 	}
 	return nil;
+}
+
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSMutableSet *set = [[super keyPathsForValuesAffectingValueForKey:key] mutableCopy];
+    
+    if ([key isEqualToString:@"controlStyles"]) {
+        [set addObject:@"styles"];
+    }
+    return set;
 }
 
 - (IBAction)styleChanged
@@ -342,6 +387,8 @@
 		[self.topInnerBorderTable reloadData];
 		[self.backgroundColorsTable reloadData];
 	}
+    
+    
 	
 if (self.textStylesController.selectedObjects && self.textStylesController.selectedObjects.count > 0) {
 	//self.textExampleView.bgColor = self.textExampleContainerBgColor;
@@ -403,10 +450,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		if (style.tableCellDetailTextStyle) {
 			[dictionary setObject:style.tableCellDetailTextStyle.jsonValue forKey:@"tableCellDetailTextStyle"];
 		}
-		
-		if (style.barButtonItemTextStyle) {
-			[dictionary setObject:style.barButtonItemTextStyle.jsonValue forKey:@"barButtonItemTextStyle"];
-		}
+
 		
 		if (style.barButtonItemStyleName) {
 			[dictionary setObject:style.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
@@ -417,6 +461,12 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 			[dictionary setObject:@(style.strokeWidth) forKey:@"strokeWidth"];
 		}
 		
+        if (style.controlStyle) {
+            [dictionary setObject:style.controlStyle.jsonValue forKey:@"controlStyle"];
+        }
+        
+        [dictionary setObject:@(style.maskToCorners) forKey:@"maskToCorners"];
+        
 		[styles addObject:dictionary];
 	}
 	

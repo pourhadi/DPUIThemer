@@ -14,7 +14,7 @@
 }
 @end
 @implementation DPStyleManager
-
+@synthesize colorVariables=_colorVariables;
 + (DPStyleManager*)sharedInstance
 {
     static dispatch_once_t onceQueue;
@@ -62,6 +62,11 @@
         }
     }
     return nil;
+}
+
+- (NSArray*)colorVariables
+{
+   return [self.delegate colorVarArray];
 }
 
 - (void)setColorVariables:(NSArray *)colorVariables

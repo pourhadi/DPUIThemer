@@ -14,12 +14,19 @@
 @class DPStyleObject;
 @class DPUIStyle;
 @class DPUITextStyle;
+
+@protocol ManagerDelegate <NSObject>
+
+- (NSArray*)colorVarArray;
+
+@end
+
 @interface DPStyleManager : NSObject
 
 + (DPStyleManager*)sharedInstance;
 
 @property (nonatomic) BOOL viewsSwizzled;
-
+@property (nonatomic, weak) id<ManagerDelegate>delegate;
 @property (nonatomic, strong) NSMutableArray *styles;
 @property (nonatomic, strong) NSArray *styleNames;
 @property (nonatomic, strong) DPUIStyle *currentStyle;

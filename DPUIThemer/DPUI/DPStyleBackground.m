@@ -82,7 +82,6 @@
 - (void)setColorVar:(NSString *)colorVar
 {
     if (colorVar && ![colorVar hasPrefix:@"#"]) {
-        
         NSArray *colors = [[DPStyleManager sharedInstance] colorVariables];
         NSPredicate *pred= [NSPredicate predicateWithFormat:@"colorName == %@", colorVar];
         NSArray *filters = [colors filteredArrayUsingPredicate:pred];
@@ -103,12 +102,12 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    [self willChangeValueForKey:@"color"];
-    _color = [object color];
-    [self didChangeValueForKey:@"color"];
+    //[self willChangeValueForKey:@"color"];
+//    _color = [object color];
+//    [self didChangeValueForKey:@"color"];
     
-    _colorString = [object colorString];
-	
+//    _colorString = [object colorString];
+	self.color = [object color];
 }
 
 - (NSString*)colorVariableName
