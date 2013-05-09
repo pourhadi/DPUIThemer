@@ -12,7 +12,9 @@
 
 @property (nonatomic, strong) DPStyleColor *color;
 @property (nonatomic) CGBlendMode blendMode;
+@property (nonatomic, strong) NSString *blendModeString;
 @property (nonatomic) CGFloat height;
+
 
 - (id)jsonValue;
 

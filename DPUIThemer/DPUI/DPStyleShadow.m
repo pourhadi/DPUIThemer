@@ -8,6 +8,7 @@
 
 #import "DPStyleShadow.h"
 #import "ColorTransformer.h"
+
 @implementation DPStyleShadow
 
 - (id)init
@@ -29,16 +30,31 @@
 	return CGSizeMake(self.xOffset, self.yOffset);
 }
 
+- (void)drawShadow
+{
+	NSShadow* shadow = [[NSShadow alloc] init];
+	[shadow setShadowColor: [self.color colorWithAlphaComponent:self.opacity]];
+	[shadow setShadowOffset: NSMakeSize(oppositeSign(self.xOffset), oppositeSign(self.yOffset))];
+	[shadow setShadowBlurRadius: self.radius];
+	[shadow set];
+}
+
 - (void)addShadowToView:(NSView*)view
 {
 	view.wantsLayer = YES;
+	view.layer.masksToBounds = NO;
+//	view.layer.shadowColor = self.color.CGColor;
+//	view.layer.shadowOffset = NSMakeSize(self.xOffset, self.yOffset);
+//	view.layer.shadowOpacity = self.opacity;
+//	view.layer.shadowRadius = self.radius;
+	
 	NSShadow* shadow = [[NSShadow alloc] init];
 	[shadow setShadowColor: self.color];
 	[shadow setShadowOffset: NSMakeSize(self.xOffset, self.yOffset)];
 	[shadow setShadowBlurRadius: self.radius];
 	[view setShadow:shadow];
 	//UIBezierPath *path = [UIBezierPath bezierPathWithRect:view.bounds];
-//	view.layer.shadowPath = path.CGPath;
+	//	view.layer.shadowPath = path.CGPath;
 }
 
 - (id)jsonValue

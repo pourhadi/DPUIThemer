@@ -24,5 +24,5 @@
 - (id)jsonValue;
 
 - (id)initWithDictionary:(NSDictionary*)dictionary;
-
+- (void)drawShadow;
 @end

@@ -44,6 +44,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSNumber *bottomLeftValue;
 @property (nonatomic, strong) NSNumber *bottomRightValue;
 
+@property (nonatomic, strong) DPStyleColor *strokeColor;
+@property (nonatomic) CGFloat strokeWidth;
+
 // Navigation bar
 
 @property (nonatomic, strong) DPUITextStyle *navBarTitleTextStyle;
@@ -95,5 +98,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet NSTextView *constantsTextView;
 
 @property (nonatomic, strong) NSString *constants;
+
+@property (nonatomic, strong) NSArray *blendModes;
 
 @end

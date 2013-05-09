@@ -27,8 +27,59 @@
 	if (self) {
 		self.color = [[DPStyleColor alloc] init];
 		self.height = 1;
+		self.blendMode = kCGBlendModeNormal;
 	}
 	return self;
+}
+
+- (void)setBlendMode:(CGBlendMode)blendMode
+{
+	[self willChangeValueForKey:@"blendMode"];
+	_blendMode = blendMode;
+	[self didChangeValueForKey:@"blendMode"];
+
+	self.blendModeString = [self blendModes][blendMode];
+}
+
+- (void)setBlendModeString:(NSString *)blendModeString
+{
+	[self willChangeValueForKey:@"blendModeString"];
+	_blendModeString = blendModeString;
+	[self didChangeValueForKey:@"blendModeString"];
+	
+	_blendMode = (CGBlendMode)[[self blendModes] indexOfObject:blendModeString];
+}
+
+- (NSArray*)blendModes
+{
+	return @[@"kCGBlendModeNormal",
+		  @"kCGBlendModeMultiply",
+		  @"kCGBlendModeScreen",
+		  @"kCGBlendModeOverlay",
+		  @"kCGBlendModeDarken",
+		  @"kCGBlendModeLighten",
+		  @"kCGBlendModeColorDodge",
+		  @"kCGBlendModeColorBurn",
+		  @"kCGBlendModeSoftLight",
+		  @"kCGBlendModeHardLight",
+		  @"kCGBlendModeDifference",
+		  @"kCGBlendModeExclusion",
+		  @"kCGBlendModeHue",
+		  @"kCGBlendModeSaturation",
+		  @"kCGBlendModeColor",
+		  @"kCGBlendModeLuminosity",
+		  @"kCGBlendModeClear",
+		  @"kCGBlendModeCopy",
+		  @"kCGBlendModeSourceIn",
+		  @"kCGBlendModeSourceOut",
+		  @"kCGBlendModeSourceAtop",
+		  @"kCGBlendModeDestinationOver",
+		  @"kCGBlendModeDestinationIn",
+		  @"kCGBlendModeDestinationOut",
+		  @"kCGBlendModeDestinationAtop",
+		  @"kCGBlendModeXOR",
+		  @"kCGBlendModePlusDarker",
+		  @"kCGBlendModePlusLighter"];
 }
 
 - (id)jsonValue

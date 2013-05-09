@@ -8,7 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DPViewStyle.h"
+#import "DPUIDefines.h"
+
 @class DPUIStyle;
 @interface DPUIExampleView : NSView
 @property (nonatomic, strong) DPUIStyle *style;
+@property (nonatomic) CGFloat xScale;
+@property (nonatomic) CGFloat yScale;
 @end

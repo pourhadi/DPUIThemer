@@ -54,6 +54,7 @@
 		44528A56173229530006166F /* ColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTransformer.m; sourceTree = "<group>"; };
 		44528A5E173230200006166F /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
 		44528A5F173230200006166F /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
+		44737CD7173A2D0E00EF9672 /* DPUIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUIDefines.h; sourceTree = "<group>"; };
 		44E94CA71734AB400064D41D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		44E94CA91734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.h"; sourceTree = "<group>"; };
 		44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.m"; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 				D7B02D1517305F1200330394 /* NSImage+DPStyle.m */,
 				44E94CAF1735F5CE0064D41D /* DPUITextStyle.h */,
 				44E94CB01735F5CF0064D41D /* DPUITextStyle.m */,
+				44737CD7173A2D0E00EF9672 /* DPUIDefines.h */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";

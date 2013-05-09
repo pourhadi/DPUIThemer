@@ -15,7 +15,7 @@ typedef NS_OPTIONS(NSUInteger, UIRectCorner) {
     UIRectCornerAllCorners  = ~0UL
 };
 @interface NSBezierPath (GTMBezierPathRoundRectAdditions)
-
+- (CGPathRef)quartzPath;
 ///  Inscribe a round rectangle inside of rectangle |rect| with a corner radius of |radius|
 //
 //  Args:

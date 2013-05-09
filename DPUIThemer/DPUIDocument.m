@@ -14,7 +14,7 @@
 
 
 @implementation DPUIStyle
-
+@synthesize strokeWidth = _strokeWidth;
 - (id)init
 {
 	self = [super init];
@@ -27,11 +27,25 @@
 		self.bgDegrees = 0;
         self.styleName = [DPUIStyle newStyleVariableName];
 		self.canvasBackgroundColor = [NSColor clearColor];
+		self.strokeWidth = 0;
+		self.strokeColor = [[DPStyleColor alloc] init];
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
 	}
 	return self;
+}
+
+- (void)setStrokeWidth:(CGFloat)strokeWidth
+{
+	[self willChangeValueForKey:@"strokeWidth"];
+	_strokeWidth = strokeWidth*2;
+	[self didChangeValueForKey:@"strokeWidth"];
+}
+
+- (CGFloat)strokeWidth
+{
+	return _strokeWidth/2;
 }
 
 + (NSString*)newStyleVariableName
@@ -213,6 +227,13 @@
 {
 	NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	
+	if ([dict objectForKey:@"exampleContainerBgColor"]) {
+		self.exampleContainerBgColor = [ColorTransformer colorFromString:[dict objectForKey:@"exampleContainerBgColor"]];
+	}
+	if ([dict objectForKey:@"textExampleContainerBgColor"]) {
+		self.textExampleContainerBgColor = [ColorTransformer colorFromString:[dict objectForKey:@"textExampleContainerBgColor"]];
+	}
+	
 	NSMutableArray *tmp = [NSMutableArray new];
 	NSArray *colorVars = [dict objectForKey:@"colors"];
 	for (NSDictionary *colorVar in colorVars) {
@@ -285,6 +306,11 @@
 		
 		if ([style objectForKey:@"barButtonItemStyleName"]) {
 			new.barButtonItemStyleName = [style objectForKey:@"barButtonItemStyleName"];
+		}
+		
+		if ([style objectForKey:@"strokeColor"]) {
+			new.strokeColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"strokeColor"]];
+			new.strokeWidth = [[style objectForKey:@"strokeWidth"] floatValue];
 		}
 		
         [newStyles addObject:new];
@@ -385,6 +411,12 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		if (style.barButtonItemStyleName) {
 			[dictionary setObject:style.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
 		}
+		
+		if (style.strokeColor) {
+			[dictionary setObject:style.strokeColor.jsonValue forKey:@"strokeColor"];
+			[dictionary setObject:@(style.strokeWidth) forKey:@"strokeWidth"];
+		}
+		
 		[styles addObject:dictionary];
 	}
 	
@@ -397,8 +429,6 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	[container setObject:tmpColorVars forKey:@"colors"];
 	
-
-	
 	[container setObject:styles forKey:@"styles"];
 	NSMutableArray *tmpTextStyles = [NSMutableArray new];
 	for (DPUITextStyle *textStyle in self.textStyles) {
@@ -407,6 +437,9 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		
 	}
 	[container setObject:tmpTextStyles forKey:@"textStyles"];
+	
+	[container setObject:[ColorTransformer stringFromColor:self.exampleContainerBgColor] forKey:@"exampleContainerBgColor"];
+	[container setObject:[ColorTransformer stringFromColor:self.textExampleContainerBgColor] forKey:@"textExampleContainerBgColor"];
 	
 	NSError *error;
 	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:0 error:&error];
@@ -509,6 +542,38 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	NSString *constants = [NSString stringWithFormat:@"//////////  View Styles \r\r%@\r\r//////////  Colors \r\r%@\r\r//////////  Text Styles \r\r%@", [styleNames componentsJoinedByString:@"\r"], [colorNames componentsJoinedByString:@"\r"], [textStyleNames componentsJoinedByString:@"\r"]];
 	return constants;
+}
+
+- (NSArray*)blendModes
+{
+	return @[@"kCGBlendModeNormal",
+		  @"kCGBlendModeMultiply",
+		  @"kCGBlendModeScreen",
+		  @"kCGBlendModeOverlay",
+		  @"kCGBlendModeDarken",
+		  @"kCGBlendModeLighten",
+		  @"kCGBlendModeColorDodge",
+		  @"kCGBlendModeColorBurn",
+		  @"kCGBlendModeSoftLight",
+		  @"kCGBlendModeHardLight",
+		  @"kCGBlendModeDifference",
+		  @"kCGBlendModeExclusion",
+		  @"kCGBlendModeHue",
+		  @"kCGBlendModeSaturation",
+		  @"kCGBlendModeColor",
+		  @"kCGBlendModeLuminosity",
+		  @"kCGBlendModeClear",
+		  @"kCGBlendModeCopy",
+		  @"kCGBlendModeSourceIn",
+		  @"kCGBlendModeSourceOut",
+		  @"kCGBlendModeSourceAtop",
+		  @"kCGBlendModeDestinationOver",
+		  @"kCGBlendModeDestinationIn",
+		  @"kCGBlendModeDestinationOut",
+		  @"kCGBlendModeDestinationAtop",
+		  @"kCGBlendModeXOR",
+		  @"kCGBlendModePlusDarker",
+		  @"kCGBlendModePlusLighter"];
 }
 
 @end
