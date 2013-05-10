@@ -10,6 +10,21 @@
 #import "DPStyleBackground.h"
 #import "DPStyleManager.h"
 #import "DPUIDocument.h"
+@implementation ParameterTransformer
++ (Class)transformedValueClass { return [NSString class]; }
++ (BOOL)allowsReverseTransformation { return YES; }
+- (id)transformedValue:(id)value {
+    return (value == nil) ? nil : [(NSString*)value substringFromIndex:5];
+}
+
+- (id)reverseTransformedValue:(id)value
+{
+	return [NSString stringWithFormat:@"PARAM:%@", value];
+}
+
+@end
+
+
 @implementation VariableTransformer
 
 

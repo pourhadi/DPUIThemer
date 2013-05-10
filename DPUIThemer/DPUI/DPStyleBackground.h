@@ -16,6 +16,11 @@
 
 @property (nonatomic, strong) NSString *colorDisplayString;
 @property (nonatomic, strong) NSString *colorVariableName;
+
+@property (nonatomic, strong) NSString *parameterName;
+
+@property (nonatomic) BOOL parameter;
+
 - (id)jsonValue;
 - (id)initWithColorString:(NSString *)color;
 - (id)initWithDictionary:(NSDictionary*)dict;

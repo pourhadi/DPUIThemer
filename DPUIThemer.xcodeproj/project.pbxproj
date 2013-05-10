@@ -36,6 +36,7 @@
 		D7B02D1F17305F1200330394 /* DPViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D1317305F1200330394 /* DPViewStyle.m */; };
 		D7B02D2017305F1200330394 /* NSImage+DPStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D1517305F1200330394 /* NSImage+DPStyle.m */; };
 		D7B02D241730611500330394 /* DPUIExampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D231730611400330394 /* DPUIExampleView.m */; };
+		D7F8AAB4173D881E004ABF7E /* DPUIParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F8AAB3173D881E004ABF7E /* DPUIParameter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,8 @@
 		D7B02D1517305F1200330394 /* NSImage+DPStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+DPStyle.m"; sourceTree = "<group>"; };
 		D7B02D221730611400330394 /* DPUIExampleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUIExampleView.h; sourceTree = "<group>"; };
 		D7B02D231730611400330394 /* DPUIExampleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUIExampleView.m; sourceTree = "<group>"; };
+		D7F8AAB2173D881E004ABF7E /* DPUIParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUIParameter.h; sourceTree = "<group>"; };
+		D7F8AAB3173D881E004ABF7E /* DPUIParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUIParameter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +256,8 @@
 				44737CD7173A2D0E00EF9672 /* DPUIDefines.h */,
 				D78A6142173C240F003F8CA8 /* DPUIControlStyle.h */,
 				D78A6143173C240F003F8CA8 /* DPUIControlStyle.m */,
+				D7F8AAB2173D881E004ABF7E /* DPUIParameter.h */,
+				D7F8AAB3173D881E004ABF7E /* DPUIParameter.m */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */,
 				44E94CB4173602580064D41D /* DPUITextStyleExampleView.m in Sources */,
 				D78A6144173C240F003F8CA8 /* DPUIControlStyle.m in Sources */,
+				D7F8AAB4173D881E004ABF7E /* DPUIParameter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

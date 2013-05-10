@@ -142,7 +142,7 @@
 {
     self = [super init];
     if (self) {
-        
+        [[DPStyleManager sharedInstance] setDelegate:self];
 		[[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
 		[[NSColorPanel sharedColorPanel] setContinuous:YES];
 		[NSColor setIgnoresAlpha:NO];
@@ -151,13 +151,19 @@
 		self.exampleContainerBgColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.2 alpha:1];
 		self.colorVars = [NSMutableArray new];
         
-        [[DPStyleManager sharedInstance] setDelegate:self];
 		self.textStyles = [NSMutableArray new];
 		self.textExampleContainerBgColor = [NSColor whiteColor];
         self.flippedStyle = [[DPUIStyle alloc] init];
         self.flippedStyle.styleName = @"Current w/Flipped Gradient";
+        self.parameters = [NSMutableArray new];
 	}
     return self;
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    [[DPStyleManager sharedInstance] setDelegate:self];
+
 }
 
 - (NSArray*)colorVarArray
@@ -354,6 +360,8 @@
     NSMutableArray *tmp = [[self.styles valueForKeyPath:@"styleName"] mutableCopy];
     [tmp insertObject:@"Current - Flipped Gradient" atIndex:0];
     [tmp insertObject:@"Current - 50% Opacity" atIndex:1];
+    [tmp insertObject:@"Current - Make Darker" atIndex:2];
+    [tmp insertObject:@"Current - Make Lighter" atIndex:3];
     return tmp;
 }
 
@@ -371,6 +379,11 @@
     
     if ([key isEqualToString:@"controlStyles"]) {
         [set addObject:@"styles"];
+    }
+    
+    if ([key isEqualToString:@"colorAndParamVars"]) {
+        [set addObject:@"colorVars"];
+        [set addObject:@"parameters"];
     }
     return set;
 }
@@ -556,6 +569,17 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	[[NSFontPanel sharedFontPanel] makeKeyAndOrderFront:nil];
 }
 
+- (NSArray*)colorAndParamVars
+{
+    NSArray *params = [NSArray arrayWithObjects:@"Parameters",@"-------", nil];
+    params = [params arrayByAddingObjectsFromArray:[self.parameters valueForKeyPath:@"name"]];
+    params = [params arrayByAddingObject:@""];
+    params = [params arrayByAddingObject:@"Colors"];
+    params = [params arrayByAddingObject:@"-------"];
+    params = [params arrayByAddingObjectsFromArray:[self.colorVars valueForKeyPath:@"colorName"]];
+    return params;
+}
+
 - (IBAction)generateConstants:(id)sender
 {
 	/*[[NSApplication sharedApplication] beginSheet:self.constantsPanel
@@ -626,4 +650,9 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		  @"kCGBlendModePlusLighter"];
 }
 
+- (IBAction)showParameters:(id)sender
+{
+    [self.parameterPanel display];
+	[self.parameterPanel makeKeyAndOrderFront:nil];
+}
 @end

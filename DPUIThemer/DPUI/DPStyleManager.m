@@ -87,5 +87,20 @@
 	self.textStyleNames = [self.textStyles valueForKeyPath:@"styleName"];
 }
 
+- (NSArray*)parameters
+{
+    return [self.delegate parameters];
+}
 
+- (id)valueForStyleParameter:(NSString *)parameter
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@", parameter];
+    NSArray *filtered = [self.parameters filteredArrayUsingPredicate:pred];
+    if (filtered) {
+        if (filtered.count > 0) {
+            return [(DPUIParameter*)filtered[0] value];
+        }
+    }
+    return nil;
+}
 @end

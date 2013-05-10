@@ -13,6 +13,7 @@
 #import "DPUITextStyleExampleView.h"
 #import "DPStyleManager.h"
 #import "DPUIControlStyle.h"
+#import "DPUIParameter.h"
 static NSString *kBackgroundTransparent = @"Transparent";
 static NSString *kBackgroundPreviewColor = @"Use preview background color";
 static NSString *kBackgroundCustomColor = @"Custom color:";
@@ -83,6 +84,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, weak) IBOutlet NSTableView *topInnerBorderTable;
 @property (nonatomic, weak) IBOutlet NSTableView *bottomInnerBorderTable;
 @property (nonatomic, strong) NSMutableArray *colorVars;
+
+@property (nonatomic, strong) NSArray *colorAndParamVars;
+
 @property (nonatomic, weak) DPUIStyle *currentStyle;
 
 @property (nonatomic, weak) IBOutlet NSButton *topLeftCorner;
@@ -107,5 +111,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSString *constants;
 
 @property (nonatomic, strong) NSArray *blendModes;
+
+@property (nonatomic, strong) NSMutableArray *parameters;
+
+@property (nonatomic, strong) IBOutlet NSPanel *parameterPanel;
 
 @end

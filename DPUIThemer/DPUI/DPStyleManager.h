@@ -18,6 +18,7 @@
 @protocol ManagerDelegate <NSObject>
 
 - (NSArray*)colorVarArray;
+- (NSArray*)parameters;
 
 @end
 
@@ -34,6 +35,9 @@
 @property (nonatomic, strong) NSArray *colorVariableNames;
 @property (nonatomic, strong) NSArray *textStyles;
 @property (nonatomic, strong) NSArray *textStyleNames;
+@property (nonatomic, strong) NSArray *parameters;
+
+- (id)valueForStyleParameter:(NSString*)parameter;
 - (void)styleApplied;
 
 - (DPStyleObject*)styleForName:(NSString*)name;

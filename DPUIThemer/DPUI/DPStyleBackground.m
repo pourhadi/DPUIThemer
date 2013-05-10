@@ -73,14 +73,21 @@
 
 - (void)unobserve
 {
-    if (self.observing.count > 0) {
-        [self.observing[0] removeObserver:self forKeyPath:@"color"];
-        [self.observing removeAllObjects];
+    for (DPStyleColor *color in self.observing) {
+        [color removeObserver:self forKeyPath:@"color"];
+        [color removeObserver:self forKeyPath:@"parameter"];
+        [color removeObserver:self forKeyPath:@"colorName"];
     }
+
+        [self.observing removeAllObjects];
+
 }
 
 - (void)setColorVar:(NSString *)colorVar
 {
+    [self unobserve];
+    
+    self.parameterName = nil;
     if (colorVar && ![colorVar hasPrefix:@"#"]) {
         NSArray *colors = [[DPStyleManager sharedInstance] colorVariables];
         NSPredicate *pred= [NSPredicate predicateWithFormat:@"colorName == %@", colorVar];
@@ -89,10 +96,10 @@
             DPStyleColor *styleColor = filters[0];
             self.color = [styleColor color];
             [styleColor addObserver:self forKeyPath:@"color" options:0 context:nil];
+            [styleColor addObserver:self forKeyPath:@"parameter" options:0 context:nil];
+            [styleColor addObserver:self forKeyPath:@"colorName" options:0 context:nil];
             [self.observing addObject:styleColor];
         }
-    } else if (!colorVar) {
-        [self unobserve];
     }
     
     [self willChangeValueForKey:@"colorVar"];
@@ -102,12 +109,13 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    //[self willChangeValueForKey:@"color"];
-//    _color = [object color];
-//    [self didChangeValueForKey:@"color"];
-    
-//    _colorString = [object colorString];
-	self.color = [object color];
+    if ([keyPath isEqualToString:@"color"]) {
+        self.color = [object color];
+    } else if ([keyPath isEqualToString:@"colorName"]) {
+        self.colorVar = [object colorName];
+    } else {
+        self.parameter = [object parameter];
+    }
 }
 
 - (NSString*)colorVariableName
@@ -152,8 +160,13 @@
 		if (![mpaths containsObject:@"color"]) {
 			[mpaths addObject:@"color"];
 		}
+        
+        if (![mpaths containsObject:@"colorVar"]) {
+            [mpaths addObject:@"colorVar"];
+        }
 	paths = mpaths;
 	}
+
 	return paths;
 }
 
@@ -188,7 +201,7 @@
 
 - (id)jsonValue
 {
-	NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":(self.colorVar ? self.colorVar : @""), @"colorName":(_colorName ? _colorName :@"")};
+	NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":(self.colorVar ? self.colorVar : @""), @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
     return dict;
 }
 
@@ -217,6 +230,8 @@
                 self.colorName = colorName;
             }
         }
+        
+        self.parameter = [[dict objectForKey:@"definedAtRuntime"] boolValue];
     }
     
     return self;

@@ -58,8 +58,8 @@
 {
 	NSShadow* shadow = [[NSShadow alloc] init];
 	[shadow setShadowColor: [self.color colorWithAlphaComponent:self.opacity]];
-	[shadow setShadowOffset: NSMakeSize(self.xOffset, self.yOffset)];
-	[shadow setShadowBlurRadius: self.radius];
+	[shadow setShadowOffset: NSMakeSize(self.xOffset*2, self.yOffset*2)];
+	[shadow setShadowBlurRadius: self.radius*2];
 	[shadow set];
 }
 
