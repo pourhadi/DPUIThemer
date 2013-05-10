@@ -47,7 +47,7 @@
 	NSMutableDictionary *dict = [NSMutableDictionary new];
 	
 	[dict setObject:@(self.shadowOffset.width) forKey:@"shadowXOffset"];
-	[dict setObject:@(self.shadowOffset.width) forKey:@"shadowYOffset"];
+	[dict setObject:@(self.shadowOffset.height) forKey:@"shadowYOffset"];
 	[dict setObject:self.styleName forKey:@"styleName"];
 	[dict setObject:self.textColor.jsonValue forKey:@"textColor"];
 	[dict setObject:self.shadowColor.jsonValue forKey:@"shadowColor"];

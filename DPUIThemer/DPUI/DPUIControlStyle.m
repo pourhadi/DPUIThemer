@@ -22,7 +22,7 @@ static NSString * const kDPUIDisabledTextStyle = @"disabledTextStyle";
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     if (self.normalTextStyle) {
-        [dictionary setObject:self.normalTextStyle.jsonValue forKey:kDPUINormalTextStyle];
+        [dictionary setObject:self.normalTextStyle forKey:kDPUINormalTextStyle];
     }
     
     if (self.highlightedStyleName) {
@@ -30,7 +30,7 @@ static NSString * const kDPUIDisabledTextStyle = @"disabledTextStyle";
     }
     
     if (self.highlightedTextStyle) {
-        [dictionary setObject:self.highlightedTextStyle.jsonValue forKey:kDPUIHighlightedTextStyle];
+        [dictionary setObject:self.highlightedTextStyle forKey:kDPUIHighlightedTextStyle];
     }
     
     if (self.selectedStyleName) {
@@ -38,7 +38,7 @@ static NSString * const kDPUIDisabledTextStyle = @"disabledTextStyle";
     }
     
     if (self.selectedTextStyle) {
-        [dictionary setObject:self.selectedTextStyle.jsonValue forKey:kDPUISelectedTextStyle];
+        [dictionary setObject:self.selectedTextStyle forKey:kDPUISelectedTextStyle];
     }
     
     if (self.disabledStyleName) {
@@ -57,16 +57,16 @@ static NSString * const kDPUIDisabledTextStyle = @"disabledTextStyle";
     self = [super init];
     if (self) {
         if ([dictionary objectForKey:kDPUINormalTextStyle]) {
-            self.normalTextStyle = [[DPUITextStyle alloc] initWithDictionary:[dictionary objectForKey:kDPUINormalTextStyle]];
+            self.normalTextStyle = [dictionary objectForKey:kDPUINormalTextStyle];
         }
         if ([dictionary objectForKey:kDPUIHighlightedTextStyle]) {
-            self.highlightedTextStyle = [[DPUITextStyle alloc] initWithDictionary:[dictionary objectForKey:kDPUIHighlightedTextStyle]];
+            self.highlightedTextStyle = [dictionary objectForKey:kDPUIHighlightedTextStyle];
         }
         if ([dictionary objectForKey:kDPUISelectedTextStyle]) {
-            self.selectedTextStyle = [[DPUITextStyle alloc] initWithDictionary:[dictionary objectForKey:kDPUISelectedTextStyle]];
+            self.selectedTextStyle = [dictionary objectForKey:kDPUISelectedTextStyle];
         }
         if ([dictionary objectForKey:kDPUIDisabledTextStyle]) {
-            self.disabledTextStyle = [[DPUITextStyle alloc] initWithDictionary:[dictionary objectForKey:kDPUIDisabledTextStyle]];
+            self.disabledTextStyle = [dictionary objectForKey:kDPUIDisabledTextStyle];
         }
         
         if ([dictionary objectForKey:kDPUIHighlightedStyleName]) {

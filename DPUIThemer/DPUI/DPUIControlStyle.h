@@ -10,16 +10,16 @@
 #import "DPUITextStyle.h"
 @interface DPUIControlStyle : NSObject
 
-@property (nonatomic, strong) DPUITextStyle *normalTextStyle;
+@property (nonatomic, strong) NSString *normalTextStyle;
 
 @property (nonatomic, strong) NSString *highlightedStyleName;
-@property (nonatomic, strong) DPUITextStyle *highlightedTextStyle;
+@property (nonatomic, strong) NSString *highlightedTextStyle;
 
 @property (nonatomic, strong) NSString *selectedStyleName;
-@property (nonatomic, strong) DPUITextStyle *selectedTextStyle;
+@property (nonatomic, strong) NSString *selectedTextStyle;
 
 @property (nonatomic, strong) NSString *disabledStyleName;
-@property (nonatomic, strong) DPUITextStyle *disabledTextStyle;
+@property (nonatomic, strong) NSString *disabledTextStyle;
 
 @property (nonatomic, strong) NSString *superStyleName;
 
