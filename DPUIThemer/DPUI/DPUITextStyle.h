@@ -13,7 +13,7 @@
 
 @end
 
-@interface DPUITextStyle : NSObject
+@interface DPUITextStyle : NSObject <NSCopying, NSCoding>
 
 
 @property (nonatomic, strong) NSString *styleName;
@@ -22,15 +22,9 @@
 @property (nonatomic) CGSize shadowOffset;
 @property (nonatomic, strong) DPStyleColor *shadowColor;
 @property (nonatomic) NSTextAlignment alignment;
-
-
-
-
 @property (nonatomic) CGFloat xShadowOffset;
 @property (nonatomic) CGFloat yShadowOffset;
-
 @property (nonatomic) NSInteger fontSize;
-
 @property (nonatomic, strong) NSString *fontString;
 
 

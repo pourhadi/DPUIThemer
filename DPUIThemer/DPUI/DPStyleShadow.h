@@ -8,14 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DPStyleShadow : NSObject
+@interface DPStyleShadow : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic, strong) NSColor *color;
 @property (nonatomic) CGFloat radius;
 @property (nonatomic) CGSize offset;
 @property (nonatomic) CGFloat opacity;
-
-
 @property (nonatomic) CGFloat xOffset;
 @property (nonatomic) CGFloat yOffset;
 @property (nonatomic) CGFloat yOffsetDisplay;

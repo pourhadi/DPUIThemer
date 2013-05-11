@@ -15,11 +15,112 @@
 
 @implementation DPUIStyle
 @synthesize strokeWidth = _strokeWidth;
+
+
+//===========================================================
+//  Keyed Archiving
+//
+//===========================================================
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.styleName forKey:@"styleName"];
+    [encoder encodeObject:self.bgColors forKey:@"bgColors"];
+    [encoder encodeInteger:self.bgDegrees forKey:@"bgDegrees"];
+    [encoder encodeObject:self.topInnerBorders forKey:@"topInnerBorders"];
+    [encoder encodeObject:self.bottomInnerBorders forKey:@"bottomInnerBorders"];
+    [encoder encodeObject:self.innerShadow forKey:@"innerShadow"];
+    [encoder encodeObject:self.shadow forKey:@"shadow"];
+    [encoder encodeFloat:self.cornerRadius forKey:@"cornerRadius"];
+	[encoder encodeInteger:self.roundedCorners forKey:@"roundedCorners"];
+    [encoder encodeBool:self.maskToCorners forKey:@"maskToCorners"];
+    [encoder encodeObject:self.canvasBackgroundType forKey:@"canvasBackgroundType"];
+    [encoder encodeObject:self.canvasBackgroundColor forKey:@"canvasBackgroundColor"];
+    [encoder encodeObject:self.topLeftValue forKey:@"topLeftValue"];
+    [encoder encodeObject:self.topRightValue forKey:@"topRightValue"];
+    [encoder encodeObject:self.bottomLeftValue forKey:@"bottomLeftValue"];
+    [encoder encodeObject:self.bottomRightValue forKey:@"bottomRightValue"];
+    [encoder encodeObject:self.strokeColor forKey:@"strokeColor"];
+    [encoder encodeFloat:self.strokeWidth forKey:@"strokeWidth"];
+    [encoder encodeBool:self.drawAsynchronously forKey:@"drawAsynchronously"];
+    [encoder encodeObject:self.navBarTitleTextStyle forKey:@"navBarTitleTextStyle"];
+    [encoder encodeObject:self.tableCellTitleTextStyle forKey:@"tableCellTitleTextStyle"];
+    [encoder encodeObject:self.tableCellDetailTextStyle forKey:@"tableCellDetailTextStyle"];
+    [encoder encodeObject:self.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
+    [encoder encodeObject:self.controlStyle forKey:@"controlStyle"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if (self) {
+        self.styleName = [decoder decodeObjectForKey:@"styleName"];
+        self.bgColors = [decoder decodeObjectForKey:@"bgColors"];
+        self.bgDegrees = [decoder decodeIntegerForKey:@"bgDegrees"];
+        self.topInnerBorders = [decoder decodeObjectForKey:@"topInnerBorders"];
+        self.bottomInnerBorders = [decoder decodeObjectForKey:@"bottomInnerBorders"];
+        self.innerShadow = [decoder decodeObjectForKey:@"innerShadow"];
+        self.shadow = [decoder decodeObjectForKey:@"shadow"];
+		// self.cornerRadii = [decoder decodeCGSizeForKey:@"cornerRadii"];
+        self.cornerRadius = [decoder decodeFloatForKey:@"cornerRadius"];
+		[self setRoundedCorners:[decoder decodeIntegerForKey:@"roundedCorners"]];
+        self.maskToCorners = [decoder decodeBoolForKey:@"maskToCorners"];
+        self.canvasBackgroundType = [decoder decodeObjectForKey:@"canvasBackgroundType"];
+        self.canvasBackgroundColor = [decoder decodeObjectForKey:@"canvasBackgroundColor"];
+        self.topLeftValue = [decoder decodeObjectForKey:@"topLeftValue"];
+        self.topRightValue = [decoder decodeObjectForKey:@"topRightValue"];
+        self.bottomLeftValue = [decoder decodeObjectForKey:@"bottomLeftValue"];
+        self.bottomRightValue = [decoder decodeObjectForKey:@"bottomRightValue"];
+        self.strokeColor = [decoder decodeObjectForKey:@"strokeColor"];
+        self.strokeWidth = [decoder decodeFloatForKey:@"strokeWidth"];
+        self.drawAsynchronously = [decoder decodeBoolForKey:@"drawAsynchronously"];
+        self.navBarTitleTextStyle = [decoder decodeObjectForKey:@"navBarTitleTextStyle"];
+        self.tableCellTitleTextStyle = [decoder decodeObjectForKey:@"tableCellTitleTextStyle"];
+        self.tableCellDetailTextStyle = [decoder decodeObjectForKey:@"tableCellDetailTextStyle"];
+        self.barButtonItemStyleName = [decoder decodeObjectForKey:@"barButtonItemStyleName"];
+        self.controlStyle = [decoder decodeObjectForKey:@"controlStyle"];
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
+	
+    [theCopy setStyleName:[self.styleName copy]];
+    [theCopy setBgColors:[self.bgColors copy]];
+    [theCopy setBgDegrees:self.bgDegrees];
+    [theCopy setTopInnerBorders:[self.topInnerBorders copy]];
+    [theCopy setBottomInnerBorders:[self.bottomInnerBorders copy]];
+    [theCopy setInnerShadow:[self.innerShadow copy]];
+    [theCopy setShadow:[self.shadow copy]];
+    [theCopy setCornerRadii:self.cornerRadii];
+    [theCopy setCornerRadius:self.cornerRadius];
+    [theCopy setRoundedCorners:self.roundedCorners];
+    [theCopy setMaskToCorners:self.maskToCorners];
+    [theCopy setCanvasBackgroundType:[self.canvasBackgroundType copy]];
+    [theCopy setCanvasBackgroundColor:[self.canvasBackgroundColor copy]];
+    [theCopy setTopLeftValue:[self.topLeftValue copy]];
+    [theCopy setTopRightValue:[self.topRightValue copy]];
+    [theCopy setBottomLeftValue:[self.bottomLeftValue copy]];
+    [theCopy setBottomRightValue:[self.bottomRightValue copy]];
+    [theCopy setStrokeColor:[self.strokeColor copy]];
+    [theCopy setStrokeWidth:self.strokeWidth];
+    [theCopy setDrawAsynchronously:self.drawAsynchronously];
+    [theCopy setNavBarTitleTextStyle:[self.navBarTitleTextStyle copy]];
+    [theCopy setTableCellTitleTextStyle:[self.tableCellTitleTextStyle copy]];
+    [theCopy setTableCellDetailTextStyle:[self.tableCellDetailTextStyle copy]];
+    [theCopy setBarButtonItemStyleName:[self.barButtonItemStyleName copy]];
+    [theCopy setControlStyle:[self.controlStyle copy]];
+	
+    return theCopy;
+}
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.bgColors = [NSMutableArray new];
+		DPStyleColor *color = [[DPStyleColor alloc] init];
+		[self.bgColors addObject:color];
 		self.topInnerBorders = [NSMutableArray new];
 		self.bottomInnerBorders = [NSMutableArray new];
 		self.innerShadow = [[DPStyleShadow alloc] init];
@@ -31,6 +132,7 @@
 		self.strokeColor = [[DPStyleColor alloc] init];
         self.controlStyle = [[DPUIControlStyle alloc] init];
         self.controlStyle.superStyleName = self.styleName;
+		self.canvasBackgroundType = @"Transparent";
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -137,6 +239,80 @@
 @end
 
 @implementation DPUIDocument
+//===========================================================
+// - (NSArray *)keyPaths
+//
+//===========================================================
+- (NSArray *)keyPaths
+{
+    NSArray *result = [NSArray arrayWithObjects:
+					   @"exampleView",
+					   @"textExampleView",
+					   @"style",
+					   @"stylesController",
+					   @"textStylesController",
+					   @"styleTable",
+					   @"colorTable",
+					   @"backgroundColorsTable",
+					   @"topInnerBorderTable",
+					   @"bottomInnerBorderTable",
+					   @"colorVars",
+					   @"colorAndParamVars",
+					   @"currentStyle",
+					   @"topLeftCorner",
+					   @"topRightCorner",
+					   @"bottomLeftCorner",
+					   @"bottomRightCorner",
+					   @"viewCanvasBackgroundTypes",
+					   @"viewCanvasBackgroundValues",
+					   @"styles",
+					   @"controlStyles",
+					   @"textStyles",
+					   @"exampleContainerBgColor",
+					   @"textExampleContainerBgColor",
+					   @"constantsPanel",
+					   @"constantsTextView",
+					   @"constants",
+					   @"blendModes",
+					   @"parameters",
+					   @"parameterPanel",
+					   nil];
+	
+    return result;
+}
+
+//===========================================================
+// - (void)startObservingObject:
+//
+//===========================================================
+- (void)startObservingObject:(id)thisObject
+{
+    if ([thisObject respondsToSelector:@selector(keyPaths)]) {
+        NSArray *keyPathsArray = [thisObject keyPaths];
+        for (NSString *keyPath in keyPathsArray) {
+            [thisObject addObserver:self
+						 forKeyPath:keyPath
+							options:NSKeyValueObservingOptionOld
+							context:NULL];
+        }
+    }
+	
+	
+}
+- (void)stopObservingObject:(id)thisObject
+{
+    if ([thisObject respondsToSelector:@selector(keyPaths)]) {
+        NSArray *keyPathsArray = [thisObject keyPaths];
+        for (NSString *keyPath in keyPathsArray) {
+            [thisObject removeObserver:self forKeyPath:keyPath];
+        }
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	[self updateChangeCount:NSChangeDone];
+}
 
 - (id)init
 {
@@ -151,11 +327,14 @@
 		self.exampleContainerBgColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.2 alpha:1];
 		self.colorVars = [NSMutableArray new];
         
+		
 		self.textStyles = [NSMutableArray new];
 		self.textExampleContainerBgColor = [NSColor whiteColor];
         self.flippedStyle = [[DPUIStyle alloc] init];
         self.flippedStyle.styleName = @"Current w/Flipped Gradient";
         self.parameters = [NSMutableArray new];
+		
+		//	[self startObservingObject:self];
 	}
     return self;
 }
@@ -163,7 +342,12 @@
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
     [[DPStyleManager sharedInstance] setDelegate:self];
+	[self startObservingObject:self];
+}
 
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+	[self stopObservingObject:self];
 }
 
 - (NSArray*)colorVarArray
@@ -199,26 +383,7 @@
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController
 {
     [super windowControllerDidLoadNib:aController];
-	
-//	
-//	self.style = [[DPViewStyle alloc] init];
-//	self.style.background = [[DPStyleBackground alloc] init];
-//	DPStyleColor *white = [[DPStyleColor alloc] init];
-//	white.colorName = @"white";
-//	white.color = [NSColor whiteColor];
-//	DPStyleColor *black = [[DPStyleColor alloc] init];
-//	black.colorName = @"black";
-//	black.color = [NSColor blackColor];
-//	
-//	self.style.background.colors = @[white, black];
-//	self.style.background.locations = @[@(0.0),@(1.0)];
-//	
-//	DPStyleInnerBorder *top = [[DPStyleInnerBorder alloc] init];
-//	top.color = black;
-//	top.height = 1;
-//	top.blendMode = 5;
-//	self.style.topInnerBorders = @[top];
-//
+
 	if (self.updateTimer) {
 		[self.updateTimer invalidate];
 		self.updateTimer = nil;
@@ -345,6 +510,8 @@
         if ([style objectForKey:@"maskToCorners"]) {
             new.maskToCorners = [[style objectForKey:@"maskToCorners"] boolValue];
         }
+		
+		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 		
         [newStyles addObject:new];
 	}
@@ -480,6 +647,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
         
         [dictionary setObject:@(style.maskToCorners) forKey:@"maskToCorners"];
         
+		[dictionary setObject:@(style.drawAsynchronously) forKey:@"drawAsynchronously"];
 		[styles addObject:dictionary];
 	}
 	
@@ -654,5 +822,43 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 {
     [self.parameterPanel display];
 	[self.parameterPanel makeKeyAndOrderFront:nil];
+}
+
+- (IBAction)styleSegTapped:(id)sender
+{
+	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
+	
+	if (seg.selectedSegment == 0) {
+		[self.stylesController add:nil];
+	} else if (seg.selectedSegment == 1) {
+		[self.stylesController remove:nil];
+	} else if (seg.selectedSegment == 2) {
+		DPUIStyle *style = [self.stylesController selectedObjects][0];
+		DPUIStyle *newStyle = [style copy];
+		newStyle.styleName = [self dupeNameForStyle:style];
+		[self.stylesController addObject:newStyle];
+		[self.styleTable reloadData];
+	}
+}
+
+- (NSString*)dupeNameForStyle:(DPUIStyle*)style
+{
+	NSInteger x = 1;
+	BOOL found = NO;
+	NSString *name;
+	
+	while (!found) {
+		
+		name = [NSString stringWithFormat:@"%@%ld", style.styleName, (long)x];
+		if (![[[DPStyleManager sharedInstance] styleNames] containsObject:name]) {
+			found = YES;
+		} else {
+			x += 1;
+		}
+		
+	}
+	
+	return name;
+
 }
 @end

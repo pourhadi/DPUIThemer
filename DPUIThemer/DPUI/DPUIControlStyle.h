@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DPUITextStyle.h"
-@interface DPUIControlStyle : NSObject
+@interface DPUIControlStyle : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic, strong) NSString *normalTextStyle;
 

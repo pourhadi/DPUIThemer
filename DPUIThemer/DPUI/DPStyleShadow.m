@@ -11,6 +11,50 @@
 
 @implementation DPStyleShadow
 
+//===========================================================
+//  Keyed Archiving
+//
+//===========================================================
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.color forKey:@"color"];
+    [encoder encodeFloat:self.radius forKey:@"radius"];
+	//  [encoder encodeCGSize:self.offset forKey:@"offset"];
+    [encoder encodeFloat:self.opacity forKey:@"opacity"];
+    [encoder encodeFloat:self.xOffset forKey:@"xOffset"];
+    [encoder encodeFloat:self.yOffset forKey:@"yOffset"];
+    [encoder encodeFloat:self.yOffsetDisplay forKey:@"yOffsetDisplay"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if (self) {
+        self.color = [decoder decodeObjectForKey:@"color"];
+        self.radius = [decoder decodeFloatForKey:@"radius"];
+		//   self.offset = [decoder decodeCGSizeForKey:@"offset"];
+        self.opacity = [decoder decodeFloatForKey:@"opacity"];
+        self.xOffset = [decoder decodeFloatForKey:@"xOffset"];
+        self.yOffset = [decoder decodeFloatForKey:@"yOffset"];
+        self.yOffsetDisplay = [decoder decodeFloatForKey:@"yOffsetDisplay"];
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
+	
+    [theCopy setColor:[self.color copy]];
+    [theCopy setRadius:self.radius];
+    [theCopy setOffset:self.offset];
+    [(DPStyleShadow*)theCopy setOpacity:self.opacity];
+    [theCopy setXOffset:self.xOffset];
+    [theCopy setYOffset:self.yOffset];
+    [theCopy setYOffsetDisplay:self.yOffsetDisplay];
+	
+    return theCopy;
+}
 - (id)init
 {
     self = [super init];

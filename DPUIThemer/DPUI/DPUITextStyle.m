@@ -29,6 +29,59 @@
 @implementation DPUITextStyle
 @synthesize alignment=_alignment;
 
+//===========================================================
+//  Keyed Archiving
+//
+//===========================================================
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.styleName forKey:@"styleName"];
+    [encoder encodeObject:self.textColor forKey:@"textColor"];
+    [encoder encodeObject:self.font forKey:@"font"];
+	//  [encoder encodeCGSize:self.shadowOffset forKey:@"shadowOffset"];
+    [encoder encodeObject:self.shadowColor forKey:@"shadowColor"];
+    [encoder encodeInteger:self.alignment forKey:@"alignment"];
+    [encoder encodeFloat:self.xShadowOffset forKey:@"xShadowOffset"];
+    [encoder encodeFloat:self.yShadowOffset forKey:@"yShadowOffset"];
+    [encoder encodeInteger:self.fontSize forKey:@"fontSize"];
+    [encoder encodeObject:self.fontString forKey:@"fontString"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if (self) {
+        self.styleName = [decoder decodeObjectForKey:@"styleName"];
+        self.textColor = [decoder decodeObjectForKey:@"textColor"];
+        self.font = [decoder decodeObjectForKey:@"font"];
+		//   self.shadowOffset = [decoder decodeCGSizeForKey:@"shadowOffset"];
+        self.shadowColor = [decoder decodeObjectForKey:@"shadowColor"];
+        self.alignment = [decoder decodeIntegerForKey:@"alignment"];
+        self.xShadowOffset = [decoder decodeFloatForKey:@"xShadowOffset"];
+        self.yShadowOffset = [decoder decodeFloatForKey:@"yShadowOffset"];
+        self.fontSize = [decoder decodeIntegerForKey:@"fontSize"];
+        self.fontString = [decoder decodeObjectForKey:@"fontString"];
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
+	
+    [theCopy setStyleName:[self.styleName copy]];
+    [theCopy setTextColor:[self.textColor copy]];
+    [theCopy setFont:[self.font copy]];
+    [theCopy setShadowOffset:self.shadowOffset];
+    [theCopy setShadowColor:(__bridge CGColorRef)([self.shadowColor copy])];
+    [theCopy setAlignment:self.alignment];
+    [theCopy setXShadowOffset:self.xShadowOffset];
+    [theCopy setYShadowOffset:self.yShadowOffset];
+    [theCopy setFontSize:self.fontSize];
+    [theCopy setFontString:[self.fontString copy]];
+	
+    return theCopy;
+}
 - (id)init
 {
 	self = [super init];

@@ -83,6 +83,11 @@
 
 }
 
+- (void)dealloc
+{
+	[self unobserve];
+}
+
 - (void)setColorVar:(NSString *)colorVar
 {
     [self unobserve];
@@ -99,6 +104,8 @@
             [styleColor addObserver:self forKeyPath:@"parameter" options:0 context:nil];
             [styleColor addObserver:self forKeyPath:@"colorName" options:0 context:nil];
             [self.observing addObject:styleColor];
+			
+			self.parameter = styleColor.parameter;
         }
     }
     

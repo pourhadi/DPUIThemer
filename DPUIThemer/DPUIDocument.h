@@ -24,7 +24,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 	ViewCanvasBackgroundTypeCustomColor = 2,
 };
 
-@interface DPUIStyle : NSObject
+@interface DPUIStyle : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic, strong) NSString *styleName;
 @property (nonatomic, strong) NSMutableArray *bgColors;
@@ -50,6 +50,8 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic, strong) DPStyleColor *strokeColor;
 @property (nonatomic) CGFloat strokeWidth;
+
+@property (nonatomic) BOOL drawAsynchronously;
 
 
 // Navigation bar
