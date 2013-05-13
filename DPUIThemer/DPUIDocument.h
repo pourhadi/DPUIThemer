@@ -30,8 +30,16 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 	ViewCanvasBackgroundTypeCustomColor = 2,
 };
 
+@interface DYNMoreOption : NSObject
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSNumber* index;
+
+@end
+
 @interface DPUIStyle : NSObject <NSCopying, NSCoding>
 
+@property (nonatomic) CGFloat gradientAngle;
 @property (nonatomic, strong) NSString *styleName;
 @property (nonatomic, strong) NSMutableArray *bgColors;
 @property (nonatomic, strong) NSMutableArray *bgLocations;
@@ -87,6 +95,10 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 // controls
 
 @property (nonatomic, strong) DPUIControlStyle *controlStyle;
+
+// UITextField
+
+@property (nonatomic, strong) NSString *textFieldTextStyleName;
 @end
 
 @interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate>
@@ -144,4 +156,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet NSView *propertiesContainerView;
 @property (nonatomic, strong) IBOutlet NSTableView *sliderStylesTable;
 
+@property (nonatomic, strong) IBOutlet NSView *controlStateView;
+@property (nonatomic, strong) IBOutlet NSView *searchFieldView;
+@property (nonatomic, strong) IBOutlet NSView *navigationBarView;
+@property (nonatomic, strong) IBOutlet NSView *tableViewCellView;
+@property (nonatomic, strong) IBOutlet NSView *moreContainerView;
+@property (nonatomic, strong) IBOutlet NSOutlineView *moreOutlineView;
+
+@property (nonatomic, strong) NSArray *moreSelectionOptions;
 @end

@@ -12,7 +12,11 @@
 #import "DPStyleManager.h"
 #import <QuartzCore/QuartzCore.h>
 
+@implementation DYNMoreOption
 
+
+
+@end
 @implementation DPUIStyle
 @synthesize strokeWidth = _strokeWidth;
 
@@ -137,6 +141,7 @@
 		self.startY = 0;
 		self.endX = 0.5;
 		self.endY = 1;
+        self.gradientAngle = 180;
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -222,6 +227,9 @@
 	
 	return new;
 }
+
+
+
 
 @end
 
@@ -372,6 +380,31 @@
         self.parameters = [NSMutableArray new];
 		self.sliderStyles = [NSMutableArray new];
 		//	[self startObservingObject:self];
+        
+        DYNMoreOption *navbar = [[DYNMoreOption alloc] init];
+        navbar.index = @(0);
+        navbar.name = @"UINavigationBar";
+        
+        
+        DYNMoreOption *tablecell = [[DYNMoreOption alloc] init];
+        tablecell.index = @(1);
+        tablecell.name = @"UITableViewCell";
+        
+        DYNMoreOption *searchbar = [[DYNMoreOption alloc] init];
+        searchbar.index = @(2);
+        searchbar.name = @"UISearchBar";
+        
+        DYNMoreOption *textField = [[DYNMoreOption alloc] init];
+        textField.name = @"UITextField";
+        textField.index = @(3);
+        DYNMoreOption *controls = [[DYNMoreOption alloc] init];
+        controls.name = @"Control States";
+        controls.index = @(4);
+        self.moreSelectionOptions = @[navbar,
+                 tablecell,
+                 searchbar,
+                 textField,
+                 controls];
 	}
     return self;
 }
@@ -493,6 +526,14 @@
         
 		new.styleName = [style objectForKey:@"name"];
 		NSDictionary *bg = [style objectForKey:@"background"];
+        
+//        new.startX = [[bg objectForKey:@"startPointX"] floatValue];
+//        new.startY = [[bg objectForKey:@"startPointY"] floatValue];
+//        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
+//        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
+        
+        new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
+        
 		NSArray *colors = [bg objectForKey:@"colors"];
 		NSMutableArray *tmp = [NSMutableArray new];
 
@@ -561,7 +602,11 @@
 		if ([style objectForKey:@"searchFieldTextStyleName"]) {
 			new.searchFieldTextStyleName = [style objectForKey:@"searchFieldTextStyleName"];
 		}
-		
+        
+        if ([style objectForKey:@"textFieldTextStyleName"]) {
+            new.textFieldTextStyleName = [style objectForKey:@"textFieldTextStyleName"];
+        }
+        
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 		
         [newStyles addObject:new];
@@ -576,6 +621,11 @@
 	
 	[self.colorTable reloadData];
 	[self.styleTable reloadData];
+    
+    self.sliderStylesController.selectedObjects = nil;
+    if (self.styles.count > 0) {
+        self.stylesController.selectedObjects = @[self.styles[0]];
+    }
 }
 
 - (NSMutableArray*)controlStyles
@@ -654,6 +704,13 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		// background
 		[bg setObject:bgColors forKey:@"colors"];
 		
+//        [bg setObject:@(style.startX) forKey:@"startPointX"];
+//        [bg setObject:@(style.startY) forKey:@"startPointY"];
+//        [bg setObject:@(style.endX) forKey:@"endPointX"];
+//        [bg setObject:@(style.endY) forKey:@"endPointY"];
+//        
+        [bg setObject:@(style.gradientAngle) forKey:@"gradientAngle"];
+        
 		[dictionary setObject:bg forKey:@"background"];
 		
 		// top inner borders
@@ -723,6 +780,10 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		if (style.searchFieldTextStyleName) {
 			[dictionary setObject:style.searchFieldTextStyleName forKey:@"searchFieldTextStyleName"];
 		}
+        
+        if (style.textFieldTextStyleName) {
+            [dictionary setObject:style.textFieldTextStyleName forKey:@"textFieldTextStyleName"];
+        }
 		
 		[styles addObject:dictionary];
 	}
@@ -965,5 +1026,10 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	return name;
 
+}
+
+- (IBAction)moreSourceSelected:(id)sender
+{
+    
 }
 @end

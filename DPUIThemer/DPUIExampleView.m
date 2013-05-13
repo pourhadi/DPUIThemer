@@ -80,6 +80,57 @@
 	return self.frame.size.width;
 }
 
+- (CGPoint)radialIntersectionWithDegrees:(CGFloat)degrees forFrame:(CGRect)frame {
+    return [self radialIntersectionWithRadians:degrees * M_PI / 180 forFrame:frame];
+}
+
+- (CGPoint)radialIntersectionWithRadians:(CGFloat)radians forFrame:(CGRect)frame  {
+    radians = fmodf(radians, 2 * M_PI);
+    if (radians < 0)
+        radians += (CGFloat)(2 * M_PI);
+    return [self radialIntersectionWithConstrainedRadians:radians forFrame:frame];
+}
+
+- (CGPoint)radialIntersectionWithConstrainedRadians:(CGFloat)radians  forFrame:(CGRect)frame {
+    // This method requires 0 <= radians < 2 * π.
+    
+    CGFloat xRadius = frame.size.width / 2;
+    CGFloat yRadius = frame.size.height / 2;
+    
+    CGPoint pointRelativeToCenter;
+    CGFloat tangent = tanf(radians);
+    CGFloat y = xRadius * tangent;
+    // An infinite line passing through the center at angle `radians`
+    // intersects the right edge at Y coordinate `y` and the left edge
+    // at Y coordinate `-y`.
+    if (fabsf(y) <= yRadius) {
+        // The line intersects the left and right edges before it intersects
+        // the top and bottom edges.
+        if (radians < (CGFloat)M_PI_2 || radians > (CGFloat)(M_PI + M_PI_2)) {
+            // The ray at angle `radians` intersects the right edge.
+            pointRelativeToCenter = CGPointMake(xRadius, y);
+        } else {
+            // The ray intersects the left edge.
+            pointRelativeToCenter = CGPointMake(-xRadius, -y);
+        }
+    } else {
+        // The line intersects the top and bottom edges before it intersects
+        // the left and right edges.
+        CGFloat x = yRadius / tangent;
+        if (radians < (CGFloat)M_PI) {
+            // The ray at angle `radians` intersects the bottom edge.
+            pointRelativeToCenter = CGPointMake(x, yRadius);
+        } else {
+            // The ray intersects the top edge.
+            pointRelativeToCenter = CGPointMake(-x, -yRadius);
+        }
+    }
+    
+    return CGPointMake(pointRelativeToCenter.x + CGRectGetMidX(frame),
+                       pointRelativeToCenter.y + CGRectGetMidY(frame));
+}
+
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	
@@ -90,6 +141,7 @@
 	CGFloat baseX = (dirtyRect.size.width - width) / 2;
 	CGFloat baseY = (dirtyRect.size.height - height) / 2;
     NSRect newRect = NSMakeRect(baseX, baseY, width, height);
+    self.drawRect = newRect;
 	CGSize size = newRect.size;
 	if (self.sliderStyle) {
 		
@@ -158,8 +210,7 @@
 			[combined fill];
 			[NSGraphicsContext restoreGraphicsState];
 		}
-		
-		
+
 		[maxTrackGrad drawInBezierPath: maximumTrackPath angle: -90];
 		[minTrackGrad drawInBezierPath: minimumTrackPath angle: -90];
 		
@@ -333,11 +384,43 @@
                 locArray[x] = [(NSNumber*)locations[x] floatValue];
             }
             
+            CGPoint startPoint = CGPointMake(self.style.startX, self.style.startY);
+            CGPoint endPoint = CGPointMake(self.style.endX, self.style.endY);
+            
+            CGFloat degrees = self.style.gradientAngle;
+            CGFloat endDegrees = degrees+180;
+            if (endDegrees > 360) {
+                endDegrees = endDegrees-360;
+            }
+            endPoint = [self radialIntersectionWithDegrees:endDegrees forFrame:self.drawRect];
+
+          //  endPoint = [self radialIntersectionWithDegrees:degrees];
+            if (degrees < 180) {
+                startPoint.x = size.width - endPoint.x;
+                startPoint.y = size.height - endPoint.y;
+            
+            } else {
+                startPoint = [self radialIntersectionWithDegrees:degrees forFrame:self.drawRect];
+                
+                endPoint.x = size.width - startPoint.x;
+                endPoint.y = size.height - startPoint.y;
+            }
+//
+            
+            
+            startPoint.x /= size.width;
+            startPoint.y /= size.height;
+            endPoint.x /= size.width;
+            endPoint.y /= size.height;
+            
+            
+         //   NSLog(@"point: %f %f", startPoint.x, startPoint.y);
+            
             CFArrayRef components = (__bridge CFArrayRef)colors;
             gradient = CGGradientCreateWithColors(myColorspace, components, locArray);
 			[NSGraphicsContext saveGraphicsState];
 			[path addClip];
-            CGContextDrawLinearGradient(context, gradient, CGPointMake(baseX + (0.5*size.width),baseY + (1*size.height)), CGPointMake(baseX + (0.5*size.width), baseY + (0*size.height)), 0);
+            CGContextDrawLinearGradient(context, gradient, CGPointMake(baseX + (startPoint.x*size.width),baseY + (startPoint.y*size.height)), CGPointMake(baseX + (endPoint.x*size.width), baseY + (endPoint.y*size.height)), 0);
 			[NSGraphicsContext restoreGraphicsState];
 		} else if (self.style.bgColors.count > 0){
             NSColor *fill = [self.style.bgColors[0] color];
@@ -632,12 +715,44 @@
 		for (int x = 0; x < locations.count; x++) {
 			locArray[x] = [(NSNumber*)locations[x] floatValue];
 		}
+        
+        
+        CGPoint startPoint = CGPointMake(self.style.startX, self.style.startY);
+        CGPoint endPoint = CGPointMake(self.style.endX, self.style.endY);
+        
+        CGFloat degrees = style.gradientAngle;
+        CGFloat endDegrees = degrees+180;
+        if (endDegrees > 360) {
+            endDegrees = endDegrees-360;
+        }
+        endPoint = [self radialIntersectionWithDegrees:endDegrees forFrame:rect];
+        
+        //  endPoint = [self radialIntersectionWithDegrees:degrees];
+        if (degrees < 180) {
+            startPoint.x = size.width - endPoint.x;
+            startPoint.y = size.height - endPoint.y;
+            
+        } else {
+            startPoint = [self radialIntersectionWithDegrees:degrees forFrame:rect];
+            
+            endPoint.x = size.width - startPoint.x;
+            endPoint.y = size.height - startPoint.y;
+        }
+        //
+        
+        
+        startPoint.x /= size.width;
+        startPoint.y /= size.height;
+        endPoint.x /= size.width;
+        endPoint.y /= size.height;
+        
+    
 		
 		CFArrayRef components = (__bridge CFArrayRef)colors;
 		gradient = CGGradientCreateWithColors(myColorspace, components, locArray);
 		[NSGraphicsContext saveGraphicsState];
 		[path addClip];
-		CGContextDrawLinearGradient(context, gradient, CGPointMake(baseX + (0.5*size.width),baseY + (1*size.height)), CGPointMake(baseX + (0.5*size.width), baseY + (0*size.height)), 0);
+        CGContextDrawLinearGradient(context, gradient, CGPointMake(baseX + (startPoint.x*size.width),baseY + (startPoint.y*size.height)), CGPointMake(baseX + (endPoint.x*size.width), baseY + (endPoint.y*size.height)), 0);
 		[NSGraphicsContext restoreGraphicsState];
 	} else if (style.bgColors.count > 0){
 		NSColor *fill = [style.bgColors[0] color];
