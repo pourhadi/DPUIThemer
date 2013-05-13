@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
+		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
 		44528A60173230200006166F /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A5F173230200006166F /* NSColor+Hex.m */; };
 		44E94CA81734AB410064D41D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E94CA71734AB400064D41D /* QuartzCore.framework */; };
@@ -52,6 +53,8 @@
 /* Begin PBXFileReference section */
 		443BB98B1730E6C300A94E21 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		443BB98C1730E6C300A94E21 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
+		443D2E04173F43FA008F4162 /* DYNSliderStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNSliderStyle.h; sourceTree = "<group>"; };
+		443D2E05173F43FA008F4162 /* DYNSliderStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNSliderStyle.m; sourceTree = "<group>"; };
 		44528A55173229530006166F /* ColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTransformer.h; sourceTree = "<group>"; };
 		44528A56173229530006166F /* ColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTransformer.m; sourceTree = "<group>"; };
 		44528A5E173230200006166F /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
@@ -258,6 +261,8 @@
 				D78A6143173C240F003F8CA8 /* DPUIControlStyle.m */,
 				D7F8AAB2173D881E004ABF7E /* DPUIParameter.h */,
 				D7F8AAB3173D881E004ABF7E /* DPUIParameter.m */,
+				443D2E04173F43FA008F4162 /* DYNSliderStyle.h */,
+				443D2E05173F43FA008F4162 /* DYNSliderStyle.m */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				44E94CB4173602580064D41D /* DPUITextStyleExampleView.m in Sources */,
 				D78A6144173C240F003F8CA8 /* DPUIControlStyle.m in Sources */,
 				D7F8AAB4173D881E004ABF7E /* DPUIParameter.m in Sources */,
+				443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

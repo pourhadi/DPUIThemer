@@ -28,6 +28,7 @@
 
 @implementation DPUITextStyle
 @synthesize alignment=_alignment;
+@synthesize fontSizeString=_fontSizeString;
 
 //===========================================================
 //  Keyed Archiving
@@ -107,6 +108,8 @@
 	[dict setObject:self.font.fontName forKey:@"fontName"];
 	[dict setObject:@(self.font.pointSize) forKey:@"fontSize"];
 	[dict setObject:@(_alignment) forKey:@"alignment"];
+	[dict setObject:@(self.fontSizeType) forKey:@"fontSizeType"];
+	[dict setObject:self.fontSizeString forKey:@"fontSizeString"];
 	return dict;
 }
 
@@ -121,9 +124,32 @@
 		self.shadowColor = [[DPStyleColor alloc] initWithDictionary:[dict objectForKey:@"shadowColor"]];
 		self.shadowOffset = CGSizeMake([[dict objectForKey:@"shadowXoffset"] floatValue], [[dict objectForKey:@"shadowYOffset"] floatValue]);
 		_alignment = [[dict objectForKey:@"alignment"] intValue];
+		self.fontSizeString = [dict objectForKey:@"fontSizeString"];
+		self.fontSizeType = [[dict objectForKey:@"fontSizeType"] intValue];
 	}
 	
 	return self;
+}
+
+- (void)setFontSizeString:(NSString *)fontSizeString
+{
+	if ([fontSizeString hasSuffix:@"%"]) {
+		self.fontSizeType = DYNFontSizeTypeRelative;
+	} else {
+		self.fontSizeType = DYNFontSizeTypeAbsolute;
+		self.fontSize = [fontSizeString integerValue];
+	}
+	
+	_fontSizeString = fontSizeString;
+}
+
+- (NSString*)fontSizeString
+{
+	if (self.fontSizeType == DYNFontSizeTypeAbsolute) {
+		return [NSString stringWithFormat:@"%d", (int)self.font.pointSize];
+	}
+	
+	return _fontSizeString;
 }
 
 + (NSString*)newStyleVariableName
@@ -204,7 +230,7 @@
 
 - (NSString*)fontString
 {
-	return [NSString stringWithFormat:@"%@ %d", self.font.fontName, (int)self.font.pointSize];
+	return [NSString stringWithFormat:@"%@", self.font.fontName];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
@@ -221,6 +247,11 @@
 	
 	if ([key isEqualToString:@"font"]) {
 		[mutable addObject:@"fontSize"];
+	}
+	
+	if ([key isEqualToString:@"fontSizeString"]) {
+		[mutable addObject:@"fontSize"];
+		[mutable addObject:@"font"];
 	}
 	
 	return mutable;

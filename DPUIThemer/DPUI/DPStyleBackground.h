@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) NSString *parameterName;
 
+@property (nonatomic, strong) NSNumber *location;
+
 @property (nonatomic) BOOL parameter;
 
 - (id)jsonValue;

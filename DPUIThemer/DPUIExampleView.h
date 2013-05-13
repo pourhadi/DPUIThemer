@@ -9,10 +9,17 @@
 #import <Cocoa/Cocoa.h>
 #import "DPViewStyle.h"
 #import "DPUIDefines.h"
-
+#import "DYNSliderStyle.h"
 @class DPUIStyle;
 @interface DPUIExampleView : NSView
+@property (nonatomic, strong) NSColor *containerColor;
+@property (nonatomic, strong) DYNSliderStyle *sliderStyle;
 @property (nonatomic, strong) DPUIStyle *style;
 @property (nonatomic) CGFloat xScale;
 @property (nonatomic) CGFloat yScale;
+
+@property (nonatomic) CGFloat height;
+@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat frameWidth;
+@property (nonatomic) CGFloat frameHeight;
 @end

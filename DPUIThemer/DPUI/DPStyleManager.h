@@ -36,7 +36,8 @@
 @property (nonatomic, strong) NSArray *textStyles;
 @property (nonatomic, strong) NSArray *textStyleNames;
 @property (nonatomic, strong) NSArray *parameters;
-
+@property (nonatomic, strong) NSMutableArray *sliderStyles;
+@property (nonatomic, strong) NSArray *sliderStyleNames;
 - (id)valueForStyleParameter:(NSString*)parameter;
 - (void)styleApplied;
 

@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "DPStyleBackground.h"
 
+typedef NS_ENUM(NSUInteger, DYNFontSizeType){
+	DYNFontSizeTypeAbsolute,
+	DYNFontSizeTypeRelative,
+};
+
 @interface TextStyleTransformer : NSValueTransformer
 
 @end
@@ -27,6 +32,8 @@
 @property (nonatomic) NSInteger fontSize;
 @property (nonatomic, strong) NSString *fontString;
 
+@property (nonatomic, strong) NSString *fontSizeString;
+@property (nonatomic) DYNFontSizeType fontSizeType;
 
 - (id)jsonValue;
 - (id)initWithDictionary:(NSDictionary*)dict;

@@ -54,7 +54,7 @@
 
 - (DPStyleObject*)styleForName:(NSString*)name
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@", name];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"styleName == %@", name];
     NSArray *filtered = [self.styles filteredArrayUsingPredicate:pred];
     if (filtered) {
         if (filtered.count > 0) {
@@ -62,6 +62,13 @@
         }
     }
     return nil;
+}
+
+- (void)setSliderStyles:(NSMutableArray *)sliderStyles
+{
+	_sliderStyles = sliderStyles;
+	
+	self.sliderStyleNames = [sliderStyles valueForKeyPath:@"name"];
 }
 
 - (NSArray*)colorVariables

@@ -18,6 +18,12 @@ static NSString *kBackgroundTransparent = @"Transparent";
 static NSString *kBackgroundPreviewColor = @"Use preview background color";
 static NSString *kBackgroundCustomColor = @"Custom color:";
 
+typedef NS_OPTIONS(NSUInteger, CornerRadiusType) {
+	CornerRadiusTypeCustom,
+	CornerRadiusTypeHalfHeight,
+	CornerRadiusTypeHalfWidth,
+};
+
 typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 	ViewCanvasBackgroundTypeTransparent = 0,
 	ViewCanvasBackgroundTypePreviewColor = 1,
@@ -28,6 +34,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic, strong) NSString *styleName;
 @property (nonatomic, strong) NSMutableArray *bgColors;
+@property (nonatomic, strong) NSMutableArray *bgLocations;
 @property (nonatomic) NSInteger bgDegrees;
 @property (nonatomic, strong) NSMutableArray *topInnerBorders;
 @property (nonatomic, strong) NSMutableArray *bottomInnerBorders;
@@ -37,6 +44,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic) CGSize cornerRadii;
 @property (nonatomic) CGFloat cornerRadius;
+@property (nonatomic, strong) NSNumber* cornerRadiusType;
 @property (nonatomic) UIRectCorner roundedCorners;
 @property (nonatomic) BOOL maskToCorners;
 
@@ -53,7 +61,15 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic) BOOL drawAsynchronously;
 
+@property (nonatomic) CGFloat startX;
+@property (nonatomic) CGFloat startY;
+@property (nonatomic) CGFloat endX;
+@property (nonatomic) CGFloat endY;
 
+// UISearchBar
+
+@property (nonatomic, strong) NSString *searchBarTextFieldStyleName;
+@property (nonatomic, strong) NSString *searchFieldTextStyleName;
 // Navigation bar
 
 @property (nonatomic, strong) DPUITextStyle *navBarTitleTextStyle;
@@ -62,6 +78,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic, strong) DPUITextStyle *tableCellTitleTextStyle;
 @property (nonatomic, strong) DPUITextStyle *tableCellDetailTextStyle;
+@property (nonatomic, strong) NSString *tableCellSelectedStyleName;
 
 // UIBarButtonItem
 
@@ -117,5 +134,14 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSMutableArray *parameters;
 
 @property (nonatomic, strong) IBOutlet NSPanel *parameterPanel;
+
+@property (nonatomic, strong) IBOutlet NSTabView *viewStyleTabs;
+@property (nonatomic, strong) IBOutlet NSTabView *sliderStyleTabs;
+
+@property (nonatomic, strong) NSMutableArray *sliderStyles;
+@property (nonatomic, strong) IBOutlet NSArrayController *sliderStylesController;
+
+@property (nonatomic, strong) IBOutlet NSView *propertiesContainerView;
+@property (nonatomic, strong) IBOutlet NSTableView *sliderStylesTable;
 
 @end

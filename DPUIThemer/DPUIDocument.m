@@ -133,6 +133,10 @@
         self.controlStyle = [[DPUIControlStyle alloc] init];
         self.controlStyle.superStyleName = self.styleName;
 		self.canvasBackgroundType = @"Transparent";
+		self.startX = 0.5;
+		self.startY = 0;
+		self.endX = 0.5;
+		self.endY = 1;
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -309,9 +313,42 @@
     }
 }
 
+- (void)emptyPropertiesContainer
+{
+	for (NSView *sub in self.propertiesContainerView.subviews) {
+		[sub removeFromSuperview];
+	}
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	[self updateChangeCount:NSChangeDone];
+	if (object == self.stylesController) {
+		if (self.stylesController.selectedObjects.count > 0) {
+			[self.sliderStylesController setSelectedObjects:nil];
+
+			if (!self.viewStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.viewStyleTabs];
+			}
+		}
+		
+	} else if (object == self.sliderStylesController) {
+		if (self.sliderStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+
+			if (!self.sliderStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
+			}
+		}
+		
+	} else {
+		[self updateChangeCount:NSChangeDone];
+	}
 }
 
 - (id)init
@@ -333,7 +370,7 @@
         self.flippedStyle = [[DPUIStyle alloc] init];
         self.flippedStyle.styleName = @"Current w/Flipped Gradient";
         self.parameters = [NSMutableArray new];
-		
+		self.sliderStyles = [NSMutableArray new];
 		//	[self startObservingObject:self];
 	}
     return self;
@@ -390,8 +427,10 @@
 	}
 	self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(styleChanged) userInfo:nil repeats:YES];
     
+	
+	[self.stylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
+	[self.sliderStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 }
-
 + (BOOL)autosavesInPlace
 {
     return YES;
@@ -511,11 +550,28 @@
             new.maskToCorners = [[style objectForKey:@"maskToCorners"] boolValue];
         }
 		
+		if ([style objectForKey:@"cornerRadiusType"]) {
+			new.cornerRadiusType = [style objectForKey:@"cornerRadiusType"];
+		}
+		
+		if ([style objectForKey:@"searchFieldStyleName"]) {
+			new.searchBarTextFieldStyleName = [style objectForKey:@"searchFieldStyleName"];
+		}
+		
+		if ([style objectForKey:@"searchFieldTextStyleName"]) {
+			new.searchFieldTextStyleName = [style objectForKey:@"searchFieldTextStyleName"];
+		}
+		
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 		
         [newStyles addObject:new];
 	}
 	
+	NSMutableArray *tmpSlider = [NSMutableArray new];
+	for (NSDictionary *slider in [dict objectForKey:@"sliderStyles"]) {
+		[tmpSlider addObject:[[DYNSliderStyle alloc] initWithDictionary:slider]];
+	}
+	self.sliderStyles = tmpSlider;
 	self.styles = newStyles;
 	
 	[self.colorTable reloadData];
@@ -557,17 +613,24 @@
 
 - (IBAction)styleChanged
 {
+	self.exampleView.containerColor = self.exampleContainerBgColor;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];
 	[[DPStyleManager sharedInstance] setStyles:self.styles];
+	[[DPStyleManager sharedInstance] setSliderStyles:self.sliderStyles];
+
 	if (self.stylesController.selectedObjects && self.stylesController.selectedObjects.count > 0) {
+		self.exampleView.sliderStyle = nil;
 		[[DPStyleManager sharedInstance] setCurrentStyle:self.stylesController.selectedObjects[0]];
 		self.exampleView.style = self.stylesController.selectedObjects[0];
 
 		[self.bottomInnerBorderTable reloadData];
 		[self.topInnerBorderTable reloadData];
 		[self.backgroundColorsTable reloadData];
+	} else if (self.sliderStylesController.selectedObjects && self.sliderStylesController.selectedObjects.count > 0) {
+		self.exampleView.style = nil;
+		self.exampleView.sliderStyle = self.sliderStylesController.selectedObjects[0];
+		
 	}
-    
     
 	
 if (self.textStylesController.selectedObjects && self.textStylesController.selectedObjects.count > 0) {
@@ -648,6 +711,19 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
         [dictionary setObject:@(style.maskToCorners) forKey:@"maskToCorners"];
         
 		[dictionary setObject:@(style.drawAsynchronously) forKey:@"drawAsynchronously"];
+		
+		if (style.cornerRadiusType) {
+			[dictionary setObject:style.cornerRadiusType forKey:@"cornerRadiusType"];
+		}
+		
+		if (style.searchBarTextFieldStyleName) {
+			[dictionary setObject:style.searchBarTextFieldStyleName forKey:@"searchFieldStyleName"];
+		}
+		
+		if (style.searchFieldTextStyleName) {
+			[dictionary setObject:style.searchFieldTextStyleName forKey:@"searchFieldTextStyleName"];
+		}
+		
 		[styles addObject:dictionary];
 	}
 	
@@ -671,6 +747,15 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	[container setObject:[ColorTransformer stringFromColor:self.exampleContainerBgColor] forKey:@"exampleContainerBgColor"];
 	[container setObject:[ColorTransformer stringFromColor:self.textExampleContainerBgColor] forKey:@"textExampleContainerBgColor"];
+	
+	NSMutableArray *tmpSlider = [NSMutableArray new];
+	
+	for (DYNSliderStyle *slider in self.sliderStyles) {
+		[tmpSlider addObject:slider.jsonValue];
+	}
+	
+	[container setObject:tmpSlider forKey:@"sliderStyles"];
+	
 	
 	NSError *error;
 	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:0 error:&error];
@@ -712,11 +797,11 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	}
 	if (self.topLeftCorner.state == 1) {
 		corners = corners | UIRectCornerTopLeft;
-
 	}
 
-	self.currentStyle.roundedCorners = corners;
-	self.exampleView.style = self.stylesController.selectedObjects[0];
+	
+	[[self.stylesController selectedObjects][0] setRoundedCorners:corners];
+	//	self.exampleView.style = self.stylesController.selectedObjects[0];
 
 }
 
@@ -839,6 +924,26 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 		[self.stylesController addObject:newStyle];
 		[self.styleTable reloadData];
 	}
+}
+
+
+- (IBAction)sliderSegTapped:(id)sender
+{
+	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
+	
+	if (seg.selectedSegment == 0) {
+		[self.sliderStylesController add:nil];
+	} else if (seg.selectedSegment == 1) {
+		[self.sliderStylesController remove:nil];
+	} else if (seg.selectedSegment == 2) {
+//		DPUIStyle *style = [self.stylesController selectedObjects][0];
+//		DPUIStyle *newStyle = [style copy];
+//		newStyle.styleName = [self dupeNameForStyle:style];
+//		[self.stylesController addObject:newStyle];
+//		[self.styleTable reloadData];
+	}
+	
+	[self.sliderStylesTable reloadData];
 }
 
 - (NSString*)dupeNameForStyle:(DPUIStyle*)style
