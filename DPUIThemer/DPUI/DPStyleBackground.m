@@ -125,6 +125,19 @@
     }
 }
 
+- (NSImage*)imageRep
+{
+	
+	NSImage *image = [NSImage imageWithSize:NSMakeSize(40, 20) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+	
+		[self.color setFill];
+		NSRectFill(dstRect);
+		
+		return YES;
+	}];
+	return image;
+}
+
 - (NSString*)colorVariableName
 {
 	if (!_colorName) {
@@ -161,7 +174,7 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key NS_AVAILABLE(10_5, 2_0)
 {
 	NSSet *paths = [super keyPathsForValuesAffectingValueForKey:key];
-	if ([key isEqualToString:@"colorName"] || [key isEqualToString:@"colorString"] || [key isEqualToString:@"colorVariableName"] || [key isEqualToString:@"colorDisplayString"]) {
+	if ([key isEqualToString:@"colorName"] || [key isEqualToString:@"colorString"] || [key isEqualToString:@"colorVariableName"] || [key isEqualToString:@"colorDisplayString"] || [key isEqualToString:@"imageRep"]) {
 		
 		NSMutableSet *mpaths = [paths mutableCopy];
 		if (![mpaths containsObject:@"color"]) {

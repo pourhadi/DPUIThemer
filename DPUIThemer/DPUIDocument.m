@@ -20,7 +20,216 @@
 @implementation DPUIStyle
 @synthesize strokeWidth = _strokeWidth;
 
+- (id)initWithDictionary:(NSDictionary*)style
+{
+	self = [super init];
+	if (self) {
+		DPUIStyle *new = self;
+		
+		new.styleName = [style objectForKey:@"name"];
+		NSDictionary *bg = [style objectForKey:@"background"];
+        
+		//        new.startX = [[bg objectForKey:@"startPointX"] floatValue];
+		//        new.startY = [[bg objectForKey:@"startPointY"] floatValue];
+		//        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
+		//        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
+        
+        new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
+        
+		NSArray *colors = [bg objectForKey:@"colors"];
+		NSMutableArray *tmp = [NSMutableArray new];
+		
+		for (NSDictionary *color in colors ) {
+			[tmp addObject:[[DPStyleColor alloc] initWithDictionary:color]];
+		}
+		new.bgColors = tmp;
+		
+		tmp = [NSMutableArray new];
+		NSArray *top = [style objectForKey:@"topInnerBorders"];
+		for (NSDictionary *border in top) {
+			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
+		}
+		new.topInnerBorders = tmp;
+		tmp = [NSMutableArray new];
+		NSArray *bottom = [style objectForKey:@"bottomInnerBorders"];
+		for (NSDictionary *border in bottom) {
+			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
+		}
+		new.bottomInnerBorders = tmp;
+		
+		new.shadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"shadow"]];
+		new.innerShadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"innerShadow"]];
+		
+		new.roundedCorners = [[style objectForKey:@"roundedCorners"] unsignedIntegerValue];
+		new.cornerRadius = [[style objectForKey:@"cornerRadius"] floatValue];
+		
+		new.canvasBackgroundType = [style objectForKey:@"canvasBackgroundType"];
+		new.canvasBackgroundColor = [ColorTransformer colorFromString:[style objectForKey:@"canvasBackgroundColor"]];
+		
+		if ([style objectForKey:@"tableCellTitleTextStyle"]) {
+			new.tableCellTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellTitleTextStyle"]];
+		}
+		if ([style objectForKey:@"tableCellDetailTextStyle"]){
+			new.tableCellDetailTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellDetailTextStyle"]];
+		}
+		if ([style objectForKey:@"navBarTitleTextStyle"]) {
+			new.navBarTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"navBarTitleTextStyle"]];
+		}
+		
+		if ([style objectForKey:@"barButtonItemStyleName"]) {
+			new.barButtonItemStyleName = [style objectForKey:@"barButtonItemStyleName"];
+		}
+		
+		if ([style objectForKey:@"strokeColor"]) {
+			new.strokeColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"strokeColor"]];
+			new.strokeWidth = [[style objectForKey:@"strokeWidth"] floatValue];
+		}
+        
+        if ([style objectForKey:@"controlStyle"]) {
+            new.controlStyle = [[DPUIControlStyle alloc] initWithDictionary:[style objectForKey:@"controlStyle"]];
+        }
+        
+        if ([style objectForKey:@"maskToCorners"]) {
+            new.maskToCorners = [[style objectForKey:@"maskToCorners"] boolValue];
+        }
+		
+		if ([style objectForKey:@"cornerRadiusType"]) {
+			new.cornerRadiusType = [style objectForKey:@"cornerRadiusType"];
+		}
+		
+		if ([style objectForKey:@"searchFieldStyleName"]) {
+			new.searchBarTextFieldStyleName = [style objectForKey:@"searchFieldStyleName"];
+		}
+		
+		if ([style objectForKey:@"searchFieldTextStyleName"]) {
+			new.searchFieldTextStyleName = [style objectForKey:@"searchFieldTextStyleName"];
+		}
+        
+        if ([style objectForKey:@"textFieldTextStyleName"]) {
+            new.textFieldTextStyleName = [style objectForKey:@"textFieldTextStyleName"];
+        }
+		
+		if ([style objectForKey:@"segmentedControlStyle"]) {
+			new.segmentedControlStyle = [[DPUIControlStyle alloc] initWithDictionary:[style objectForKey:@"segmentedControlStyle"]];
+		}
+        
+		if ([style objectForKey:@"segmentDividerColor"]) {
+			new.segmentDividerColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"segmentDividerColor"]];
+		}
+		
+		if ([style objectForKey:@"segmentDividerWidth"]) {
+			new.segmentDividerWidth = [[style objectForKey:@"segmentDividerWidth"] floatValue];
+		}
+		
+		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 
+	}
+	return self;
+}
+- (id)jsonValue
+{
+	DPUIStyle *style = self;
+	
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	[dictionary setObject:style.styleName forKey:@"name"];
+	NSMutableDictionary *bg = [NSMutableDictionary new];
+	NSMutableArray *bgColors = [NSMutableArray new];
+	for (DPStyleColor *color in style.bgColors) {
+		[bgColors addObject:color.jsonValue];
+	}
+	// background
+	[bg setObject:bgColors forKey:@"colors"];
+	
+	//        [bg setObject:@(style.startX) forKey:@"startPointX"];
+	//        [bg setObject:@(style.startY) forKey:@"startPointY"];
+	//        [bg setObject:@(style.endX) forKey:@"endPointX"];
+	//        [bg setObject:@(style.endY) forKey:@"endPointY"];
+	//
+	[bg setObject:@(style.gradientAngle) forKey:@"gradientAngle"];
+	
+	[dictionary setObject:bg forKey:@"background"];
+	
+	// top inner borders
+	NSArray *topinnerborders = [style.topInnerBorders valueForKeyPath:@"jsonValue"];
+	[dictionary setObject:topinnerborders forKey:@"topInnerBorders"];
+	
+	// bottom inner borders
+	NSArray *bottom = [style.bottomInnerBorders valueForKeyPath:@"jsonValue"];
+	[dictionary setObject:bottom forKey:@"bottomInnerBorders"];
+	
+	//NSDictionary *cornerRadii = (__bridge NSDictionary *)(CGSizeCreateDictionaryRepresentation(style.cornerRadii));
+	[dictionary setObject:@(style.cornerRadius) forKey:@"cornerRadius"];
+	[dictionary setObject:@(style.roundedCorners) forKey:@"roundedCorners"];
+	[dictionary setObject:style.innerShadow.jsonValue forKey:@"innerShadow"];
+	[dictionary setObject:style.shadow.jsonValue forKey:@"shadow"];
+	
+	NSColor *canvasBgColor = [NSColor clearColor];
+	if ([style.canvasBackgroundType isEqualToString:kBackgroundPreviewColor]) {
+		//canvasBgColor = self.exampleContainerBgColor;
+	} else if ([style.canvasBackgroundType isEqualToString:kBackgroundCustomColor]) {
+		canvasBgColor = style.canvasBackgroundColor;
+	} else if (!style.canvasBackgroundType) {
+		style.canvasBackgroundType = kBackgroundTransparent;
+	}
+	
+	[dictionary setObject:style.canvasBackgroundType forKey:@"canvasBackgroundType"];
+	[dictionary setObject:[ColorTransformer stringFromColor:canvasBgColor] forKey:@"canvasBackgroundColor"];
+	
+	if (style.navBarTitleTextStyle) {
+		[dictionary setObject:style.navBarTitleTextStyle.jsonValue forKey:@"navBarTitleTextStyle"];
+	}
+	
+	if (style.tableCellTitleTextStyle) {
+		[dictionary setObject:style.tableCellTitleTextStyle.jsonValue forKey:@"tableCellTitleTextStyle"];
+	}
+	
+	if (style.tableCellDetailTextStyle) {
+		[dictionary setObject:style.tableCellDetailTextStyle.jsonValue forKey:@"tableCellDetailTextStyle"];
+	}
+	
+	
+	if (style.barButtonItemStyleName) {
+		[dictionary setObject:style.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
+	}
+	
+	if (style.strokeColor) {
+		[dictionary setObject:style.strokeColor.jsonValue forKey:@"strokeColor"];
+		[dictionary setObject:@(style.strokeWidth) forKey:@"strokeWidth"];
+	}
+	
+	if (style.controlStyle) {
+		[dictionary setObject:style.controlStyle.jsonValue forKey:@"controlStyle"];
+	}
+	
+	[dictionary setObject:@(style.maskToCorners) forKey:@"maskToCorners"];
+	
+	[dictionary setObject:@(style.drawAsynchronously) forKey:@"drawAsynchronously"];
+	
+	if (style.cornerRadiusType) {
+		[dictionary setObject:style.cornerRadiusType forKey:@"cornerRadiusType"];
+	}
+	
+	if (style.searchBarTextFieldStyleName) {
+		[dictionary setObject:style.searchBarTextFieldStyleName forKey:@"searchFieldStyleName"];
+	}
+	
+	if (style.searchFieldTextStyleName) {
+		[dictionary setObject:style.searchFieldTextStyleName forKey:@"searchFieldTextStyleName"];
+	}
+	
+	if (style.textFieldTextStyleName) {
+		[dictionary setObject:style.textFieldTextStyleName forKey:@"textFieldTextStyleName"];
+	}
+	
+	if (style.segmentedControlStyle.selectedStyleName) {
+		[dictionary setObject:style.segmentedControlStyle.jsonValue forKey:@"segmentedControlStyle"];
+		
+		[dictionary setObject:@(style.segmentDividerWidth) forKey:@"segmentDividerWidth"];
+		[dictionary setObject:style.segmentDividerColor.jsonValue forKey:@"segmentDividerColor"];
+	}
+	
+	return dictionary;
+}
 //===========================================================
 //  Keyed Archiving
 //
@@ -142,6 +351,9 @@
 		self.endX = 0.5;
 		self.endY = 1;
         self.gradientAngle = 180;
+		self.segmentedControlStyle = [[DPUIControlStyle alloc] init];
+		self.segmentDividerColor = [[DPStyleColor alloc] init];
+		self.segmentDividerWidth = 1;
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -333,6 +545,7 @@
 	if (object == self.stylesController) {
 		if (self.stylesController.selectedObjects.count > 0) {
 			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
 
 			if (!self.viewStyleTabs.window) {
 				[self emptyPropertiesContainer];
@@ -345,7 +558,7 @@
 	} else if (object == self.sliderStylesController) {
 		if (self.sliderStylesController.selectedObjects.count > 0) {
 			[self.stylesController setSelectedObjects:nil];
-
+			[self.imageStylesController setSelectedObjects:nil];
 			if (!self.sliderStyleTabs.window) {
 				[self emptyPropertiesContainer];
 				
@@ -354,7 +567,19 @@
 			}
 		}
 		
-	} else {
+	} else if (object == self.imageStylesController) {
+		if (self.imageStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+
+			if (!self.imageStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.imageStyleTabs];
+			}
+		}
+	}else {
 		[self updateChangeCount:NSChangeDone];
 	}
 }
@@ -379,6 +604,7 @@
         self.flippedStyle.styleName = @"Current w/Flipped Gradient";
         self.parameters = [NSMutableArray new];
 		self.sliderStyles = [NSMutableArray new];
+		self.imageStyles = [NSMutableArray new];
 		//	[self startObservingObject:self];
         
         DYNMoreOption *navbar = [[DYNMoreOption alloc] init];
@@ -397,13 +623,20 @@
         DYNMoreOption *textField = [[DYNMoreOption alloc] init];
         textField.name = @"UITextField";
         textField.index = @(3);
+		
+		DYNMoreOption *seg = [[DYNMoreOption alloc] init];
+		seg.name = @"UISegmentedControl";
+		seg.index = @(4);
+		
         DYNMoreOption *controls = [[DYNMoreOption alloc] init];
         controls.name = @"Control States";
-        controls.index = @(4);
+        controls.index = @(5);
+		
         self.moreSelectionOptions = @[navbar,
                  tablecell,
                  searchbar,
                  textField,
+				 seg,
                  controls];
 	}
     return self;
@@ -463,6 +696,7 @@
 	
 	[self.stylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 	[self.sliderStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
+	[self.imageStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 }
 + (BOOL)autosavesInPlace
 {
@@ -522,93 +756,9 @@
 	NSArray *styles = [dict objectForKey:@"styles"];
 	NSMutableArray *newStyles = [NSMutableArray new];
 	for (NSDictionary*style in styles) {
-		DPUIStyle *new = [[DPUIStyle alloc] init];
+		DPUIStyle *new = [[DPUIStyle alloc] initWithDictionary:style];
         
-		new.styleName = [style objectForKey:@"name"];
-		NSDictionary *bg = [style objectForKey:@"background"];
-        
-//        new.startX = [[bg objectForKey:@"startPointX"] floatValue];
-//        new.startY = [[bg objectForKey:@"startPointY"] floatValue];
-//        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
-//        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
-        
-        new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
-        
-		NSArray *colors = [bg objectForKey:@"colors"];
-		NSMutableArray *tmp = [NSMutableArray new];
-
-		for (NSDictionary *color in colors ) {
-			[tmp addObject:[[DPStyleColor alloc] initWithDictionary:color]];
-		}
-		new.bgColors = tmp;
-		
-		tmp = [NSMutableArray new];
-		NSArray *top = [style objectForKey:@"topInnerBorders"];
-		for (NSDictionary *border in top) {
-			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
-		}
-		new.topInnerBorders = tmp;
-		tmp = [NSMutableArray new];
-		NSArray *bottom = [style objectForKey:@"bottomInnerBorders"];
-		for (NSDictionary *border in bottom) {
-			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
-		}
-		new.bottomInnerBorders = tmp;
-		
-		new.shadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"shadow"]];
-		new.innerShadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"innerShadow"]];
-		
-		new.roundedCorners = [[style objectForKey:@"roundedCorners"] unsignedIntegerValue];
-		new.cornerRadius = [[style objectForKey:@"cornerRadius"] floatValue];
-		
-		new.canvasBackgroundType = [style objectForKey:@"canvasBackgroundType"];
-		new.canvasBackgroundColor = [ColorTransformer colorFromString:[style objectForKey:@"canvasBackgroundColor"]];
-		
-		if ([style objectForKey:@"tableCellTitleTextStyle"]) {
-			new.tableCellTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellTitleTextStyle"]];
-		}
-		if ([style objectForKey:@"tableCellDetailTextStyle"]){
-			new.tableCellDetailTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellDetailTextStyle"]];
-		}
-		if ([style objectForKey:@"navBarTitleTextStyle"]) {
-			new.navBarTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"navBarTitleTextStyle"]];
-		}
-		
-		if ([style objectForKey:@"barButtonItemStyleName"]) {
-			new.barButtonItemStyleName = [style objectForKey:@"barButtonItemStyleName"];
-		}
-		
-		if ([style objectForKey:@"strokeColor"]) {
-			new.strokeColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"strokeColor"]];
-			new.strokeWidth = [[style objectForKey:@"strokeWidth"] floatValue];
-		}
-        
-        if ([style objectForKey:@"controlStyle"]) {
-            new.controlStyle = [[DPUIControlStyle alloc] initWithDictionary:[style objectForKey:@"controlStyle"]];
-        }
-        
-        if ([style objectForKey:@"maskToCorners"]) {
-            new.maskToCorners = [[style objectForKey:@"maskToCorners"] boolValue];
-        }
-		
-		if ([style objectForKey:@"cornerRadiusType"]) {
-			new.cornerRadiusType = [style objectForKey:@"cornerRadiusType"];
-		}
-		
-		if ([style objectForKey:@"searchFieldStyleName"]) {
-			new.searchBarTextFieldStyleName = [style objectForKey:@"searchFieldStyleName"];
-		}
-		
-		if ([style objectForKey:@"searchFieldTextStyleName"]) {
-			new.searchFieldTextStyleName = [style objectForKey:@"searchFieldTextStyleName"];
-		}
-        
-        if ([style objectForKey:@"textFieldTextStyleName"]) {
-            new.textFieldTextStyleName = [style objectForKey:@"textFieldTextStyleName"];
-        }
-        
-		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
-		
+				
         [newStyles addObject:new];
 	}
 	
@@ -616,6 +766,13 @@
 	for (NSDictionary *slider in [dict objectForKey:@"sliderStyles"]) {
 		[tmpSlider addObject:[[DYNSliderStyle alloc] initWithDictionary:slider]];
 	}
+	
+	NSMutableArray *tmpImage = [NSMutableArray new];
+	for (NSDictionary *imageStyle in [dict objectForKey:@"imageStyles"]) {
+		[tmpImage addObject:[[DPUIStyle alloc] initWithDictionary:imageStyle]];
+	}
+	
+	self.imageStyles = tmpImage;
 	self.sliderStyles = tmpSlider;
 	self.styles = newStyles;
 	
@@ -672,16 +829,19 @@
 		self.exampleView.sliderStyle = nil;
 		[[DPStyleManager sharedInstance] setCurrentStyle:self.stylesController.selectedObjects[0]];
 		self.exampleView.style = self.stylesController.selectedObjects[0];
-
+		self.exampleView.imageStyle = nil;
 		[self.bottomInnerBorderTable reloadData];
 		[self.topInnerBorderTable reloadData];
 		[self.backgroundColorsTable reloadData];
 	} else if (self.sliderStylesController.selectedObjects && self.sliderStylesController.selectedObjects.count > 0) {
 		self.exampleView.style = nil;
 		self.exampleView.sliderStyle = self.sliderStylesController.selectedObjects[0];
-		
+		self.exampleView.imageStyle = nil;
+	} else if (self.imageStylesController.selectedObjects && self.imageStylesController.selectedObjects.count > 0) {
+		self.exampleView.imageStyle = self.imageStylesController.selectedObjects[0];
+		self.exampleView.style = nil;
+		self.exampleView.sliderStyle = nil;
 	}
-    
 	
 if (self.textStylesController.selectedObjects && self.textStylesController.selectedObjects.count > 0) {
 	//self.textExampleView.bgColor = self.textExampleContainerBgColor;
@@ -694,97 +854,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	NSMutableDictionary *container = [NSMutableDictionary new];
 	NSMutableArray *styles = [NSMutableArray new];
 	for (DPUIStyle *style in self.styles) {
-		NSMutableDictionary *dictionary = [NSMutableDictionary new];
-		[dictionary setObject:style.styleName forKey:@"name"];
-		NSMutableDictionary *bg = [NSMutableDictionary new];
-		NSMutableArray *bgColors = [NSMutableArray new];
-		for (DPStyleColor *color in style.bgColors) {
-			[bgColors addObject:color.jsonValue];
-		}
-		// background
-		[bg setObject:bgColors forKey:@"colors"];
-		
-//        [bg setObject:@(style.startX) forKey:@"startPointX"];
-//        [bg setObject:@(style.startY) forKey:@"startPointY"];
-//        [bg setObject:@(style.endX) forKey:@"endPointX"];
-//        [bg setObject:@(style.endY) forKey:@"endPointY"];
-//        
-        [bg setObject:@(style.gradientAngle) forKey:@"gradientAngle"];
-        
-		[dictionary setObject:bg forKey:@"background"];
-		
-		// top inner borders
-		NSArray *topinnerborders = [style.topInnerBorders valueForKeyPath:@"jsonValue"];
-		[dictionary setObject:topinnerborders forKey:@"topInnerBorders"];
-		
-		// bottom inner borders
-		NSArray *bottom = [style.bottomInnerBorders valueForKeyPath:@"jsonValue"];
-		[dictionary setObject:bottom forKey:@"bottomInnerBorders"];
-		
-		//NSDictionary *cornerRadii = (__bridge NSDictionary *)(CGSizeCreateDictionaryRepresentation(style.cornerRadii));
-		[dictionary setObject:@(style.cornerRadius) forKey:@"cornerRadius"];
-		[dictionary setObject:@(style.roundedCorners) forKey:@"roundedCorners"];
-		[dictionary setObject:style.innerShadow.jsonValue forKey:@"innerShadow"];
-		[dictionary setObject:style.shadow.jsonValue forKey:@"shadow"];
-		
-		NSColor *canvasBgColor = [NSColor clearColor];
-		if ([style.canvasBackgroundType isEqualToString:kBackgroundPreviewColor]) {
-			canvasBgColor = self.exampleContainerBgColor;
-		} else if ([style.canvasBackgroundType isEqualToString:kBackgroundCustomColor]) {
-			canvasBgColor = style.canvasBackgroundColor;
-		} else if (!style.canvasBackgroundType) {
-			style.canvasBackgroundType = kBackgroundTransparent;
-		}
-		
-		[dictionary setObject:style.canvasBackgroundType forKey:@"canvasBackgroundType"];
-		[dictionary setObject:[ColorTransformer stringFromColor:canvasBgColor] forKey:@"canvasBackgroundColor"];
-		
-		if (style.navBarTitleTextStyle) {
-			[dictionary setObject:style.navBarTitleTextStyle.jsonValue forKey:@"navBarTitleTextStyle"];
-		}
-		
-		if (style.tableCellTitleTextStyle) {
-			[dictionary setObject:style.tableCellTitleTextStyle.jsonValue forKey:@"tableCellTitleTextStyle"];
-		}
-		
-		if (style.tableCellDetailTextStyle) {
-			[dictionary setObject:style.tableCellDetailTextStyle.jsonValue forKey:@"tableCellDetailTextStyle"];
-		}
-
-		
-		if (style.barButtonItemStyleName) {
-			[dictionary setObject:style.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
-		}
-		
-		if (style.strokeColor) {
-			[dictionary setObject:style.strokeColor.jsonValue forKey:@"strokeColor"];
-			[dictionary setObject:@(style.strokeWidth) forKey:@"strokeWidth"];
-		}
-		
-        if (style.controlStyle) {
-            [dictionary setObject:style.controlStyle.jsonValue forKey:@"controlStyle"];
-        }
-        
-        [dictionary setObject:@(style.maskToCorners) forKey:@"maskToCorners"];
-        
-		[dictionary setObject:@(style.drawAsynchronously) forKey:@"drawAsynchronously"];
-		
-		if (style.cornerRadiusType) {
-			[dictionary setObject:style.cornerRadiusType forKey:@"cornerRadiusType"];
-		}
-		
-		if (style.searchBarTextFieldStyleName) {
-			[dictionary setObject:style.searchBarTextFieldStyleName forKey:@"searchFieldStyleName"];
-		}
-		
-		if (style.searchFieldTextStyleName) {
-			[dictionary setObject:style.searchFieldTextStyleName forKey:@"searchFieldTextStyleName"];
-		}
-        
-        if (style.textFieldTextStyleName) {
-            [dictionary setObject:style.textFieldTextStyleName forKey:@"textFieldTextStyleName"];
-        }
-		
+		NSDictionary *dictionary = style.jsonValue;
 		[styles addObject:dictionary];
 	}
 	
@@ -817,6 +887,12 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	[container setObject:tmpSlider forKey:@"sliderStyles"];
 	
+	NSMutableArray *tmpImageStyles = [NSMutableArray new];
+	for (DPUIStyle *style in self.imageStyles) {
+		[tmpImageStyles addObject:style.jsonValue];
+	}
+	
+	[container setObject:tmpImageStyles forKey:@"imageStyles"];
 	
 	NSError *error;
 	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:0 error:&error];
@@ -1007,6 +1083,18 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	[self.sliderStylesTable reloadData];
 }
 
+- (IBAction)imageStyleSegTapped:(id)sender
+{
+	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
+
+	if (seg.selectedSegment == 0) {
+		[self.imageStylesController add:nil];
+	} else if (seg.selectedSegment == 1) {
+		[self.imageStylesController remove:nil];
+	} else if (seg.selectedSegment == 2) {
+	}
+[self.imageStylesTable reloadData];
+}
 - (NSString*)dupeNameForStyle:(DPUIStyle*)style
 {
 	NSInteger x = 1;

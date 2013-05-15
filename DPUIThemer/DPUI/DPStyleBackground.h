@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface DPStyleColor : NSObject <NSCopying>
 @property (nonatomic, strong) NSString *colorName;
 @property (nonatomic, strong) NSColor *color;
@@ -22,6 +24,8 @@
 @property (nonatomic, strong) NSNumber *location;
 
 @property (nonatomic) BOOL parameter;
+
+@property (nonatomic, strong) NSImage *imageRep;
 
 - (id)jsonValue;
 - (id)initWithColorString:(NSString *)color;

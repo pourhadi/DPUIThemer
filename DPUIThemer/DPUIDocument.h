@@ -99,6 +99,19 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 // UITextField
 
 @property (nonatomic, strong) NSString *textFieldTextStyleName;
+
+
+// UISegmentedControl
+
+@property (nonatomic, strong) DPUIControlStyle *segmentedControlStyle;
+@property (nonatomic) CGFloat segmentDividerWidth;
+@property (nonatomic, strong) DPStyleColor *segmentDividerColor;
+
+- (id)initWithDictionary:(NSDictionary*)dictionary;
+- (id)jsonValue;
+
+
+
 @end
 
 @interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate>
@@ -164,4 +177,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet NSOutlineView *moreOutlineView;
 
 @property (nonatomic, strong) NSArray *moreSelectionOptions;
+
+@property (nonatomic, strong) NSMutableArray *imageStyles;
+@property (nonatomic, strong) IBOutlet NSArrayController *imageStylesController;
+@property (nonatomic, strong) IBOutlet NSTabView *imageStyleTabs;
+@property (nonatomic, strong) IBOutlet NSTableView *imageStylesTable;
 @end

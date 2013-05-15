@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSColor *containerColor;
 @property (nonatomic, strong) DYNSliderStyle *sliderStyle;
 @property (nonatomic, strong) DPUIStyle *style;
+@property (nonatomic, strong) DPUIStyle *imageStyle;
 @property (nonatomic) CGFloat xScale;
 @property (nonatomic) CGFloat yScale;
 
