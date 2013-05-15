@@ -107,6 +107,10 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic) CGFloat segmentDividerWidth;
 @property (nonatomic, strong) DPStyleColor *segmentDividerColor;
 
+// UIScrollView
+
+@property (nonatomic) BOOL automaticallyEmbedScrollViewInContainerView;
+
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 - (id)jsonValue;
 

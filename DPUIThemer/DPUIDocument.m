@@ -120,6 +120,10 @@
 		if ([style objectForKey:@"segmentDividerWidth"]) {
 			new.segmentDividerWidth = [[style objectForKey:@"segmentDividerWidth"] floatValue];
 		}
+        
+        if ([style objectForKey:@"automaticallyEmbedScrollViewInContainerView"]) {
+            new.automaticallyEmbedScrollViewInContainerView = [[style objectForKey:@"automaticallyEmbedScrollViewInContainerView"] boolValue];
+        }
 		
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 
@@ -228,6 +232,8 @@
 		[dictionary setObject:style.segmentDividerColor.jsonValue forKey:@"segmentDividerColor"];
 	}
 	
+    [dictionary setObject:@(style.automaticallyEmbedScrollViewInContainerView) forKey:@"automaticallyEmbedScrollViewInContainerView"];
+    
 	return dictionary;
 }
 //===========================================================
@@ -628,15 +634,20 @@
 		seg.name = @"UISegmentedControl";
 		seg.index = @(4);
 		
+        DYNMoreOption *scrollView = [[DYNMoreOption alloc] init];
+        scrollView.name = @"UIScrollView";
+        scrollView.index = @(5);
+        
         DYNMoreOption *controls = [[DYNMoreOption alloc] init];
         controls.name = @"Control States";
-        controls.index = @(5);
+        controls.index = @(6);
 		
         self.moreSelectionOptions = @[navbar,
                  tablecell,
                  searchbar,
                  textField,
 				 seg,
+                scrollView,
                  controls];
 	}
     return self;
@@ -895,7 +906,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	[container setObject:tmpImageStyles forKey:@"imageStyles"];
 	
 	NSError *error;
-	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:0 error:&error];
+	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:NSJSONWritingPrettyPrinted error:&error];
 	return json;
 }
 
