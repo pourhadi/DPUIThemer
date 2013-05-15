@@ -370,9 +370,8 @@
 		
 		NSBezierPath *strokePath = starPath;
 		
-		
 		[strokePath setLineWidth:self.imageStyle.strokeWidth*2];
-		[self.style.strokeColor.color setStroke];
+		[self.imageStyle.strokeColor.color setStroke];
 		[strokePath stroke];
 	}
     [NSGraphicsContext restoreGraphicsState];
