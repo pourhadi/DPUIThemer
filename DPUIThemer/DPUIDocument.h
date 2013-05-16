@@ -47,6 +47,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSMutableArray *topInnerBorders;
 @property (nonatomic, strong) NSMutableArray *bottomInnerBorders;
 
+@property (nonatomic, strong) NSMutableArray *leftInnerBorders;
+@property (nonatomic, strong) NSMutableArray *rightInnerBorders;
+
 @property (nonatomic, strong) DPStyleShadow *innerShadow;
 @property (nonatomic, strong) DPStyleShadow *shadow;
 
@@ -107,9 +110,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic) CGFloat segmentDividerWidth;
 @property (nonatomic, strong) DPStyleColor *segmentDividerColor;
 
-// UIScrollView
+// UITableView - grouped
+@property (nonatomic, strong) NSString *groupedTableTopCell;
+@property (nonatomic, strong) NSString *groupedTableMiddleCell;
+@property (nonatomic, strong) NSString *groupedTableSingleCell;
+@property (nonatomic, strong) NSString *groupedTableBottomCell;
 
-@property (nonatomic) BOOL automaticallyEmbedScrollViewInContainerView;
 
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 - (id)jsonValue;

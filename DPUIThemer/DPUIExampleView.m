@@ -845,6 +845,103 @@
             }
         }
         
+        if (self.style.leftInnerBorders.count > 0) {
+            currentY = size.height - baseY;
+            for (int x = 0; x < self.style.leftInnerBorders.count; x++) {
+                DPStyleInnerBorder *innerBorder = self.style.leftInnerBorders[x];
+                currentY -= innerBorder.height;
+				
+				
+				NSColor* shadowColor = innerBorder.color.color;
+				CGSize shadowOffset = CGSizeMake(-innerBorder.height, 0);
+				CGFloat shadowBlurRadius = 0;
+				
+				//// Shadow Declarations
+				NSShadow* shadow = [[NSShadow alloc] init];
+				[shadow setShadowColor: shadowColor];
+				[shadow setShadowOffset: NSMakeSize(oppositeSign(shadowOffset.width), oppositeSign(shadowOffset.height))];
+				[shadow setShadowBlurRadius: shadowBlurRadius];
+				
+				//// Rectangle Drawing
+				NSBezierPath* rectanglePath = path;
+				
+				////// Rectangle Inner Shadow
+				NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
+				rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -shadow.shadowOffset.width, -shadow.shadowOffset.height);
+				rectangleBorderRect = NSInsetRect(NSUnionRect(rectangleBorderRect, [rectanglePath bounds]), -1, -1);
+				
+				NSBezierPath* rectangleNegativePath = [NSBezierPath bezierPathWithRect: rectangleBorderRect];
+				[rectangleNegativePath appendBezierPath: rectanglePath];
+				[rectangleNegativePath setWindingRule: NSEvenOddWindingRule];
+				
+				[NSGraphicsContext saveGraphicsState];
+				{
+					CGContextSetBlendMode(context, innerBorder.blendMode);
+					
+					NSShadow* shadowWithOffset = [shadow copy];
+					CGFloat xOffset = shadowWithOffset.shadowOffset.width + round(rectangleBorderRect.size.width);
+					CGFloat yOffset = shadowWithOffset.shadowOffset.height;
+					shadowWithOffset.shadowOffset = NSMakeSize(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset));
+					[shadowWithOffset set];
+					[[NSColor grayColor] setFill];
+					[rectanglePath addClip];
+					NSAffineTransform* transform = [NSAffineTransform transform];
+					[transform translateXBy: -round(rectangleBorderRect.size.width) yBy: 0];
+					[[transform transformBezierPath: rectangleNegativePath] fill];
+				}
+				[NSGraphicsContext restoreGraphicsState];
+            }
+        }
+        
+        
+        if (self.style.rightInnerBorders.count > 0) {
+            currentY = size.height - baseY;
+            for (int x = 0; x < self.style.rightInnerBorders.count; x++) {
+                DPStyleInnerBorder *innerBorder = self.style.rightInnerBorders[x];
+                currentY -= innerBorder.height;
+				
+				
+				NSColor* shadowColor = innerBorder.color.color;
+				CGSize shadowOffset = CGSizeMake(innerBorder.height, 0);
+				CGFloat shadowBlurRadius = 0;
+				
+				//// Shadow Declarations
+				NSShadow* shadow = [[NSShadow alloc] init];
+				[shadow setShadowColor: shadowColor];
+				[shadow setShadowOffset: NSMakeSize(oppositeSign(shadowOffset.width), oppositeSign(shadowOffset.height))];
+				[shadow setShadowBlurRadius: shadowBlurRadius];
+				
+				//// Rectangle Drawing
+				NSBezierPath* rectanglePath = path;
+				
+				////// Rectangle Inner Shadow
+				NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
+				rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -shadow.shadowOffset.width, -shadow.shadowOffset.height);
+				rectangleBorderRect = NSInsetRect(NSUnionRect(rectangleBorderRect, [rectanglePath bounds]), -1, -1);
+				
+				NSBezierPath* rectangleNegativePath = [NSBezierPath bezierPathWithRect: rectangleBorderRect];
+				[rectangleNegativePath appendBezierPath: rectanglePath];
+				[rectangleNegativePath setWindingRule: NSEvenOddWindingRule];
+				
+				[NSGraphicsContext saveGraphicsState];
+				{
+					CGContextSetBlendMode(context, innerBorder.blendMode);
+					
+					NSShadow* shadowWithOffset = [shadow copy];
+					CGFloat xOffset = shadowWithOffset.shadowOffset.width + round(rectangleBorderRect.size.width);
+					CGFloat yOffset = shadowWithOffset.shadowOffset.height;
+					shadowWithOffset.shadowOffset = NSMakeSize(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset));
+					[shadowWithOffset set];
+					[[NSColor grayColor] setFill];
+					[rectanglePath addClip];
+					NSAffineTransform* transform = [NSAffineTransform transform];
+					[transform translateXBy: -round(rectangleBorderRect.size.width) yBy: 0];
+					[[transform transformBezierPath: rectangleNegativePath] fill];
+				}
+				[NSGraphicsContext restoreGraphicsState];
+            }
+        }
+
     if (self.style.strokeWidth > 0) {
 		NSBezierPath *strokePath;
 		CGRect strokeRect = CGRectMake(newRect.origin.x + (self.style.strokeWidth/2), newRect.origin.y + (self.style.strokeWidth/2), newRect.size.width-self.style.strokeWidth, newRect.size.height-self.style.strokeWidth);
@@ -1183,7 +1280,102 @@
 			[NSGraphicsContext restoreGraphicsState];
 		}
 	}
-	
+    if (self.style.leftInnerBorders.count > 0) {
+        currentY = size.height - baseY;
+        for (int x = 0; x < self.style.leftInnerBorders.count; x++) {
+            DPStyleInnerBorder *innerBorder = self.style.leftInnerBorders[x];
+            currentY -= innerBorder.height;
+            
+            
+            NSColor* shadowColor = innerBorder.color.color;
+            CGSize shadowOffset = CGSizeMake(-innerBorder.height, 0);
+            CGFloat shadowBlurRadius = 0;
+            
+            //// Shadow Declarations
+            NSShadow* shadow = [[NSShadow alloc] init];
+            [shadow setShadowColor: shadowColor];
+            [shadow setShadowOffset: NSMakeSize(oppositeSign(shadowOffset.width), oppositeSign(shadowOffset.height))];
+            [shadow setShadowBlurRadius: shadowBlurRadius];
+            
+            //// Rectangle Drawing
+            NSBezierPath* rectanglePath = path;
+            
+            ////// Rectangle Inner Shadow
+            NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
+            rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -shadow.shadowOffset.width, -shadow.shadowOffset.height);
+            rectangleBorderRect = NSInsetRect(NSUnionRect(rectangleBorderRect, [rectanglePath bounds]), -1, -1);
+            
+            NSBezierPath* rectangleNegativePath = [NSBezierPath bezierPathWithRect: rectangleBorderRect];
+            [rectangleNegativePath appendBezierPath: rectanglePath];
+            [rectangleNegativePath setWindingRule: NSEvenOddWindingRule];
+            
+            [NSGraphicsContext saveGraphicsState];
+            {
+                CGContextSetBlendMode(context, innerBorder.blendMode);
+                
+                NSShadow* shadowWithOffset = [shadow copy];
+                CGFloat xOffset = shadowWithOffset.shadowOffset.width + round(rectangleBorderRect.size.width);
+                CGFloat yOffset = shadowWithOffset.shadowOffset.height;
+                shadowWithOffset.shadowOffset = NSMakeSize(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset));
+                [shadowWithOffset set];
+                [[NSColor grayColor] setFill];
+                [rectanglePath addClip];
+                NSAffineTransform* transform = [NSAffineTransform transform];
+                [transform translateXBy: -round(rectangleBorderRect.size.width) yBy: 0];
+                [[transform transformBezierPath: rectangleNegativePath] fill];
+            }
+            [NSGraphicsContext restoreGraphicsState];
+        }
+    }
+    
+    
+    if (self.style.rightInnerBorders.count > 0) {
+        currentY = size.height - baseY;
+        for (int x = 0; x < self.style.rightInnerBorders.count; x++) {
+            DPStyleInnerBorder *innerBorder = self.style.rightInnerBorders[x];
+            currentY -= innerBorder.height;
+            
+            
+            NSColor* shadowColor = innerBorder.color.color;
+            CGSize shadowOffset = CGSizeMake(innerBorder.height, 0);
+            CGFloat shadowBlurRadius = 0;
+            
+            //// Shadow Declarations
+            NSShadow* shadow = [[NSShadow alloc] init];
+            [shadow setShadowColor: shadowColor];
+            [shadow setShadowOffset: NSMakeSize(oppositeSign(shadowOffset.width), oppositeSign(shadowOffset.height))];
+            [shadow setShadowBlurRadius: shadowBlurRadius];
+            
+            //// Rectangle Drawing
+            NSBezierPath* rectanglePath = path;
+            
+            ////// Rectangle Inner Shadow
+            NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
+            rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -shadow.shadowOffset.width, -shadow.shadowOffset.height);
+            rectangleBorderRect = NSInsetRect(NSUnionRect(rectangleBorderRect, [rectanglePath bounds]), -1, -1);
+            
+            NSBezierPath* rectangleNegativePath = [NSBezierPath bezierPathWithRect: rectangleBorderRect];
+            [rectangleNegativePath appendBezierPath: rectanglePath];
+            [rectangleNegativePath setWindingRule: NSEvenOddWindingRule];
+            
+            [NSGraphicsContext saveGraphicsState];
+            {
+                CGContextSetBlendMode(context, innerBorder.blendMode);
+                
+                NSShadow* shadowWithOffset = [shadow copy];
+                CGFloat xOffset = shadowWithOffset.shadowOffset.width + round(rectangleBorderRect.size.width);
+                CGFloat yOffset = shadowWithOffset.shadowOffset.height;
+                shadowWithOffset.shadowOffset = NSMakeSize(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset));
+                [shadowWithOffset set];
+                [[NSColor grayColor] setFill];
+                [rectanglePath addClip];
+                NSAffineTransform* transform = [NSAffineTransform transform];
+                [transform translateXBy: -round(rectangleBorderRect.size.width) yBy: 0];
+                [[transform transformBezierPath: rectangleNegativePath] fill];
+            }
+            [NSGraphicsContext restoreGraphicsState];
+        }
+    }
     if (style.strokeWidth > 0) {
 		
 		CGRect strokeRect = CGRectMake(rect.origin.x + (style.strokeWidth/2), rect.origin.y + (style.strokeWidth/2), rect.size.width-style.strokeWidth, rect.size.height-style.strokeWidth);

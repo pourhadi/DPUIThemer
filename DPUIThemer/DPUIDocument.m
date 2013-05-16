@@ -11,7 +11,10 @@
 #import "ColorTransformer.h"
 #import "DPStyleManager.h"
 #import <QuartzCore/QuartzCore.h>
-
+static NSString *kGROUPED_TABLE_TOP_CELL_KEY = @"groupedTableTopCell";
+static NSString *kGROUPED_TABLE_MIDDLE_CELL_KEY = @"groupedTableMiddleCell";
+static NSString *kGROUPED_TABLE_SINGLE_CELL_KEY = @"groupedTableSingleCell";
+static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 @implementation DYNMoreOption
 
 
@@ -57,6 +60,20 @@
 		}
 		new.bottomInnerBorders = tmp;
 		
+        tmp = [NSMutableArray new];
+		NSArray *left = [style objectForKey:@"leftInnerBorders"];
+		for (NSDictionary *border in left) {
+			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
+		}
+		new.leftInnerBorders = tmp;
+        
+        tmp = [NSMutableArray new];
+		NSArray *right = [style objectForKey:@"rightInnerBorders"];
+		for (NSDictionary *border in right) {
+			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
+		}
+		new.rightInnerBorders = tmp;
+        
 		new.shadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"shadow"]];
 		new.innerShadow = [[DPStyleShadow alloc] initWithDictionary:[style objectForKey:@"innerShadow"]];
 		
@@ -120,11 +137,19 @@
 		if ([style objectForKey:@"segmentDividerWidth"]) {
 			new.segmentDividerWidth = [[style objectForKey:@"segmentDividerWidth"] floatValue];
 		}
-        
-        if ([style objectForKey:@"automaticallyEmbedScrollViewInContainerView"]) {
-            new.automaticallyEmbedScrollViewInContainerView = [[style objectForKey:@"automaticallyEmbedScrollViewInContainerView"] boolValue];
-        }
 		
+        if ([style objectForKey:kGROUPED_TABLE_TOP_CELL_KEY]) {
+            new.groupedTableTopCell = [style objectForKey:kGROUPED_TABLE_TOP_CELL_KEY];
+        }
+        if ([style objectForKey:kGROUPED_TABLE_BOTTOM_CELL_KEY]) {
+            new.groupedTableBottomCell = [style objectForKey:kGROUPED_TABLE_BOTTOM_CELL_KEY];
+        }
+        if ([style objectForKey:kGROUPED_TABLE_MIDDLE_CELL_KEY]) {
+            new.groupedTableMiddleCell = [style objectForKey:kGROUPED_TABLE_MIDDLE_CELL_KEY];
+        }
+        if ([style objectForKey:kGROUPED_TABLE_SINGLE_CELL_KEY]) {
+            new.groupedTableSingleCell = [style objectForKey:kGROUPED_TABLE_SINGLE_CELL_KEY];
+        }
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 
 	}
@@ -161,6 +186,12 @@
 	NSArray *bottom = [style.bottomInnerBorders valueForKeyPath:@"jsonValue"];
 	[dictionary setObject:bottom forKey:@"bottomInnerBorders"];
 	
+    NSArray *left = [style.leftInnerBorders valueForKeyPath:@"jsonValue"];
+	[dictionary setObject:left forKey:@"leftInnerBorders"];
+    
+    NSArray *right = [style.rightInnerBorders valueForKeyPath:@"jsonValue"];
+	[dictionary setObject:right forKey:@"rightInnerBorders"];
+    
 	//NSDictionary *cornerRadii = (__bridge NSDictionary *)(CGSizeCreateDictionaryRepresentation(style.cornerRadii));
 	[dictionary setObject:@(style.cornerRadius) forKey:@"cornerRadius"];
 	[dictionary setObject:@(style.roundedCorners) forKey:@"roundedCorners"];
@@ -231,9 +262,23 @@
 		[dictionary setObject:@(style.segmentDividerWidth) forKey:@"segmentDividerWidth"];
 		[dictionary setObject:style.segmentDividerColor.jsonValue forKey:@"segmentDividerColor"];
 	}
-	
-    [dictionary setObject:@(style.automaticallyEmbedScrollViewInContainerView) forKey:@"automaticallyEmbedScrollViewInContainerView"];
     
+    if (style.groupedTableTopCell) {
+        [dictionary setObject:style.groupedTableTopCell forKey:kGROUPED_TABLE_TOP_CELL_KEY];
+    }
+    
+    if (style.groupedTableMiddleCell) {
+        [dictionary setObject:style.groupedTableMiddleCell forKey:kGROUPED_TABLE_MIDDLE_CELL_KEY];
+    }
+    
+    if (style.groupedTableBottomCell) {
+        [dictionary setObject:style.groupedTableBottomCell forKey:kGROUPED_TABLE_BOTTOM_CELL_KEY];
+    }
+    
+    if (style.groupedTableSingleCell) {
+        [dictionary setObject:style.groupedTableSingleCell forKey:kGROUPED_TABLE_SINGLE_CELL_KEY];
+    }
+	    
 	return dictionary;
 }
 //===========================================================
@@ -304,16 +349,21 @@
 - (id)copyWithZone:(NSZone *)zone
 {
     id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
-	
+    
+    [theCopy setGradientAngle:self.gradientAngle];
     [theCopy setStyleName:[self.styleName copy]];
     [theCopy setBgColors:[self.bgColors copy]];
+    [theCopy setBgLocations:[self.bgLocations copy]];
     [theCopy setBgDegrees:self.bgDegrees];
     [theCopy setTopInnerBorders:[self.topInnerBorders copy]];
     [theCopy setBottomInnerBorders:[self.bottomInnerBorders copy]];
+    [theCopy setLeftInnerBorders:[self.leftInnerBorders copy]];
+    [theCopy setRightInnerBorders:[self.rightInnerBorders copy]];
     [theCopy setInnerShadow:[self.innerShadow copy]];
     [theCopy setShadow:[self.shadow copy]];
     [theCopy setCornerRadii:self.cornerRadii];
     [theCopy setCornerRadius:self.cornerRadius];
+    [theCopy setCornerRadiusType:[self.cornerRadiusType copy]];
     [theCopy setRoundedCorners:self.roundedCorners];
     [theCopy setMaskToCorners:self.maskToCorners];
     [theCopy setCanvasBackgroundType:[self.canvasBackgroundType copy]];
@@ -325,13 +375,29 @@
     [theCopy setStrokeColor:[self.strokeColor copy]];
     [theCopy setStrokeWidth:self.strokeWidth];
     [theCopy setDrawAsynchronously:self.drawAsynchronously];
+    [theCopy setStartX:self.startX];
+    [theCopy setStartY:self.startY];
+    [theCopy setEndX:self.endX];
+    [theCopy setEndY:self.endY];
+    [theCopy setSearchBarTextFieldStyleName:[self.searchBarTextFieldStyleName copy]];
+    [theCopy setSearchFieldTextStyleName:[self.searchFieldTextStyleName copy]];
     [theCopy setNavBarTitleTextStyle:[self.navBarTitleTextStyle copy]];
     [theCopy setTableCellTitleTextStyle:[self.tableCellTitleTextStyle copy]];
     [theCopy setTableCellDetailTextStyle:[self.tableCellDetailTextStyle copy]];
+    [theCopy setTableCellSelectedStyleName:[self.tableCellSelectedStyleName copy]];
     [theCopy setBarButtonItemStyleName:[self.barButtonItemStyleName copy]];
     [theCopy setControlStyle:[self.controlStyle copy]];
-	
+    [theCopy setTextFieldTextStyleName:[self.textFieldTextStyleName copy]];
+    [theCopy setSegmentedControlStyle:[self.segmentedControlStyle copy]];
+    [theCopy setSegmentDividerWidth:self.segmentDividerWidth];
+    [theCopy setSegmentDividerColor:[self.segmentDividerColor copy]];
+    [theCopy setGroupedTableTopCell:[self.groupedTableTopCell copy]];
+    [theCopy setGroupedTableMiddleCell:[self.groupedTableMiddleCell copy]];
+    [theCopy setGroupedTableSingleCell:[self.groupedTableSingleCell copy]];
+    [theCopy setGroupedTableBottomCell:[self.groupedTableBottomCell copy]];
+    
     return theCopy;
+
 }
 - (id)init
 {
@@ -342,6 +408,8 @@
 		[self.bgColors addObject:color];
 		self.topInnerBorders = [NSMutableArray new];
 		self.bottomInnerBorders = [NSMutableArray new];
+        self.leftInnerBorders = [NSMutableArray new];
+        self.rightInnerBorders = [NSMutableArray new];
 		self.innerShadow = [[DPStyleShadow alloc] init];
 		self.shadow = [[DPStyleShadow alloc] init];
 		self.bgDegrees = 0;
@@ -634,9 +702,9 @@
 		seg.name = @"UISegmentedControl";
 		seg.index = @(4);
 		
-        DYNMoreOption *scrollView = [[DYNMoreOption alloc] init];
-        scrollView.name = @"UIScrollView";
-        scrollView.index = @(5);
+        DYNMoreOption *groupedTable = [[DYNMoreOption alloc] init];
+        groupedTable.name = @"UITableView - Grouped";
+        groupedTable.index = @(5);
         
         DYNMoreOption *controls = [[DYNMoreOption alloc] init];
         controls.name = @"Control States";
@@ -647,7 +715,7 @@
                  searchbar,
                  textField,
 				 seg,
-                scrollView,
+                                      groupedTable,
                  controls];
 	}
     return self;
