@@ -107,7 +107,7 @@
 	[dict setObject:self.shadowColor.jsonValue forKey:@"shadowColor"];
 	[dict setObject:self.font.fontName forKey:@"fontName"];
 	[dict setObject:@(self.font.pointSize) forKey:@"fontSize"];
-	[dict setObject:@(_alignment) forKey:@"alignment"];
+	[dict setObject:@(self.alignment) forKey:@"alignment"];
 	[dict setObject:@(self.fontSizeType) forKey:@"fontSizeType"];
 	[dict setObject:self.fontSizeString forKey:@"fontSizeString"];
 	return dict;
@@ -123,7 +123,7 @@
 		self.textColor = [[DPStyleColor alloc] initWithDictionary:[dict objectForKey:@"textColor"]];
 		self.shadowColor = [[DPStyleColor alloc] initWithDictionary:[dict objectForKey:@"shadowColor"]];
 		self.shadowOffset = CGSizeMake([[dict objectForKey:@"shadowXoffset"] floatValue], [[dict objectForKey:@"shadowYOffset"] floatValue]);
-		_alignment = [[dict objectForKey:@"alignment"] intValue];
+		self.alignment = [[dict objectForKey:@"alignment"] intValue];
 		self.fontSizeString = [dict objectForKey:@"fontSizeString"];
 		self.fontSizeType = [[dict objectForKey:@"fontSizeType"] intValue];
 	}
