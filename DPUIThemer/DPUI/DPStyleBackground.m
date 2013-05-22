@@ -117,7 +117,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"color"]) {
-        self.color = [object color];
+        self.colorVar = [object colorName];
     } else if ([keyPath isEqualToString:@"colorName"]) {
         self.colorVar = [object colorName];
     } else {

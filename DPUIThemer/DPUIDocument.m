@@ -84,13 +84,13 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 		new.canvasBackgroundColor = [ColorTransformer colorFromString:[style objectForKey:@"canvasBackgroundColor"]];
 		
 		if ([style objectForKey:@"tableCellTitleTextStyle"]) {
-			new.tableCellTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellTitleTextStyle"]];
+			new.tableCellTitleTextStyle = [style objectForKey:@"tableCellTitleTextStyle"];
 		}
 		if ([style objectForKey:@"tableCellDetailTextStyle"]){
-			new.tableCellDetailTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"tableCellDetailTextStyle"]];
+			new.tableCellDetailTextStyle = [style objectForKey:@"tableCellDetailTextStyle"];
 		}
 		if ([style objectForKey:@"navBarTitleTextStyle"]) {
-			new.navBarTitleTextStyle = [[DPUITextStyle alloc] initWithDictionary:[style objectForKey:@"navBarTitleTextStyle"]];
+			new.navBarTitleTextStyle = [style objectForKey:@"navBarTitleTextStyle"];
 		}
 		
 		if ([style objectForKey:@"barButtonItemStyleName"]) {
@@ -211,15 +211,15 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 	[dictionary setObject:[ColorTransformer stringFromColor:canvasBgColor] forKey:@"canvasBackgroundColor"];
 	
 	if (style.navBarTitleTextStyle) {
-		[dictionary setObject:style.navBarTitleTextStyle.jsonValue forKey:@"navBarTitleTextStyle"];
+		[dictionary setObject:style.navBarTitleTextStyle forKey:@"navBarTitleTextStyle"];
 	}
 	
 	if (style.tableCellTitleTextStyle) {
-		[dictionary setObject:style.tableCellTitleTextStyle.jsonValue forKey:@"tableCellTitleTextStyle"];
+		[dictionary setObject:style.tableCellTitleTextStyle forKey:@"tableCellTitleTextStyle"];
 	}
 	
 	if (style.tableCellDetailTextStyle) {
-		[dictionary setObject:style.tableCellDetailTextStyle.jsonValue forKey:@"tableCellDetailTextStyle"];
+		[dictionary setObject:style.tableCellDetailTextStyle forKey:@"tableCellDetailTextStyle"];
 	}
 	
 	

@@ -83,12 +83,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSString *searchFieldTextStyleName;
 // Navigation bar
 
-@property (nonatomic, strong) DPUITextStyle *navBarTitleTextStyle;
+@property (nonatomic, strong) NSString *navBarTitleTextStyle;
 
 // UITableViewCell styles
 
-@property (nonatomic, strong) DPUITextStyle *tableCellTitleTextStyle;
-@property (nonatomic, strong) DPUITextStyle *tableCellDetailTextStyle;
+@property (nonatomic, strong) NSString *tableCellTitleTextStyle;
+@property (nonatomic, strong) NSString *tableCellDetailTextStyle;
 @property (nonatomic, strong) NSString *tableCellSelectedStyleName;
 
 // UIBarButtonItem
