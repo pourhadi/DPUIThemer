@@ -50,9 +50,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIStyle : NSObject <NSCopying, NSCoding>
+@interface DPUIStyle : NSObject <NSCopying, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
-
+@property (nonatomic, weak) DPUIStyle *parentNode;
 @property (nonatomic) NSInteger count;
 @property (nonatomic) BOOL isLeaf;
 @property (nonatomic, strong) NSMutableArray *children;
@@ -142,10 +142,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate>
 {
 }
 
+@property (nonatomic, strong) NSArray *flatStylesArray;
+@property (nonatomic, strong) DPUIStyle *rootNode;
 @property (nonatomic, weak) IBOutlet NSOutlineView *styleOutlineView;
 @property (nonatomic, strong) IBOutlet NSTreeController *styleTreeController;
 @property (nonatomic, weak) IBOutlet DPUIExampleView *exampleView;
