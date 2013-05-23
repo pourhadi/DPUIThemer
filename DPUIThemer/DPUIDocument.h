@@ -30,6 +30,19 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 	ViewCanvasBackgroundTypeCustomColor = 2,
 };
 
+@interface DYNNode : NSObject
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSMutableArray *children;
+
+@property (nonatomic) BOOL isLeaf;
+
+@property (nonatomic, strong) id object;
+
+- (NSImage*)image;
+
+@end
+
 @interface DYNMoreOption : NSObject
 
 @property (nonatomic, strong) NSString *name;
@@ -38,6 +51,11 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @end
 
 @interface DPUIStyle : NSObject <NSCopying, NSCoding>
+
+
+@property (nonatomic) NSInteger count;
+@property (nonatomic) BOOL isLeaf;
+@property (nonatomic, strong) NSMutableArray *children;
 
 @property (nonatomic) CGFloat gradientAngle;
 @property (nonatomic, strong) NSString *styleName;
@@ -124,9 +142,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
 }
+
+@property (nonatomic, weak) IBOutlet NSOutlineView *styleOutlineView;
+@property (nonatomic, strong) IBOutlet NSTreeController *styleTreeController;
 @property (nonatomic, weak) IBOutlet DPUIExampleView *exampleView;
 @property (nonatomic, weak) IBOutlet DPUITextStyleExampleView *textExampleView;
 @property (nonatomic, strong) IBOutlet DPViewStyle *style;

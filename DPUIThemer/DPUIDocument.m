@@ -15,6 +15,27 @@ static NSString *kGROUPED_TABLE_TOP_CELL_KEY = @"groupedTableTopCell";
 static NSString *kGROUPED_TABLE_MIDDLE_CELL_KEY = @"groupedTableMiddleCell";
 static NSString *kGROUPED_TABLE_SINGLE_CELL_KEY = @"groupedTableSingleCell";
 static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
+
+@interface NSObject (Fake)
+
+- (id)observedObject;
+
+@end
+
+@implementation NSObject (Fake)
+
+
+
+@end
+
+@implementation DYNNode
+
+
+
+
+@end
+
+
 @implementation DYNMoreOption
 
 
@@ -30,14 +51,30 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 		DPUIStyle *new = self;
 		
 		new.styleName = [style objectForKey:@"name"];
-		NSDictionary *bg = [style objectForKey:@"background"];
-        
-		//        new.startX = [[bg objectForKey:@"startPointX"] floatValue];
-		//        new.startY = [[bg objectForKey:@"startPointY"] floatValue];
-		//        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
-		//        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
-        
-        new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
+		
+		if ([style objectForKey:@"isLeaf"]) {
+		new.isLeaf = [[style objectForKey:@"isLeaf"] boolValue];
+		} else {
+			new.isLeaf = YES;
+		}
+		if (!new.isLeaf) {
+			
+			NSMutableArray *children = [NSMutableArray new];
+			for (NSDictionary *child in [style objectForKey:@"children"]) {
+				[children addObject:[[DPUIStyle alloc] initWithDictionary:child]];
+			}
+	
+	new.children = children;
+}
+
+NSDictionary *bg = [style objectForKey:@"background"];
+
+//        new.startX = [[bg objectForKey:@"startPointX"] floatValue];
+//        new.startY = [[bg objectForKey:@"startPointY"] floatValue];
+//        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
+//        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
+
+new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         
 		NSArray *colors = [bg objectForKey:@"colors"];
 		NSMutableArray *tmp = [NSMutableArray new];
@@ -278,6 +315,18 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
     if (style.groupedTableSingleCell) {
         [dictionary setObject:style.groupedTableSingleCell forKey:kGROUPED_TABLE_SINGLE_CELL_KEY];
     }
+	
+	[dictionary setObject:@(self.isLeaf) forKey:@"isLeaf"];
+	
+	if (self.isLeaf) {
+		NSMutableArray *children = [NSMutableArray new];
+		
+		for (DPUIStyle *childStyle in self.children) {
+			[children addObject:childStyle.jsonValue];
+		}
+		
+		[dictionary setObject:children forKey:@"children"];
+	}
 	    
 	return dictionary;
 }
@@ -428,6 +477,8 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 		self.segmentedControlStyle = [[DPUIControlStyle alloc] init];
 		self.segmentDividerColor = [[DPStyleColor alloc] init];
 		self.segmentDividerWidth = 1;
+		self.isLeaf = YES;
+		self.children = [NSMutableArray new];
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -836,7 +887,6 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 	NSMutableArray *newStyles = [NSMutableArray new];
 	for (NSDictionary*style in styles) {
 		DPUIStyle *new = [[DPUIStyle alloc] initWithDictionary:style];
-        
 				
         [newStyles addObject:new];
 	}
@@ -1130,15 +1180,21 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
 	
 	if (seg.selectedSegment == 0) {
-		[self.stylesController add:nil];
+		//[self.stylesController add:nil];
+		[self.styleTreeController add:nil];
 	} else if (seg.selectedSegment == 1) {
-		[self.stylesController remove:nil];
+		[self.styleTreeController remove:nil];
 	} else if (seg.selectedSegment == 2) {
 		DPUIStyle *style = [self.stylesController selectedObjects][0];
 		DPUIStyle *newStyle = [style copy];
 		newStyle.styleName = [self dupeNameForStyle:style];
 		[self.stylesController addObject:newStyle];
 		[self.styleTable reloadData];
+	} else if (seg.selectedSegment == 3) {
+		DPUIStyle *folder = [[DPUIStyle alloc] init];
+		folder.isLeaf = NO;
+		folder.styleName = @"New Folder";
+		[self.styleTreeController addObject:folder];
 	}
 }
 
@@ -1199,4 +1255,82 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 {
     
 }
+
+
+#pragma mark NSOutlineView Hacks for Drag and Drop
+
+static NSTreeNode *_rootTreeNode = nil;
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard
+{
+	return YES;
+}
+
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldReorderColumn:(NSInteger)columnIndex toColumn:(NSInteger)newColumnIndex NS_AVAILABLE_MAC(10_6)
+{
+	return YES;
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+	return NSDragOperationMove;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)ov acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)childIndex {
+    NSTreeNode *targetNode = item;
+    // A target of "nil" means we are on the main root tree
+    if (targetNode == nil) {
+        targetNode = _rootTreeNode;
+    }
+    DPUIStyle *nodeData = [targetNode observedObject];
+	
+    // Determine the parent to insert into and the child index to insert at.
+    if (nodeData.isLeaf) {
+        // If our target is a leaf, and we are dropping on it
+        if (childIndex == NSOutlineViewDropOnItemIndex) {
+            // If we are dropping on a leaf, we will have to turn it into a container node
+            nodeData.isLeaf = YES;
+            nodeData.expandable = YES;
+            childIndex = 0;
+        } else {
+            // We will be dropping on the item's parent at the target index of this child, plus one
+            NSTreeNode *oldTargetNode = targetNode;
+            targetNode = [targetNode parentNode];
+            childIndex = [[targetNode childNodes] indexOfObject:oldTargetNode] + 1;
+        }
+    } else {
+        if (childIndex == NSOutlineViewDropOnItemIndex) {
+            // Insert it at the start, if we were dropping on it
+            childIndex = 0;
+        }
+    }
+    
+    // Group all insert or move animations together
+    [self.styleOutlineView beginUpdates];
+    // If the source was ourselves, we use our dragged nodes and do a reorder
+    if ([self _dragIsLocalReorder:info]) {
+        [self _performDragReorderWithDragInfo:info parentNode:targetNode childIndex:childIndex];
+    } else {
+        [self _performInsertWithDragInfo:info parentNode:targetNode childIndex:childIndex];
+    }
+    [self.styleOutlineView endUpdates];
+	
+    // Return YES to indicate we were successful with the drop. Otherwise, it would slide back the drag image.
+    return YES;
+}
+
+- (BOOL) outlineView: (NSOutlineView *)ov
+	isItemExpandable: (id)item { return NO; }
+
+- (int)  outlineView: (NSOutlineView *)ov
+numberOfChildrenOfItem:(id)item { return 0; }
+
+- (id)   outlineView: (NSOutlineView *)ov
+			   child:(int)index
+			  ofItem:(id)item { return nil; }
+
+- (id)   outlineView: (NSOutlineView *)ov
+objectValueForTableColumn:(NSTableColumn*)col
+			  byItem:(id)item { return nil; }
 @end
