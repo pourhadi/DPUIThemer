@@ -36,6 +36,9 @@
         if (_colorName)
             [copy setColorName:[self.colorName copyWithZone:zone]];
         [copy setColor:[self.color copyWithZone:zone]];
+		[copy setIsLeaf:self.isLeaf];
+		[copy setChildren:[self.children copyWithZone:zone]];
+		[copy setParentNode:self.parentNode];
 	}
 	return copy;
 }
@@ -221,8 +224,14 @@
 
 - (id)jsonValue
 {
+		
+		NSMutableDictionary *muteDict = [NSMutableDictionary new];
+
+	
 	NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":(self.colorVar ? self.colorVar : @""), @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
-    return dict;
+	
+	[muteDict addEntriesFromDictionary:dict];
+    return muteDict;
 }
 
 - (id)initWithColorString:(NSString *)color
@@ -230,14 +239,19 @@
 	self = [super init];
 	if (self) {
 		self.color = [ColorTransformer colorFromString:color];
+		self.isLeaf = YES;
 	}
 	return self;
 }
+
+
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
     self = [super init];
     if (self) {
+		
+
         
         NSString *colorVar = [dict objectForKey:@"colorVar"];
         if (![colorVar isEqualToString:@""]) {

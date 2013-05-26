@@ -14,9 +14,10 @@
 #import "DPStyleManager.h"
 #import "DPUIControlStyle.h"
 #import "DPUIParameter.h"
-static NSString *kBackgroundTransparent = @"Transparent";
-static NSString *kBackgroundPreviewColor = @"Use preview background color";
-static NSString *kBackgroundCustomColor = @"Custom color:";
+#import"DPUICustomSetting.h"
+static NSString * const kBackgroundTransparent = @"Transparent";
+static NSString *const kBackgroundPreviewColor = @"Use preview background color";
+static NSString *const kBackgroundCustomColor = @"Custom color:";
 
 typedef NS_OPTIONS(NSUInteger, CornerRadiusType) {
 	CornerRadiusTypeCustom,
@@ -134,6 +135,8 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSString *groupedTableSingleCell;
 @property (nonatomic, strong) NSString *groupedTableBottomCell;
 
+// Custom settings
+@property (nonatomic, strong) NSMutableArray *customSettings;
 
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 - (id)jsonValue;
@@ -142,7 +145,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
 {
 }
 
@@ -215,4 +218,20 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet NSArrayController *imageStylesController;
 @property (nonatomic, strong) IBOutlet NSTabView *imageStyleTabs;
 @property (nonatomic, strong) IBOutlet NSTableView *imageStylesTable;
+@property (nonatomic, weak) IBOutlet NSOutlineView *colorOutlineView;
+@property (nonatomic, weak) IBOutlet NSSegmentedControl *colorsSeg;
+
+@property (nonatomic, weak) IBOutlet NSTableView *customSettingsTable;
+
+@property (nonatomic, strong) NSArray *customSettingTypeKeys;
+
+@property (nonatomic, strong) IBOutlet NSArrayController *customSettingsController;
+
+@property (nonatomic, weak) IBOutlet NSPopUpButton *iconPopup;
+
+@property (nonatomic, strong) NSString *iconKey;
+
+@property (nonatomic, strong) NSArray *availableIconKeys;
+@property (nonatomic, strong) NSArray *availableIconImages;
+
 @end

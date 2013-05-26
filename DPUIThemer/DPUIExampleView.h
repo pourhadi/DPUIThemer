@@ -25,4 +25,8 @@
 @property (nonatomic) CGFloat frameHeight;
 
 @property (nonatomic) CGRect drawRect;
+
+@property (nonatomic, strong) NSString *iconKey;
+
+@property (nonatomic, strong) NSDictionary *iconDictionary;
 @end

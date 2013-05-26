@@ -9,6 +9,7 @@
 #import "DPUIExampleView.h"
 #import "DPUIDocument.h"
 #import "NSBezierPath+GTMBezierPathRoundRectAdditions.h"
+#import "NSBezierPath+SVG.h"
 @implementation DPUIExampleView
 
 - (id)initWithFrame:(NSRect)frame
@@ -179,10 +180,18 @@
 	return newPath;
 }
 
+- (NSDictionary*)iconDictionary
+{
+	if (!_iconDictionary) {
+		NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icons" ofType:@"json"] options:0 error:nil];
+		_iconDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+	}
+	return _iconDictionary;
+}
+
 
 - (void)drawStyledImageInRect:(NSRect)rect
 {
-	
 	//// Star Drawing
 	NSBezierPath* starPath = [NSBezierPath bezierPath];
 	[starPath moveToPoint: NSMakePoint(rect.origin.x + (46.5/92)*rect.size.width, (92.5/92)*rect.size.width)];
@@ -197,6 +206,49 @@
 	[starPath lineToPoint: NSMakePoint(rect.origin.x + (30.28/92)*rect.size.width, (68.83/92)*rect.size.width)];
 	[starPath closePath];
 
+	if (self.iconKey) {
+		[starPath removeAllPoints];
+		
+		[NSGraphicsContext saveGraphicsState];
+		//CGContextTranslateCTM([NSGraphicsContext currentContext].graphicsPort, 0.0f, rect.size.height);
+		//	CGContextScaleCTM([NSGraphicsContext currentContext].graphicsPort, 1.0f, -1.0f);
+
+		
+		NSString *svgString = [self.iconDictionary objectForKey:self.iconKey];
+		
+		NSBezierPath *path = [NSBezierPath bezierPathWithSVGString:svgString];
+		CGSize size = rect.size;
+		CGSize currentSize = path.bounds.size;
+		
+		CGFloat scale;
+		
+		if (currentSize.width > currentSize.height) {
+			scale = (size.width) / currentSize.width/1.5;
+		} else {
+			scale = (size.height) / currentSize.height/1.5;
+		}
+		
+		NSAffineTransform *trans = [NSAffineTransform transform];
+		[trans scaleXBy:scale yBy:-scale];
+		[path transformUsingAffineTransform:trans];
+		
+		trans = [NSAffineTransform transform];
+		
+		[trans translateXBy:-(path.bounds.origin.x)*(1-(1/rect.size.width)) yBy:-(path.bounds.origin.y) *(1-(1 / rect.size.height))];
+		[path transformUsingAffineTransform:trans];
+		
+		trans = [NSAffineTransform transform];
+		
+		CGFloat xTrans = rect.origin.x + ((rect.size.width-path.bounds.size.width)/2);// + path.bounds.size.width/2;
+		CGFloat yTrans = rect.origin.y + ((rect.size.height-path.bounds.size.height)/2);// - path.bounds.size.height;
+		[trans translateXBy:(xTrans)*(1-(1/path.bounds.size.width)) yBy:(yTrans) *(1-(1 / path.bounds.size.height))];
+		[path transformUsingAffineTransform:trans];
+		
+		starPath = path;
+		
+		[NSGraphicsContext restoreGraphicsState];
+	}
+	
 	if (self.imageStyle.shadow.opacity > 0) {
 		[NSGraphicsContext saveGraphicsState];
 		[self.imageStyle.shadow drawShadow];

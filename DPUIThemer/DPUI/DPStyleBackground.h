@@ -27,6 +27,10 @@
 
 @property (nonatomic, strong) NSImage *imageRep;
 
+@property (nonatomic) BOOL isLeaf;
+@property (nonatomic, strong) NSMutableArray *children;
+@property (nonatomic, weak) DPStyleColor *parentNode;
+
 - (id)jsonValue;
 - (id)initWithColorString:(NSString *)color;
 - (id)initWithDictionary:(NSDictionary*)dict;

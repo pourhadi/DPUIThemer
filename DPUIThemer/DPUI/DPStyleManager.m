@@ -94,6 +94,13 @@
 	self.textStyleNames = [self.textStyles valueForKeyPath:@"styleName"];
 }
 
+- (void)setImageStyles:(NSArray *)imageStyles
+{
+	_imageStyles = imageStyles;
+	
+	self.imageStyleNames = [self.imageStyles valueForKeyPath:@"styleName"];
+}
+
 - (NSArray*)parameters
 {
     return [self.delegate parameters];

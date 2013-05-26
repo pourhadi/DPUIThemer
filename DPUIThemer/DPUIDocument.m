@@ -12,6 +12,8 @@
 #import "DPStyleManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ImageAndTextCell.h"
+#import "NSTableView+ColorWell.h"
+#import "NSBezierPath+SVG.h"
 static NSString *kGROUPED_TABLE_TOP_CELL_KEY = @"groupedTableTopCell";
 static NSString *kGROUPED_TABLE_MIDDLE_CELL_KEY = @"groupedTableMiddleCell";
 static NSString *kGROUPED_TABLE_SINGLE_CELL_KEY = @"groupedTableSingleCell";
@@ -171,6 +173,12 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		if ([style objectForKey:@"tableCellDetailTextStyle"]){
 			new.tableCellDetailTextStyle = [style objectForKey:@"tableCellDetailTextStyle"];
 		}
+		
+		if ([style objectForKey:@"tableCellSelectedStyleName"])
+			{
+				new.tableCellSelectedStyleName = [style objectForKey:@"tableCellSelectedStyleName"];
+			}
+		
 		if ([style objectForKey:@"navBarTitleTextStyle"]) {
 			new.navBarTitleTextStyle = [style objectForKey:@"navBarTitleTextStyle"];
 		}
@@ -232,6 +240,15 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         if ([style objectForKey:kGROUPED_TABLE_SINGLE_CELL_KEY]) {
             new.groupedTableSingleCell = [style objectForKey:kGROUPED_TABLE_SINGLE_CELL_KEY];
         }
+		
+		if ([style objectForKey:@"customSettings"]) {
+			NSMutableArray *tmpSettings = [NSMutableArray new];
+			for (NSDictionary *setting in [style objectForKey:@"customSettings"]) {
+				[tmpSettings addObject:[[DPUICustomSetting alloc] initWithDictionary:setting]];
+			}
+	new.customSettings = tmpSettings;
+		}
+		
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 
 	}
@@ -321,6 +338,10 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		[dictionary setObject:style.tableCellDetailTextStyle forKey:@"tableCellDetailTextStyle"];
 	}
 	
+	if (style.tableCellSelectedStyleName) {
+		[dictionary setObject:style.tableCellSelectedStyleName forKey:@"tableCellSelectedStyleName"];
+	}
+	
 	
 	if (style.barButtonItemStyleName) {
 		[dictionary setObject:style.barButtonItemStyleName forKey:@"barButtonItemStyleName"];
@@ -377,6 +398,14 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     if (style.groupedTableSingleCell) {
         [dictionary setObject:style.groupedTableSingleCell forKey:kGROUPED_TABLE_SINGLE_CELL_KEY];
     }
+	
+	if (style.customSettings.count > 0) {
+		NSMutableArray *tmpSettings = [NSMutableArray new];
+		for (DPUICustomSetting *setting in style.customSettings) {
+			[tmpSettings addObject:setting.jsonValue];
+		}
+[dictionary setObject:tmpSettings forKey:@"customSettings"];
+	}
     
 	return dictionary;
 }
@@ -494,6 +523,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     [theCopy setGroupedTableMiddleCell:[self.groupedTableMiddleCell copy]];
     [theCopy setGroupedTableSingleCell:[self.groupedTableSingleCell copy]];
     [theCopy setGroupedTableBottomCell:[self.groupedTableBottomCell copy]];
+	[theCopy setCustomSettings:[self.customSettings copy]];
     
     return theCopy;
 
@@ -529,6 +559,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.segmentDividerWidth = 1;
 		self.isLeaf = YES;
 		self.children = [NSMutableArray new];
+		self.customSettings = [NSMutableArray new];
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -536,6 +567,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
 	return self;
 }
+
 
 - (NSMutableArray*)children
 {
@@ -661,6 +693,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 @property (nonatomic, weak) IBOutlet NSView *mainView;
 
 @property (nonatomic, strong) DPUIStyle *flippedStyle;
+
+@property (nonatomic) BOOL isKey;
 @end
 
 @implementation DPUIDocument
@@ -851,25 +885,32 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         controls.name = @"Control States";
         controls.index = @(6);
 		
+		DYNMoreOption *custom = [[DYNMoreOption alloc] init];
+		custom.name = @"Custom";
+		custom.index = @(7);
+		
         self.moreSelectionOptions = @[navbar,
                  tablecell,
                  searchbar,
                  textField,
 				 seg,
                                       groupedTable,
-                 controls];
+                 controls,
+									  custom];
 	}
     return self;
 }
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
+	self.isKey = YES;
     [[DPStyleManager sharedInstance] setDelegate:self];
 	[self startObservingObject:self];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
+	self.isKey = NO;
 	[self stopObservingObject:self];
 }
 
@@ -1045,12 +1086,17 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
 - (IBAction)styleChanged
 {
+	if (self.isKey) {
+
 	self.exampleView.containerColor = self.exampleContainerBgColor;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];
-	[[DPStyleManager sharedInstance] setStyles:self.styles];
+	[[DPStyleManager sharedInstance] setStyles:[[self getFlatStylesArray] mutableCopy]];
 	[[DPStyleManager sharedInstance] setSliderStyles:self.sliderStyles];
+	[[DPStyleManager sharedInstance] setImageStyles:self.imageStyles];
 
 	if (self.stylesController.selectedObjects && self.stylesController.selectedObjects.count > 0) {
+		[self.iconPopup setHidden:YES];
+
 		self.exampleView.sliderStyle = nil;
 		[[DPStyleManager sharedInstance] setCurrentStyle:self.stylesController.selectedObjects[0]];
 		self.exampleView.style = self.stylesController.selectedObjects[0];
@@ -1059,6 +1105,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		[self.topInnerBorderTable reloadData];
 		[self.backgroundColorsTable reloadData];
 	} else if (self.sliderStylesController.selectedObjects && self.sliderStylesController.selectedObjects.count > 0) {
+		[self.iconPopup setHidden:YES];
+
 		self.exampleView.style = nil;
 		self.exampleView.sliderStyle = self.sliderStylesController.selectedObjects[0];
 		self.exampleView.imageStyle = nil;
@@ -1066,12 +1114,15 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.exampleView.imageStyle = self.imageStylesController.selectedObjects[0];
 		self.exampleView.style = nil;
 		self.exampleView.sliderStyle = nil;
+		
+		[self.iconPopup setHidden:NO];
 	}
 	
 if (self.textStylesController.selectedObjects && self.textStylesController.selectedObjects.count > 0) {
 	//self.textExampleView.bgColor = self.textExampleContainerBgColor;
 	self.textExampleView.style = self.textStylesController.selectedObjects[0];
 }
+	}
 }
 
 - (NSData*)getJSON
@@ -1282,8 +1333,16 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
 	
 	if (seg.selectedSegment == 0) {
-		//[self.stylesController add:nil];
-		[self.styleTreeController add:nil];
+		DPUIStyle *style = [self selectedNode];
+		DPUIStyle *newStyle = [[DPUIStyle alloc] init];
+		newStyle.isLeaf = YES;
+        if (style.parentNode) {
+			
+			[style.parentNode.children addObject:newStyle];
+			
+        } else {
+			[self.rootNode.children addObject:newStyle];
+		}
 	} else if (seg.selectedSegment == 1) {
 		
         DPUIStyle *style = [self selectedNode];
@@ -1313,7 +1372,9 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
             [self.rootNode.children addObject:folder];
         }
 	}
-    
+
+	self.flatStylesArray = [self getFlatStylesArray];
+
     [self.styleOutlineView reloadData];
 }
 
@@ -1553,19 +1614,19 @@ static NSTreeNode *_rootTreeNode = nil;
 
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
     // If the session ended in the trash, then delete all the items
-    if (operation == NSDragOperationDelete) {
-        [_outlineView beginUpdates];
-        
-        [_draggedNodes enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id node, NSUInteger index, BOOL *stop) {
-            id parent = [node parentNode];
-            NSMutableArray *children = [parent mutableChildNodes];
-            NSInteger childIndex = [children indexOfObject:node];
-            [children removeObjectAtIndex:childIndex];
-            [_outlineView removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:childIndex] inParent:parent == _rootTreeNode ? nil : parent withAnimation:NSTableViewAnimationEffectFade];
-        }];
-        
-        [_outlineView endUpdates];
-    }
+//    if (operation == NSDragOperationDelete) {
+//        [_outlineView beginUpdates];
+//        
+//        [_draggedNodes enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id node, NSUInteger index, BOOL *stop) {
+//            id parent = [node parentNode];
+//            NSMutableArray *children = [parent mutableChildNodes];
+//            NSInteger childIndex = [children indexOfObject:node];
+//            [children removeObjectAtIndex:childIndex];
+//            [_outlineView removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:childIndex] inParent:parent == _rootTreeNode ? nil : parent withAnimation:NSTableViewAnimationEffectFade];
+//        }];
+//        
+//        [_outlineView endUpdates];
+//    }
     
     _draggedNodes = nil;
 }
@@ -1602,19 +1663,31 @@ static NSTreeNode *_rootTreeNode = nil;
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
     id objectValue = nil;
+	
+	if (outlineView == self.colorOutlineView) {
+		DPStyleColor *color = item;
+		objectValue = color.colorVar;
+	} else {
     DPUIStyle *nodeData = item;
     
     objectValue = nodeData.styleName;
+	}
     
     return objectValue;
 }
 
 // Optional method: needed to allow editing.
 - (void)outlineView:(NSOutlineView *)ov setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item  {
-    DPUIStyle *nodeData = item;
+  
+	if (ov == self.colorOutlineView) {
+		DPStyleColor *color = item;
+		color.colorVar = object;
+	} else {
+	DPUIStyle *nodeData = item;
     
     // Here, we manipulate the data stored in the node.
         nodeData.styleName = object;
+	}
 }
 
 // We can return a different cell for each row, if we want
@@ -1632,6 +1705,8 @@ static NSTreeNode *_rootTreeNode = nil;
 
 - (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(ImageAndTextCell *)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item {
     
+	if (outlineView == self.styleOutlineView) {
+	
     DPUIStyle *style = item;
     if (!style.isLeaf) {
         cell.image = [NSImage imageNamed:@"FolderGeneric.png"];
@@ -1640,6 +1715,17 @@ static NSTreeNode *_rootTreeNode = nil;
         cell.image = [NSImage imageNamed:@"styleIcon.png"];
         cell.stringValue = style.styleName;
     }
+	} else if (outlineView == self.colorOutlineView) {
+		
+		DPStyleColor *style = item;
+		if (!style.isLeaf) {
+			cell.image = [NSImage imageNamed:@"FolderGeneric.png"];
+			cell.stringValue = style.colorVar;
+		} else {
+			cell.image = style.imageRep;
+			cell.stringValue = style.colorVar;
+		}
+	}
     
 }
 
@@ -1686,4 +1772,189 @@ static NSTreeNode *_rootTreeNode = nil;
 {
     return NSZeroRect;
 }
+
+static NSTableView *lastSelectedTableView = nil;
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+	NSTableView *tableView = aNotification.object;
+	
+	if (tableView != lastSelectedTableView) {
+		if ([[NSColorPanel sharedColorPanel] isVisible]) {
+			[tableView.associatedColorWell performClick:nil];
+		}
+	} else {
+	
+	if (tableView.associatedColorWell) {
+		[tableView.associatedColorWell performClick:nil];
+	}
+	}
+	
+	lastSelectedTableView = tableView;
+}
+
+
+- (IBAction)tableClicked:(id)sender
+{
+	NSTableView *tableView = sender;
+	if (tableView != lastSelectedTableView) {
+		if ([[NSColorPanel sharedColorPanel] isVisible]) {
+			[tableView.associatedColorWell performClick:nil];
+		}
+	}
+	lastSelectedTableView = tableView;
+}
+
+- (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
+{
+	
+
+	if (tableView != lastSelectedTableView) {
+		if ([[NSColorPanel sharedColorPanel] isVisible]) {
+			[tableView.associatedColorWell performClick:nil];
+		}
+	}
+	lastSelectedTableView = tableView;
+
+}
+
+- (NSCell *)tableView:(NSTableView *)tableView dataCellForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+	if ([[tableColumn identifier] isEqualToString:@"valueColumn"]) {
+		
+		NSPopUpButtonCell *cell = [tableColumn dataCellForRow:row];
+		
+		DPUICustomSetting *setting = self.customSettingsController.arrangedObjects[row];
+		
+		[cell removeAllItems];
+		[cell addItemsWithTitles:setting.possibleValues];
+		
+		return cell;
+		
+		
+	} else {
+		return [tableColumn dataCellForRow:row];
+	}
+	
+	return nil;
+}
+
+- (IBAction)newCustomSetting:(id)sender
+{
+//	DPUICustomSetting *setting = [[DPUICustomSetting alloc] init];
+//	
+//	DPUIStyle *selectedStyle = self.stylesController.selectedObjects[0];
+//	[selectedStyle.customSettings addObject:setting];
+//	
+//	[self.customSettingsTable reloadData];
+	
+	
+}
+
+- (NSArray*)customSettingTypeKeys
+{
+	return [DPUICustomSetting keyPathTypes];
+}
+
+
+- (IBAction)deleteCustomSetting:(id)sender
+{
+	
+}
+
+- (void)setIconKey:(NSString *)iconKey
+{
+	[self willChangeValueForKey:iconKey];
+	_iconKey = iconKey;
+	[self didChangeValueForKey:iconKey];
+	
+	self.exampleView.iconKey = iconKey;
+}
+
+- (NSArray*)availableIconKeys
+{
+	if (!_availableIconKeys) {
+		[self willChangeValueForKey:@"availableIconKeys"];
+		_availableIconKeys = self.exampleView.iconDictionary.allKeys;
+		_availableIconKeys = [_availableIconKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+		[self didChangeValueForKey:@"availableIconKeys"];
+		
+		
+	}
+	return _availableIconKeys;
+}
+
+- (NSArray*)availableIconImages
+{
+	if (!_availableIconImages) {
+		
+		NSMutableArray *tmp = [NSMutableArray new];
+		for (NSString *key in self.availableIconKeys) {
+			[tmp addObject:[self menuImageForIcon:key]];
+		}
+		_availableIconImages = tmp;
+		
+	}
+	return _availableIconImages;
+}
+
+- (NSImage*)menuImageForIcon:(NSString*)icon
+{
+	NSImage *image = [NSImage imageWithSize:NSMakeSize(35, 35) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+
+	NSString *svgString = [self.exampleView.iconDictionary objectForKey:icon];
+	
+	NSBezierPath *path = [NSBezierPath bezierPathWithSVGString:svgString];
+	CGSize size = CGSizeMake(35, 35);
+	CGSize currentSize = path.bounds.size;
+	
+	CGFloat scale;
+	
+	if (currentSize.width > currentSize.height) {
+		scale = (size.width) / currentSize.width/1.5;
+	} else {
+		scale = (size.height) / currentSize.height/1.5;
+	}
+	
+	NSAffineTransform *trans = [NSAffineTransform transform];
+	[trans scaleXBy:scale yBy:-scale];
+	[path transformUsingAffineTransform:trans];
+	
+	trans = [NSAffineTransform transform];
+	
+	[trans translateXBy:-(path.bounds.origin.x)*(1-(1/size.width)) yBy:-(path.bounds.origin.y) *(1-(1 /size.height))];
+	[path transformUsingAffineTransform:trans];
+	
+	trans = [NSAffineTransform transform];
+	
+	CGFloat xTrans = ((size.width-path.bounds.size.width)/2);// + path.bounds.size.width/2;
+	CGFloat yTrans = ((size.height-path.bounds.size.height)/2);// - path.bounds.size.height;
+															   //xTrans = 0;
+		//	yTrans = 0;
+		[trans translateXBy:(xTrans)*(1-(1/path.bounds.size.width)) yBy:(yTrans) *(1-(1 / path.bounds.size.height))];
+	[path transformUsingAffineTransform:trans];
+	
+		
+		[[NSColor blackColor] setFill];
+		[path fill];
+		return YES;
+	}];
+	return image;
+}
+
+- (void)menuNeedsUpdate:(NSMenu *)menu
+{
+	int x = 0;
+	for (NSMenuItem *item in menu.itemArray) {
+		
+		if (x >= self.availableIconImages.count) break;
+		
+		NSImage *img = self.availableIconImages[x];
+		[item setImage:img];
+		//[item setOffStateImage:img];
+		
+		x+=1;
+	}
+}
+
 @end

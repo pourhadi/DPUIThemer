@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4403A8C5174F273E00BE3A39 /* NSTableView+ColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4403A8C4174F273E00BE3A39 /* NSTableView+ColorWell.m */; };
+		4403A8C81750333E00BE3A39 /* DPUICustomSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 4403A8C71750333E00BE3A39 /* DPUICustomSetting.m */; };
+		4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */; };
+		4403A8DF1751CA8B00BE3A39 /* icons.json in Resources */ = {isa = PBXBuildFile; fileRef = 4403A8DE1751CA8B00BE3A39 /* icons.json */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
 		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
@@ -59,6 +63,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4403A8C3174F273E00BE3A39 /* NSTableView+ColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+ColorWell.h"; sourceTree = "<group>"; };
+		4403A8C4174F273E00BE3A39 /* NSTableView+ColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+ColorWell.m"; sourceTree = "<group>"; };
+		4403A8C61750333E00BE3A39 /* DPUICustomSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUICustomSetting.h; sourceTree = "<group>"; };
+		4403A8C71750333E00BE3A39 /* DPUICustomSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUICustomSetting.m; sourceTree = "<group>"; };
+		4403A8DB1751C72400BE3A39 /* NSBezierPath+SVG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+SVG.h"; sourceTree = "<group>"; };
+		4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+SVG.m"; sourceTree = "<group>"; };
+		4403A8DE1751CA8B00BE3A39 /* icons.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = icons.json; sourceTree = "<group>"; };
 		443BB98B1730E6C300A94E21 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		443BB98C1730E6C300A94E21 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
 		443D2E04173F43FA008F4162 /* DYNSliderStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNSliderStyle.h; sourceTree = "<group>"; };
@@ -213,8 +224,13 @@
 				44528A5F173230200006166F /* NSColor+Hex.m */,
 				44E94CA91734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.h */,
 				44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */,
+				4403A8DB1751C72400BE3A39 /* NSBezierPath+SVG.h */,
+				4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */,
+				4403A8DE1751CA8B00BE3A39 /* icons.json */,
 				D7B02D0217305F1200330394 /* DPUI */,
 				D779DF8E173045A4007AC130 /* Supporting Files */,
+				4403A8C3174F273E00BE3A39 /* NSTableView+ColorWell.h */,
+				4403A8C4174F273E00BE3A39 /* NSTableView+ColorWell.m */,
 			);
 			path = DPUIThemer;
 			sourceTree = "<group>";
@@ -297,6 +313,8 @@
 				D7F8AAB3173D881E004ABF7E /* DPUIParameter.m */,
 				443D2E04173F43FA008F4162 /* DYNSliderStyle.h */,
 				443D2E05173F43FA008F4162 /* DYNSliderStyle.m */,
+				4403A8C61750333E00BE3A39 /* DPUICustomSetting.h */,
+				4403A8C71750333E00BE3A39 /* DPUICustomSetting.m */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";
@@ -384,6 +402,7 @@
 				D7914292174EB00F008FCC58 /* dupe@2x.png in Resources */,
 				D7914295174EB09C008FCC58 /* folder_button.png in Resources */,
 				D7914296174EB09C008FCC58 /* folder_button@2x.png in Resources */,
+				4403A8DF1751CA8B00BE3A39 /* icons.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +459,9 @@
 				D7F8AAB4173D881E004ABF7E /* DPUIParameter.m in Sources */,
 				443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */,
 				D7914288174E9CC0008FCC58 /* ImageAndTextCell.m in Sources */,
+				4403A8C5174F273E00BE3A39 /* NSTableView+ColorWell.m in Sources */,
+				4403A8C81750333E00BE3A39 /* DPUICustomSetting.m in Sources */,
+				4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
