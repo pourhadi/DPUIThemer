@@ -225,7 +225,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		}
 		
 		if ([style objectForKey:@"segmentDividerWidth"]) {
-			new.segmentDividerWidth = [[style objectForKey:@"segmentDividerWidth"] floatValue];
+			new.segmentDividerWidth = [style objectForKey:@"segmentDividerWidth"];
 		}
 		
         if ([style objectForKey:kGROUPED_TABLE_TOP_CELL_KEY]) {
@@ -379,7 +379,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	if (style.segmentedControlStyle.selectedStyleName) {
 		[dictionary setObject:style.segmentedControlStyle.jsonValue forKey:@"segmentedControlStyle"];
 		
-		[dictionary setObject:@(style.segmentDividerWidth) forKey:@"segmentDividerWidth"];
+		[dictionary setObject:style.segmentDividerWidth forKey:@"segmentDividerWidth"];
 		[dictionary setObject:style.segmentDividerColor.jsonValue forKey:@"segmentDividerColor"];
 	}
     
@@ -556,7 +556,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         self.gradientAngle = 180;
 		self.segmentedControlStyle = [[DPUIControlStyle alloc] init];
 		self.segmentDividerColor = [[DPStyleColor alloc] init];
-		self.segmentDividerWidth = 1;
+		self.segmentDividerWidth = @(0);
 		self.isLeaf = YES;
 		self.children = [NSMutableArray new];
 		self.customSettings = [NSMutableArray new];
@@ -1053,7 +1053,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
 - (NSMutableArray*)controlStyles
 {
-    NSMutableArray *tmp = [[self.styles valueForKeyPath:@"styleName"] mutableCopy];
+    NSMutableArray *tmp = [[[self getFlatStylesArray] valueForKeyPath:@"styleName"] mutableCopy];
     [tmp insertObject:@"Current - Flipped Gradient" atIndex:0];
     [tmp insertObject:@"Current - 50% Opacity" atIndex:1];
     [tmp insertObject:@"Current - Make Darker" atIndex:2];
@@ -1087,6 +1087,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 - (IBAction)styleChanged
 {
 	if (self.isKey) {
+		//	self.flatStylesArray = [self getFlatStylesArray];
 
 	self.exampleView.containerColor = self.exampleContainerBgColor;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];

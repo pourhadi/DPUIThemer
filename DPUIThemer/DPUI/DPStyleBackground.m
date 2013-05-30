@@ -227,10 +227,17 @@
 		
 		NSMutableDictionary *muteDict = [NSMutableDictionary new];
 
+	if (self.colorString) {
+		[muteDict setObject:self.colorString forKey:@"colorString"];
+	}
 	
-	NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":(self.colorVar ? self.colorVar : @""), @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
+	[muteDict setObject:(self.colorVar ? self.colorVar : @"") forKey:@"colorVar"];
+	[muteDict setObject:(_colorName ? _colorName :@"") forKey:@"colorName"];
+	[muteDict setObject:(self.parameter ? @(NO) : @(self.parameter)) forKey:@"definedAtRuntime"];
 	
-	[muteDict addEntriesFromDictionary:dict];
+	//NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":, @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
+	
+	//	[muteDict addEntriesFromDictionary:dict];
     return muteDict;
 }
 

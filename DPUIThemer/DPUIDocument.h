@@ -126,7 +126,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 // UISegmentedControl
 
 @property (nonatomic, strong) DPUIControlStyle *segmentedControlStyle;
-@property (nonatomic) CGFloat segmentDividerWidth;
+@property (nonatomic, strong) NSNumber * segmentDividerWidth;
 @property (nonatomic, strong) DPStyleColor *segmentDividerColor;
 
 // UITableView - grouped
