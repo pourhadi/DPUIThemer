@@ -195,6 +195,8 @@
 
 - (void)setColor:(NSColor *)color
 {
+    color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+
     self.colorVar = nil;
     
 	[self willChangeValueForKey:@"color"];

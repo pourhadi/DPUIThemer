@@ -1782,11 +1782,14 @@ static NSTableView *lastSelectedTableView = nil;
 	
 	if (tableView != lastSelectedTableView) {
 		if ([[NSColorPanel sharedColorPanel] isVisible]) {
+            if (![tableView.associatedColorWell isActive]) 
 			[tableView.associatedColorWell performClick:nil];
 		}
 	} else {
 	
 	if (tableView.associatedColorWell) {
+        if (![tableView.associatedColorWell isActive])
+
 		[tableView.associatedColorWell performClick:nil];
 	}
 	}
@@ -1800,7 +1803,10 @@ static NSTableView *lastSelectedTableView = nil;
 	NSTableView *tableView = sender;
 	if (tableView != lastSelectedTableView) {
 		if ([[NSColorPanel sharedColorPanel] isVisible]) {
-			[tableView.associatedColorWell performClick:nil];
+            if (![tableView.associatedColorWell isActive]) {
+
+                [tableView.associatedColorWell performClick:nil];
+            }
 		}
 	}
 	lastSelectedTableView = tableView;
@@ -1812,7 +1818,9 @@ static NSTableView *lastSelectedTableView = nil;
 
 	if (tableView != lastSelectedTableView) {
 		if ([[NSColorPanel sharedColorPanel] isVisible]) {
-			[tableView.associatedColorWell performClick:nil];
+            if (![tableView.associatedColorWell isActive]) {
+                [tableView.associatedColorWell performClick:nil];
+            }
 		}
 	}
 	lastSelectedTableView = tableView;
