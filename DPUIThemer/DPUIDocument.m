@@ -14,6 +14,7 @@
 #import "ImageAndTextCell.h"
 #import "NSTableView+ColorWell.h"
 #import "NSBezierPath+SVG.h"
+#import "DYNClassStyle.h"
 static NSString *kGROUPED_TABLE_TOP_CELL_KEY = @"groupedTableTopCell";
 static NSString *kGROUPED_TABLE_MIDDLE_CELL_KEY = @"groupedTableMiddleCell";
 static NSString *kGROUPED_TABLE_SINGLE_CELL_KEY = @"groupedTableSingleCell";
@@ -49,6 +50,21 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 @synthesize children=_children;
 #pragma mark -
 #pragma mark NSPasteboardWriting support
+
+/*NSString *const NSPasteboardTypeString;
+ NSString *const NSPasteboardTypePDF;
+ NSString *const NSPasteboardTypeTIFF;
+ NSString *const NSPasteboardTypePNG;
+ NSString *const NSPasteboardTypeRTF;
+ NSString *const NSPasteboardTypeRTFD;
+ NSString *const NSPasteboardTypeHTML;
+ NSString *const NSPasteboardTypeTabularText;
+ NSString *const NSPasteboardTypeFont;
+ NSString *const NSPasteboardTypeRuler;
+ NSString *const NSPasteboardTypeColor;
+ NSString *const NSPasteboardTypeSound;
+ NSString *const NSPasteboardTypeMultipleTextSelection;
+ NSString *const NSPasteboardTypeFindPanelSearchOptions;*/
 
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
     // These are the types we can write.
@@ -747,6 +763,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     [super awakeFromNib];
     [self.styleOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:LOCAL_REORDER_PASTEBOARD_TYPE, NSStringPboardType, nil]];
     [self.styleOutlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
+	
+	self.styleOutlineView.delegate = self;
+	self.classStylesListTable.delegate = self;
 }
 
 //===========================================================
@@ -786,49 +805,73 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (object == self.stylesController) {
-		if (self.stylesController.selectedObjects.count > 0) {
-			[self.sliderStylesController setSelectedObjects:nil];
-			[self.imageStylesController setSelectedObjects:nil];
-
-			if (!self.viewStyleTabs.window) {
-				[self emptyPropertiesContainer];
-				
-				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
-				[self.propertiesContainerView addSubview:self.viewStyleTabs];
-			}
-		}
-		
-	} else if (object == self.sliderStylesController) {
-		if (self.sliderStylesController.selectedObjects.count > 0) {
-			[self.stylesController setSelectedObjects:nil];
-			[self.imageStylesController setSelectedObjects:nil];
-			if (!self.sliderStyleTabs.window) {
-				[self emptyPropertiesContainer];
-				
-				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
-				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
-			}
-		}
-		
-	} else if (object == self.imageStylesController) {
-		if (self.imageStylesController.selectedObjects.count > 0) {
-			[self.stylesController setSelectedObjects:nil];
-			[self.sliderStylesController setSelectedObjects:nil];
-
-			if (!self.imageStyleTabs.window) {
-				[self emptyPropertiesContainer];
-				
-				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
-				[self.propertiesContainerView addSubview:self.imageStyleTabs];
-			}
-		}
-	} else if (object == self.styleTreeController) {
-        self.flatStylesArray = [self stylesForParent:self.rootNode];
-    }
-    else {
-		[self updateChangeCount:NSChangeDone];
-	}
+//	if (object == self.stylesController) {
+//
+//		if (self.stylesController.selectedObjects.count > 0) {
+//
+//			[self.sliderStylesController setSelectedObjects:nil];
+//			[self.imageStylesController setSelectedObjects:nil];
+//			[self.classStylesListController setSelectedObjects:nil];
+//
+//			if (!self.viewStyleTabs.window) {
+//				[self emptyPropertiesContainer];
+//				
+//				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
+//				[self.propertiesContainerView addSubview:self.viewStyleTabs];
+//			}
+//		}
+//		
+//	} else if (object == self.sliderStylesController) {
+//		if (self.sliderStylesController.selectedObjects.count > 0) {
+//			[self.stylesController setSelectedObjects:nil];
+//			[self.imageStylesController setSelectedObjects:nil];
+//			[self.classStylesListController setSelectedObjects:nil];
+//
+//			if (!self.sliderStyleTabs.window) {
+//				[self emptyPropertiesContainer];
+//				
+//				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
+//				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
+//			}
+//		}
+//		
+//	} else if (object == self.imageStylesController) {
+//		if (self.imageStylesController.selectedObjects.count > 0) {
+//			[self.stylesController setSelectedObjects:nil];
+//			[self.sliderStylesController setSelectedObjects:nil];
+//			[self.classStylesListController setSelectedObjects:nil];
+//
+//
+//			if (!self.imageStyleTabs.window) {
+//				[self emptyPropertiesContainer];
+//				
+//				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
+//				[self.propertiesContainerView addSubview:self.imageStyleTabs];
+//			}
+//		}
+//	} else if (object == self.classStylesListController) {
+//		NSLog(@"class styles list");
+//
+//		if (self.classStylesListController.selectedObjects.count > 0) {
+//			NSLog(@"class styles list more than 0");
+//
+//			[self.stylesController setSelectedObjects:nil];
+//			[self.sliderStylesController setSelectedObjects:nil];
+//			[self.imageStylesController setSelectedObjects:nil];
+//			
+//			if (!self.classStyleView.window) {
+//				[self emptyPropertiesContainer];
+//				
+//				self.classStyleView.frame = self.propertiesContainerView.bounds;
+//				[self.propertiesContainerView addSubview:self.classStyleView];
+//			}
+//		}
+//	} else if (object == self.styleTreeController) {
+//        self.flatStylesArray = [self stylesForParent:self.rootNode];
+//    }
+//    else {
+//		[self updateChangeCount:NSChangeDone];
+//	}
 }
 
 - (id)init
@@ -897,6 +940,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
                                       groupedTable,
                  controls,
 									  custom];
+		
+		
+		self.classStyles = [NSArray array];
 	}
     return self;
 }
@@ -954,11 +1000,12 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
 	self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(styleChanged) userInfo:nil repeats:YES];
     
-	
 	[self.stylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 	[self.sliderStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 	[self.imageStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
     [self.styleTreeController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:nil];
+    [self.classStylesListController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:nil];
+
 }
 + (BOOL)autosavesInPlace
 {
@@ -1034,6 +1081,14 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		[tmpImage addObject:[[DPUIStyle alloc] initWithDictionary:imageStyle]];
 	}
 	
+	NSMutableArray *tmpClassStyles = [NSMutableArray new];
+	for (NSDictionary *classStyle in [dict objectForKey:@"classStyles"]) {
+		[tmpClassStyles addObject:[[DYNClassStyle alloc] initWithDictionary:classStyle]];
+	}
+	
+	self.classStyles = tmpClassStyles;
+	
+	
 	self.imageStyles = tmpImage;
 	self.sliderStyles = tmpSlider;
 	self.styles = newStyles;
@@ -1089,6 +1144,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	if (self.isKey) {
 		//	self.flatStylesArray = [self getFlatStylesArray];
 
+		self.exampleView.scale = self.scale.floatValue;
 	self.exampleView.containerColor = self.exampleContainerBgColor;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];
 	[[DPStyleManager sharedInstance] setStyles:[[self getFlatStylesArray] mutableCopy]];
@@ -1171,6 +1227,13 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	[container setObject:tmpImageStyles forKey:@"imageStyles"];
 	
+	NSMutableArray *tmpClassStyles = [NSMutableArray new];
+	for (DYNClassStyle *classStyle in self.classStyles) {
+		[tmpClassStyles addObject:classStyle.jsonValue];
+	}
+	
+	[container setObject:tmpClassStyles forKey:@"classStyles"];
+	
 	NSError *error;
 	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:NSJSONWritingPrettyPrinted error:&error];
 	return json;
@@ -1184,7 +1247,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	if (error) {
 		NSLog(@"%@", error);
 	}
-	[json writeToFile:@"Styles.dpui" options:0 error:&error];
+	[json writeToFile:@"Styles.dyn" options:0 error:&error];
 	if (error)
 	{
 		NSLog(@"%@", error);
@@ -1329,6 +1392,17 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
     return node;
 }
 
+- (IBAction)classStylesSegTapped:(id)sender
+{
+	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
+
+	if (seg.selectedSegment == 0) {
+		[self.classStylesListController add:nil];
+	} else if (seg.selectedSegment == 1) {
+		[self.classStylesListController remove:nil];
+	}
+}
+
 - (IBAction)styleSegTapped:(id)sender
 {
 	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
@@ -1439,8 +1513,6 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 
 
 #pragma mark NSOutlineView Hacks for Drag and Drop
-
-static NSTreeNode *_rootTreeNode = nil;
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard
 {
@@ -1800,21 +1872,89 @@ static NSTableView *lastSelectedTableView = nil;
 
 - (IBAction)tableClicked:(id)sender
 {
-	NSTableView *tableView = sender;
-	if (tableView != lastSelectedTableView) {
-		if ([[NSColorPanel sharedColorPanel] isVisible]) {
-            if (![tableView.associatedColorWell isActive]) {
 
-                [tableView.associatedColorWell performClick:nil];
-            }
+	id object = sender;
+	if (object == self.styleOutlineView) {
+		if (self.stylesController.selectedObjects.count > 0) {
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.viewStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.viewStyleTabs];
+			}
+		}
+		
+	} else if (object == self.sliderStylesTable) {
+		if (self.sliderStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.sliderStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
+			}
+		}
+		
+	} else if (object == self.imageStylesTable) {
+		if (self.imageStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			
+			if (!self.imageStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.imageStyleTabs];
+			}
+		}
+	} else if (object == self.classStylesListTable) {
+		if (self.classStylesListController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			
+			
+			if (!self.classStyleView.window) {
+				[self emptyPropertiesContainer];
+				
+				self.classStyleView.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.classStyleView];
+			}
 		}
 	}
-	lastSelectedTableView = tableView;
+	
+	
+	NSTableView *tableView = sender;
+	if (tableView.associatedColorWell) {
+		if (tableView != lastSelectedTableView) {
+			if ([[NSColorPanel sharedColorPanel] isVisible]) {
+				if (![tableView.associatedColorWell isActive]) {
+					
+					[tableView.associatedColorWell performClick:nil];
+				}
+			}
+		}
+		lastSelectedTableView = tableView;
+	}
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+{
+	
+	return YES;
 }
 
 - (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
 {
-	
 
 	if (tableView != lastSelectedTableView) {
 		if ([[NSColorPanel sharedColorPanel] isVisible]) {
@@ -1840,6 +1980,17 @@ static NSTableView *lastSelectedTableView = nil;
 		
 		return cell;
 		
+		
+	} else if ([[tableColumn identifier] isEqualToString:@"classStylesValueColumn"]) {
+		
+		NSPopUpButtonCell *cell = [tableColumn dataCellForRow:row];
+		
+		DPUICustomSetting *setting = self.classStylesAttributesController.arrangedObjects[row];
+		
+		[cell removeAllItems];
+		[cell addItemsWithTitles:setting.possibleValues];
+		
+		return cell;
 		
 	} else {
 		return [tableColumn dataCellForRow:row];

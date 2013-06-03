@@ -431,9 +431,15 @@
 
 }
 
+- (void)setScale:(CGFloat)scale
+{
+	_scale = scale / 100;
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
-	
+	//	CGContextScaleCTM([[NSGraphicsContext currentContext] graphicsPort], self.scale, self.scale);
+	//CGContextTranslateCTM([[NSGraphicsContext currentContext]graphicsPort], -self.scale*2, -self.scale*2);
 	[self.containerColor setFill];
 	NSRectFill(dirtyRect);
 	CGFloat width = self.width;
@@ -443,7 +449,7 @@
     NSRect newRect = NSMakeRect(baseX, baseY, width, height);
     self.drawRect = newRect;
 	CGSize size = newRect.size;
-	
+
 	if (self.imageStyle) {
 	
 		[self drawStyledImageInRect:newRect];
@@ -668,7 +674,8 @@
 			
 			NSMutableArray *colors = [NSMutableArray new];
 			for (DPStyleColor *color in self.style.bgColors) {
-                [colors addObject:color.color];
+                if (color.color)
+				[colors addObject:color.color];
             }
 			
 			NSGradient *grad = [[NSGradient alloc] initWithColors:colors];

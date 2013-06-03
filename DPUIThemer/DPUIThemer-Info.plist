@@ -9,12 +9,12 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>dpui</string>
+				<string>dyn</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string></string>
 			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
+			<string>DynUI Stylesheet</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>

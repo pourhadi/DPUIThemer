@@ -62,6 +62,7 @@
         self.yShadowOffset = [decoder decodeFloatForKey:@"yShadowOffset"];
         self.fontSize = [decoder decodeIntegerForKey:@"fontSize"];
         self.fontString = [decoder decodeObjectForKey:@"fontString"];
+		
     }
     return self;
 }
@@ -92,6 +93,8 @@
 		self.textColor = [[DPStyleColor alloc] init];
 		self.shadowColor = [[DPStyleColor alloc] init];
 		self.shadowOffset = CGSizeZero;
+		self.inheritFontSize = @(NO);
+		self.inheritAlignment = @(NO);
 	}
 	return self;
 }
@@ -110,12 +113,15 @@
 	[dict setObject:@(self.alignment) forKey:@"alignment"];
 	[dict setObject:@(self.fontSizeType) forKey:@"fontSizeType"];
 	[dict setObject:self.fontSizeString forKey:@"fontSizeString"];
+	[dict setObject:self.inheritFontSize forKey:@"inheritFontSize"];
+	[dict setObject:self.inheritAlignment forKey:@"inheritAlignment"];
+	
 	return dict;
 }
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
-	self = [super init];
+	self = [self init];
 	if (self) {
 		
 		self.styleName = [dict objectForKey:@"styleName"];
@@ -126,6 +132,14 @@
 		self.alignment = [[dict objectForKey:@"alignment"] intValue];
 		self.fontSizeString = [dict objectForKey:@"fontSizeString"];
 		self.fontSizeType = [[dict objectForKey:@"fontSizeType"] intValue];
+		
+		if ([dict objectForKey:@"inheritFontSize"]) {
+			self.inheritFontSize = [dict objectForKey:@"inheritFontSize"];
+		}
+		
+		if ([dict objectForKey:@"inheritAlignment"]) {
+			self.inheritAlignment = [dict objectForKey:@"inheritAlignment"];
+		}
 	}
 	
 	return self;

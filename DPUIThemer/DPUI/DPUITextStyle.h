@@ -35,6 +35,9 @@ typedef NS_ENUM(NSUInteger, DYNFontSizeType){
 @property (nonatomic, strong) NSString *fontSizeString;
 @property (nonatomic) DYNFontSizeType fontSizeType;
 
+@property (nonatomic, strong) NSNumber *inheritFontSize;
+@property (nonatomic, strong) NSNumber *inheritAlignment;
+
 - (id)jsonValue;
 - (id)initWithDictionary:(NSDictionary*)dict;
 

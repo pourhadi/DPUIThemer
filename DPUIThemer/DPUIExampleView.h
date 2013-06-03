@@ -19,6 +19,8 @@
 @property (nonatomic) CGFloat xScale;
 @property (nonatomic) CGFloat yScale;
 
+@property (nonatomic) CGFloat scale;
+
 @property (nonatomic) CGFloat height;
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat frameWidth;

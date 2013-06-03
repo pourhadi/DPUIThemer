@@ -19,6 +19,7 @@
 		44E94CAB1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */; };
 		44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB01735F5CF0064D41D /* DPUITextStyle.m */; };
 		44E94CB4173602580064D41D /* DPUITextStyleExampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB3173602570064D41D /* DPUITextStyleExampleView.m */; };
+		44EBB270175B1196004650BB /* DYNClassStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EBB26F175B1196004650BB /* DYNClassStyle.m */; };
 		D779DF88173045A4007AC130 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D779DF87173045A4007AC130 /* Cocoa.framework */; };
 		D779DF92173045A4007AC130 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D779DF90173045A4007AC130 /* InfoPlist.strings */; };
 		D779DF94173045A5007AC130 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D779DF93173045A4007AC130 /* main.m */; };
@@ -86,6 +87,8 @@
 		44E94CB01735F5CF0064D41D /* DPUITextStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUITextStyle.m; sourceTree = "<group>"; };
 		44E94CB2173602570064D41D /* DPUITextStyleExampleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUITextStyleExampleView.h; sourceTree = "<group>"; };
 		44E94CB3173602570064D41D /* DPUITextStyleExampleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUITextStyleExampleView.m; sourceTree = "<group>"; };
+		44EBB26E175B1196004650BB /* DYNClassStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNClassStyle.h; sourceTree = "<group>"; };
+		44EBB26F175B1196004650BB /* DYNClassStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNClassStyle.m; sourceTree = "<group>"; };
 		D779DF84173045A4007AC130 /* DPUIThemer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DPUIThemer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D779DF87173045A4007AC130 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D779DF8A173045A4007AC130 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -315,6 +318,8 @@
 				443D2E05173F43FA008F4162 /* DYNSliderStyle.m */,
 				4403A8C61750333E00BE3A39 /* DPUICustomSetting.h */,
 				4403A8C71750333E00BE3A39 /* DPUICustomSetting.m */,
+				44EBB26E175B1196004650BB /* DYNClassStyle.h */,
+				44EBB26F175B1196004650BB /* DYNClassStyle.m */,
 			);
 			path = DPUI;
 			sourceTree = "<group>";
@@ -462,6 +467,7 @@
 				4403A8C5174F273E00BE3A39 /* NSTableView+ColorWell.m in Sources */,
 				4403A8C81750333E00BE3A39 /* DPUICustomSetting.m in Sources */,
 				4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */,
+				44EBB270175B1196004650BB /* DYNClassStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

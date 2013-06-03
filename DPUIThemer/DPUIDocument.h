@@ -145,7 +145,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
 {
 }
 
@@ -233,5 +233,14 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic, strong) NSArray *availableIconKeys;
 @property (nonatomic, strong) NSArray *availableIconImages;
+
+@property (nonatomic, strong) IBOutlet NSBox *classStyleView;
+@property (nonatomic, strong) IBOutlet NSTableView *classStylesListTable;
+@property (nonatomic, strong) IBOutlet NSArrayController *classStylesListController;
+@property (nonatomic, strong) IBOutlet NSArrayController *classStylesAttributesController;
+
+@property (nonatomic, strong) NSArray *classStyles;
+
+@property (nonatomic, strong) NSNumber *scale;
 
 @end
