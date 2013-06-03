@@ -42,6 +42,8 @@
 @property (nonatomic, strong) NSArray *textStyles;
 @property (nonatomic, strong) NSArray *parameters;
 @property (nonatomic, strong) NSMutableArray *sliderStyles;
+
+@property (nonatomic, strong) id globalDraggedItem;
 - (id)valueForStyleParameter:(NSString*)parameter;
 - (void)styleApplied;
 

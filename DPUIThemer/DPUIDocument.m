@@ -83,7 +83,10 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type {
-    return self.jsonValue;
+    NSDictionary *dict = self.jsonValue;
+
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    return data;
 }
 
 #pragma mark -
@@ -101,7 +104,8 @@ static NSString *kGROUPED_TABLE_BOTTOM_CELL_KEY = @"groupedTableBottomCell";
 
 - (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
     // See if an NSURL can be created from this type
-    self = [self initWithDictionary:propertyList];
+    NSData *data = [(NSString*)propertyList dataUsingEncoding:NSASCIIStringEncoding];
+    self = [self initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
     return self;
 }
 
@@ -1617,6 +1621,8 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
     // If the source was ourselves, we use our dragged nodes and do a reorder
     if ([self _dragIsLocalReorder:info]) {
         [self _performDragReorderWithDragInfo:info parentNode:targetNode childIndex:childIndex];
+    } else {
+        [self _performInsertWithDragInfo:info parentNode:targetNode childIndex:childIndex];
     }
     [self.styleOutlineView endUpdates];
 	
@@ -1624,8 +1630,49 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
     return YES;
 }
 
+//- (BOOL)_dragIsLocalReorder:(id <NSDraggingInfo>)info {
+//    return YES;
+//}
+
+
 - (BOOL)_dragIsLocalReorder:(id <NSDraggingInfo>)info {
-    return YES;
+    // It is a local drag if the following conditions are met:
+    if ([info draggingSource] == self.styleOutlineView) {
+        // We were the source
+        if (_draggedNodes != nil) {
+            // Our nodes were saved off
+            if ([[info draggingPasteboard] availableTypeFromArray:[NSArray arrayWithObject:LOCAL_REORDER_PASTEBOARD_TYPE]] != nil) {
+                // Our pasteboard marker is on the pasteboard
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+- (void)_performInsertWithDragInfo:(id <NSDraggingInfo>)info parentNode:(DPUIStyle *)parentNode childIndex:(NSInteger)childIndex {
+    // NSOutlineView's root is nil
+    id outlineParentItem = parentNode == self.rootNode ? nil : parentNode;
+    NSMutableArray *childNodeArray = [parentNode children];
+    NSInteger outlineColumnIndex = [[_outlineView tableColumns] indexOfObject:[_outlineView outlineTableColumn]];
+    
+    // Enumerate all items dropped on us and create new model objects for them
+    NSArray *classes = [NSArray arrayWithObject:[DPUIStyle class]];
+    __block NSInteger insertionIndex = childIndex;
+    [info enumerateDraggingItemsWithOptions:0 forView:_outlineView classes:classes searchOptions:nil usingBlock:^(NSDraggingItem *draggingItem, NSInteger index, BOOL *stop) {
+        DPUIStyle *newNodeData = (DPUIStyle *)draggingItem.item;
+        // Wrap the model object in a tree node
+        // Add it to the model
+        [childNodeArray insertObject:newNodeData atIndex:insertionIndex];
+        [_outlineView insertItemsAtIndexes:[NSIndexSet indexSetWithIndex:insertionIndex] inParent:outlineParentItem withAnimation:NSTableViewAnimationEffectGap];
+        // Update the final frame of the dragging item
+        NSInteger row = [_outlineView rowForItem:newNodeData];
+        draggingItem.draggingFrame = [_outlineView frameOfCellAtColumn:outlineColumnIndex row:row];
+        
+        // Insert all children one after another
+        insertionIndex++;
+    }];
+    
 }
 
 - (void)_performDragReorderWithDragInfo:(id <NSDraggingInfo>)info parentNode:(DPUIStyle *)newParent childIndex:(NSInteger)childIndex {
@@ -1682,6 +1729,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 /* Setup a local reorder. */
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forItems:(NSArray *)draggedItems {
     _draggedNodes = draggedItems;
+    [[DPStyleManager sharedInstance] setGlobalDraggedItem:_draggedNodes];
     [session.draggingPasteboard setData:[NSData data] forType:LOCAL_REORDER_PASTEBOARD_TYPE];
 }
 

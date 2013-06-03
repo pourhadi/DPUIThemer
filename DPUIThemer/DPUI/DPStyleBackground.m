@@ -195,7 +195,7 @@
 
 - (void)setColor:(NSColor *)color
 {
-    color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+    //color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
 
     self.colorVar = nil;
     
@@ -235,7 +235,7 @@
 	
 	[muteDict setObject:(self.colorVar ? self.colorVar : @"") forKey:@"colorVar"];
 	[muteDict setObject:(_colorName ? _colorName :@"") forKey:@"colorName"];
-	[muteDict setObject:(self.parameter ? @(NO) : @(self.parameter)) forKey:@"definedAtRuntime"];
+	[muteDict setObject:@(self.parameter) forKey:@"definedAtRuntime"];
 	
 	//NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":, @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
 	
