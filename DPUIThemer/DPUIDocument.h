@@ -15,6 +15,8 @@
 #import "DPUIControlStyle.h"
 #import "DPUIParameter.h"
 #import"DPUICustomSetting.h"
+#import "ACTGradientEditor.h"
+#import "CNSplitView.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -30,6 +32,12 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 	ViewCanvasBackgroundTypePreviewColor = 1,
 	ViewCanvasBackgroundTypeCustomColor = 2,
 };
+
+@interface GradientColor : NSObject
+
+
+
+@end
 
 @interface DYNNode : NSObject
 
@@ -145,7 +153,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate, GradientEditorDelegate>
 {
 }
 
@@ -242,5 +250,14 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSArray *classStyles;
 
 @property (nonatomic, strong) NSNumber *scale;
+
+@property (nonatomic, strong) IBOutlet ACTGradientEditor *gradientEditor;
+
+@property (nonatomic, strong) IBOutlet NSArrayController *bgColorsController;
+
+@property (nonatomic, strong) DPStyleColor *currentlySelectedColor;
+
+@property (nonatomic, weak) IBOutlet CNSplitView *mainSplitView;
+@property (nonatomic, weak) IBOutlet CNSplitView *sourceSplitView;
 
 @end

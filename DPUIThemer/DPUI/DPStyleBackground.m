@@ -280,6 +280,11 @@
     return self;
 }
 
+- (void)drawSwatchInRect:(NSRect)rect
+{
+	[self.color drawSwatchInRect:rect];
+}
+
 @end
 @implementation DPStyleBackground
 

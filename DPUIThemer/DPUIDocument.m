@@ -700,8 +700,11 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	NSUInteger colorRow_;
     NSArray *_draggedNodes;
     DPUIStyle *_selectedNode;
+	
+	NSInteger _selectedColorIndex;
 
 }
+@property (nonatomic, strong) CNSplitViewToolbar *toolbar;
 @property (nonatomic, strong) NSTimer *updateTimer;
 @property (nonatomic, strong) ColorCell *backgroundColorCell;
 @property (nonatomic, strong) ColorCell *topInnerBorderColorCell;
@@ -770,6 +773,20 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	
 	self.styleOutlineView.delegate = self;
 	self.classStylesListTable.delegate = self;
+	
+	[self.gradientEditor setGradient:[[NSGradient alloc] initWithColors:@[[NSColor whiteColor], [NSColor blackColor]]]];
+	[self.gradientEditor setTarget: self];
+    [self.gradientEditor setAction: @selector(gradientChanged:)];
+    
+    [self gradientChanged: self];
+
+	}
+
+- (IBAction)gradientChanged: (id)sender
+{
+    //[gradientEditor setGradientHeight: [slider doubleValue]];
+	//  [gradientView setGradient: [gradientEditor gradient]];
+    //[gradientView setAngle: [angle doubleValue]];
 }
 
 //===========================================================
@@ -809,6 +826,23 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	if ([keyPath isEqualToString:@"currentlySelectedColor.color"]) {
+		
+		[self.gradientEditor setColorForCurrentKnob:self.currentlySelectedColor.color];
+		
+	}
+	
+	if (object == self.bgColorsController) {
+		NSMutableArray *colors = [NSMutableArray new];
+		for (DPStyleColor *color in self.bgColorsController.arrangedObjects) {
+			[colors addObject:color.color];
+		}
+		
+		NSGradient *grad = [[NSGradient alloc] initWithColors:colors];
+		
+		self.gradientEditor.gradient = grad;
+	}
+	
 //	if (object == self.stylesController) {
 //
 //		if (self.stylesController.selectedObjects.count > 0) {
@@ -947,6 +981,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		
 		
 		self.classStyles = [NSArray array];
+		
 	}
     return self;
 }
@@ -1009,8 +1044,42 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	[self.imageStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
     [self.styleTreeController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:nil];
     [self.classStylesListController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:nil];
+	//[self.bgColorsController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:nil];
+	
+	//[self addObserver:self forKeyPath:@"currentlySelectedColor.color" options:0 context:nil];
+	
+	self.gradientEditor.delegate = self;
+
+//	NSMenu *contextMenu = [[NSMenu alloc] init];
+//    [contextMenu addItemWithTitle:@"New View Style" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+//	[contextMenu addItemWithTitle:@"New View Style Group" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+//    [contextMenu addItemWithTitle:@"New Image Style" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+//	[contextMenu addItemWithTitle:@"New Slider Style" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+//	
+//	CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
+//    button1.imageTemplate = CNSplitViewToolbarButtonImageTemplateAdd;
+//	
+//    CNSplitViewToolbarButton *button2 = [[CNSplitViewToolbarButton alloc] init];
+//    button2.imageTemplate = CNSplitViewToolbarButtonImageTemplateRemove;
+//	
+//	CNSplitViewToolbar *toolbar = [[CNSplitViewToolbar alloc] init];
+//	[toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
+//    [toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
+//	
+//	[self.sourceSplitView attachToolbar:toolbar toSubViewAtIndex:2 onEdge:CNSplitViewToolbarEdgeBottom];
+//	
+//	
+//	[self.sourceSplitView showToolbarAnimated:YES];
 
 }
+
+- (void)selectedColorAtLocation:(NSInteger)locationIndex
+{
+	_selectedColorIndex = locationIndex;
+	DPStyleColor *color = self.bgColorsController.arrangedObjects[locationIndex];
+	self.currentlySelectedColor = color;
+}
+
 + (BOOL)autosavesInPlace
 {
     return YES;

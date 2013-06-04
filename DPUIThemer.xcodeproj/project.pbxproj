@@ -11,6 +11,15 @@
 		4403A8C81750333E00BE3A39 /* DPUICustomSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 4403A8C71750333E00BE3A39 /* DPUICustomSetting.m */; };
 		4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */; };
 		4403A8DF1751CA8B00BE3A39 /* icons.json in Resources */ = {isa = PBXBuildFile; fileRef = 4403A8DE1751CA8B00BE3A39 /* icons.json */; };
+		44099D5B175D80D60080FD8E /* ACTGradientEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D56175D80D60080FD8E /* ACTGradientEditor.m */; };
+		44099D5C175D80D60080FD8E /* ACTGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D58175D80D60080FD8E /* ACTGradientView.m */; };
+		44099D5D175D80D60080FD8E /* NSColor+ChessboardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D5A175D80D60080FD8E /* NSColor+ChessboardColor.m */; };
+		44099D6D175DE5E80080FD8E /* CNSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D60175DE5E80080FD8E /* CNSplitView.m */; };
+		44099D6E175DE5E80080FD8E /* CNSplitViewDraggingHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D63175DE5E80080FD8E /* CNSplitViewDraggingHandle.m */; };
+		44099D6F175DE5E80080FD8E /* CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D65175DE5E80080FD8E /* CNSplitViewToolbar.m */; };
+		44099D70175DE5E80080FD8E /* CNSplitViewToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D67175DE5E80080FD8E /* CNSplitViewToolbarButton.m */; };
+		44099D71175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D69175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m */; };
+		44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
 		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
@@ -71,6 +80,26 @@
 		4403A8DB1751C72400BE3A39 /* NSBezierPath+SVG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+SVG.h"; sourceTree = "<group>"; };
 		4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+SVG.m"; sourceTree = "<group>"; };
 		4403A8DE1751CA8B00BE3A39 /* icons.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = icons.json; sourceTree = "<group>"; };
+		44099D55175D80D60080FD8E /* ACTGradientEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTGradientEditor.h; sourceTree = "<group>"; };
+		44099D56175D80D60080FD8E /* ACTGradientEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTGradientEditor.m; sourceTree = "<group>"; };
+		44099D57175D80D60080FD8E /* ACTGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTGradientView.h; sourceTree = "<group>"; };
+		44099D58175D80D60080FD8E /* ACTGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTGradientView.m; sourceTree = "<group>"; };
+		44099D59175D80D60080FD8E /* NSColor+ChessboardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+ChessboardColor.h"; sourceTree = "<group>"; };
+		44099D5A175D80D60080FD8E /* NSColor+ChessboardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+ChessboardColor.m"; sourceTree = "<group>"; };
+		44099D5F175DE5E80080FD8E /* CNSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitView.h; sourceTree = "<group>"; };
+		44099D60175DE5E80080FD8E /* CNSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitView.m; sourceTree = "<group>"; };
+		44099D61175DE5E80080FD8E /* CNSplitViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewDefinitions.h; sourceTree = "<group>"; };
+		44099D62175DE5E80080FD8E /* CNSplitViewDraggingHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewDraggingHandle.h; sourceTree = "<group>"; };
+		44099D63175DE5E80080FD8E /* CNSplitViewDraggingHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewDraggingHandle.m; sourceTree = "<group>"; };
+		44099D64175DE5E80080FD8E /* CNSplitViewToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbar.h; sourceTree = "<group>"; };
+		44099D65175DE5E80080FD8E /* CNSplitViewToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewToolbar.m; sourceTree = "<group>"; };
+		44099D66175DE5E80080FD8E /* CNSplitViewToolbarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbarButton.h; sourceTree = "<group>"; };
+		44099D67175DE5E80080FD8E /* CNSplitViewToolbarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewToolbarButton.m; sourceTree = "<group>"; };
+		44099D68175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbarButtonCell.h; sourceTree = "<group>"; };
+		44099D69175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewToolbarButtonCell.m; sourceTree = "<group>"; };
+		44099D6A175DE5E80080FD8E /* CNSplitViewToolbarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbarDelegate.h; sourceTree = "<group>"; };
+		44099D6B175DE5E80080FD8E /* NSView+CNSplitViewToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+CNSplitViewToolbar.h"; sourceTree = "<group>"; };
+		44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+CNSplitViewToolbar.m"; sourceTree = "<group>"; };
 		443BB98B1730E6C300A94E21 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		443BB98C1730E6C300A94E21 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
 		443D2E04173F43FA008F4162 /* DYNSliderStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNSliderStyle.h; sourceTree = "<group>"; };
@@ -167,6 +196,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		44099D54175D80B80080FD8E /* ACTGradient */ = {
+			isa = PBXGroup;
+			children = (
+				44099D55175D80D60080FD8E /* ACTGradientEditor.h */,
+				44099D56175D80D60080FD8E /* ACTGradientEditor.m */,
+				44099D57175D80D60080FD8E /* ACTGradientView.h */,
+				44099D58175D80D60080FD8E /* ACTGradientView.m */,
+				44099D59175D80D60080FD8E /* NSColor+ChessboardColor.h */,
+				44099D5A175D80D60080FD8E /* NSColor+ChessboardColor.m */,
+			);
+			name = ACTGradient;
+			sourceTree = "<group>";
+		};
+		44099D5E175DE5E70080FD8E /* CNSplitView */ = {
+			isa = PBXGroup;
+			children = (
+				44099D5F175DE5E80080FD8E /* CNSplitView.h */,
+				44099D60175DE5E80080FD8E /* CNSplitView.m */,
+				44099D61175DE5E80080FD8E /* CNSplitViewDefinitions.h */,
+				44099D62175DE5E80080FD8E /* CNSplitViewDraggingHandle.h */,
+				44099D63175DE5E80080FD8E /* CNSplitViewDraggingHandle.m */,
+				44099D64175DE5E80080FD8E /* CNSplitViewToolbar.h */,
+				44099D65175DE5E80080FD8E /* CNSplitViewToolbar.m */,
+				44099D66175DE5E80080FD8E /* CNSplitViewToolbarButton.h */,
+				44099D67175DE5E80080FD8E /* CNSplitViewToolbarButton.m */,
+				44099D68175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.h */,
+				44099D69175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m */,
+				44099D6A175DE5E80080FD8E /* CNSplitViewToolbarDelegate.h */,
+				44099D6B175DE5E80080FD8E /* NSView+CNSplitViewToolbar.h */,
+				44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */,
+			);
+			path = CNSplitView;
+			sourceTree = "<group>";
+		};
 		D779DF7B173045A4007AC130 = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +273,8 @@
 		D779DF8D173045A4007AC130 /* DPUIThemer */ = {
 			isa = PBXGroup;
 			children = (
+				44099D5E175DE5E70080FD8E /* CNSplitView */,
+				44099D54175D80B80080FD8E /* ACTGradient */,
 				D7914283174E9B08008FCC58 /* Resources */,
 				44528A55173229530006166F /* ColorTransformer.h */,
 				44528A56173229530006166F /* ColorTransformer.m */,
@@ -468,6 +533,15 @@
 				4403A8C81750333E00BE3A39 /* DPUICustomSetting.m in Sources */,
 				4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */,
 				44EBB270175B1196004650BB /* DYNClassStyle.m in Sources */,
+				44099D5B175D80D60080FD8E /* ACTGradientEditor.m in Sources */,
+				44099D5C175D80D60080FD8E /* ACTGradientView.m in Sources */,
+				44099D5D175D80D60080FD8E /* NSColor+ChessboardColor.m in Sources */,
+				44099D6D175DE5E80080FD8E /* CNSplitView.m in Sources */,
+				44099D6E175DE5E80080FD8E /* CNSplitViewDraggingHandle.m in Sources */,
+				44099D6F175DE5E80080FD8E /* CNSplitViewToolbar.m in Sources */,
+				44099D70175DE5E80080FD8E /* CNSplitViewToolbarButton.m in Sources */,
+				44099D71175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m in Sources */,
+				44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

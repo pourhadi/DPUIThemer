@@ -34,6 +34,9 @@
 - (id)jsonValue;
 - (id)initWithColorString:(NSString *)color;
 - (id)initWithDictionary:(NSDictionary*)dict;
+
+- (void)drawSwatchInRect:(NSRect)rect;
+
 @end
 @interface DPStyleBackground : NSObject
 

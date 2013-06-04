@@ -63,7 +63,7 @@
         self.xOffset = 0;
 		self.yOffset = 1;
 		self.radius = 0;
-        self.color = [NSColor blackColor];
+        self.color = [[DPStyleColor alloc] init];
         self.opacity = 0;
     }
     return self;
@@ -101,7 +101,7 @@
 - (void)drawShadow
 {
 	NSShadow* shadow = [[NSShadow alloc] init];
-	[shadow setShadowColor: [self.color colorWithAlphaComponent:self.opacity]];
+	[shadow setShadowColor: [self.color.color colorWithAlphaComponent:self.opacity]];
 	[shadow setShadowOffset: NSMakeSize(self.xOffset*2, self.yOffset*2)];
 	[shadow setShadowBlurRadius: self.radius*2];
 	[shadow set];
@@ -117,7 +117,7 @@
 //	view.layer.shadowRadius = self.radius;
 	
 	NSShadow* shadow = [[NSShadow alloc] init];
-	[shadow setShadowColor: self.color];
+	[shadow setShadowColor: self.color.color];
 	[shadow setShadowOffset: NSMakeSize(self.xOffset, self.yOffset)];
 	[shadow setShadowBlurRadius: self.radius];
 	[view setShadow:shadow];
@@ -137,8 +137,8 @@
 	[dict setObject:@(yoff) forKey:@"yOffset"];
 	[dict setObject:@(self.radius) forKey:@"radius"];
 	[dict setObject:@(self.opacity) forKey:@"opacity"];
-	[dict setObject:[ColorTransformer stringFromColor:self.color] forKey:@"color"];
-	
+	//[dict setObject:[ColorTransformer stringFromColor:self.color] forKey:@"color"];
+	[dict setObject:self.color.jsonValue forKey:@"color"];
 	return dict;
 }
 
@@ -155,7 +155,15 @@
 
 		self.radius = [[dictionary objectForKey:@"radius"] floatValue];
 		self.opacity = [[dictionary objectForKey:@"opacity"] floatValue];
-		self.color = [ColorTransformer colorFromString:[dictionary objectForKey:@"color"]];
+		
+		if ([[dictionary objectForKey:@"color"] isKindOfClass:[NSString class]]) {
+			DPStyleColor *color = [[DPStyleColor alloc] initWithColorString:[dictionary objectForKey:@"color"]];
+			self.color = color;
+		} else {
+			self.color = [[DPStyleColor alloc] initWithDictionary:[dictionary objectForKey:@"color"]];
+
+		}
+		
 	}
 	return self;
 }

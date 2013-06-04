@@ -273,7 +273,7 @@
 	
 	if (self.imageStyle.innerShadow.opacity > 0) {
 		//// Shadow Declarations
-		NSColor* shadowColor = self.imageStyle.innerShadow.color;
+		NSColor* shadowColor = self.imageStyle.innerShadow.color.color;
 		CGSize shadowOffset = self.imageStyle.innerShadow.offset;
 		CGFloat shadowBlurRadius = self.imageStyle.innerShadow.radius;
 		
@@ -513,7 +513,7 @@
 			NSShadow *shadow = [[NSShadow alloc] init];
 			shadow.shadowBlurRadius = self.sliderStyle.outerShadow.radius;
 			shadow.shadowOffset = CGSizeMake(self.sliderStyle.outerShadow.xOffset, oppositeSign(self.sliderStyle.outerShadow.yOffset));
-			shadow.shadowColor = [self.sliderStyle.outerShadow.color colorWithAlphaComponent:self.sliderStyle.outerShadow.opacity];
+			shadow.shadowColor = [self.sliderStyle.outerShadow.color.color colorWithAlphaComponent:self.sliderStyle.outerShadow.opacity];
 			
 			[NSGraphicsContext saveGraphicsState];
 			[shadow set];
@@ -529,7 +529,7 @@
 		NSShadow *shadow = [[NSShadow alloc] init];
 		shadow.shadowBlurRadius = self.sliderStyle.maximumTrackInnerShadow.radius;
 		shadow.shadowOffset = CGSizeMake(self.sliderStyle.maximumTrackInnerShadow.xOffset, oppositeSign(self.sliderStyle.maximumTrackInnerShadow.yOffset));
-		shadow.shadowColor = [self.sliderStyle.maximumTrackInnerShadow.color colorWithAlphaComponent:self.sliderStyle.maximumTrackInnerShadow.opacity];
+		shadow.shadowColor = [self.sliderStyle.maximumTrackInnerShadow.color.color colorWithAlphaComponent:self.sliderStyle.maximumTrackInnerShadow.opacity];
 
 		////// Rectangle Inner Shadow
 		NSRect rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
@@ -559,7 +559,7 @@
 		shadow = [[NSShadow alloc] init];
 		shadow.shadowBlurRadius = self.sliderStyle.minimumTrackInnerShadow.radius;
 		shadow.shadowOffset = CGSizeMake(self.sliderStyle.minimumTrackInnerShadow.xOffset, oppositeSign(self.sliderStyle.minimumTrackInnerShadow.yOffset));
-		shadow.shadowColor = [self.sliderStyle.minimumTrackInnerShadow.color colorWithAlphaComponent:self.sliderStyle.minimumTrackInnerShadow.opacity];
+		shadow.shadowColor = [self.sliderStyle.minimumTrackInnerShadow.color.color colorWithAlphaComponent:self.sliderStyle.minimumTrackInnerShadow.opacity];
 		////// Rectangle Inner Shadow
 		rectangleBorderRect = NSInsetRect([rectanglePath bounds], -shadow.shadowBlurRadius, -shadow.shadowBlurRadius);
 		rectangleBorderRect = NSOffsetRect(rectangleBorderRect, -shadow.shadowOffset.width, -shadow.shadowOffset.height);
@@ -759,7 +759,7 @@
 	
         if (self.style.innerShadow.opacity > 0) {
             //// Shadow Declarations
-            NSColor* shadowColor = self.style.innerShadow.color;
+            NSColor* shadowColor = self.style.innerShadow.color.color;
             CGSize shadowOffset = self.style.innerShadow.offset;
             CGFloat shadowBlurRadius = self.style.innerShadow.radius;
             
@@ -1195,7 +1195,7 @@
 	
 	if (style.innerShadow.opacity > 0) {
 		//// Shadow Declarations
-		NSColor* shadowColor = style.innerShadow.color;
+		NSColor* shadowColor = style.innerShadow.color.color;
 		CGSize shadowOffset = style.innerShadow.offset;
 		CGFloat shadowBlurRadius = style.innerShadow.radius;
 		

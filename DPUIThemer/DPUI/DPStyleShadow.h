@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "DPStyleBackground.h"
 @interface DPStyleShadow : NSObject <NSCopying, NSCoding>
 
-@property (nonatomic, strong) NSColor *color;
+@property (nonatomic, strong) DPStyleColor *color;
 @property (nonatomic) CGFloat radius;
 @property (nonatomic) CGSize offset;
 @property (nonatomic) CGFloat opacity;
