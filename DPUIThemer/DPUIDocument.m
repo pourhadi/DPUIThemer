@@ -718,6 +718,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 @property (nonatomic, strong) DPUIStyle *flippedStyle;
 
 @property (nonatomic) BOOL isKey;
+
+@property (nonatomic, strong) NSOpenPanel *openPanel;
 @end
 
 @implementation DPUIDocument
@@ -780,7 +782,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     
     [self gradientChanged: self];
 
-	}
+	
+}
 
 - (IBAction)gradientChanged: (id)sender
 {
@@ -1071,6 +1074,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 //	
 //	[self.sourceSplitView showToolbarAnimated:YES];
 
+	
+	
 }
 
 - (void)selectedColorAtLocation:(NSInteger)locationIndex
@@ -1385,6 +1390,15 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 
 - (IBAction)generateConstants:(id)sender
 {
+	
+	self.openPanel = [NSOpenPanel openPanel];
+	[self.openPanel setCanChooseDirectories:YES];
+	[self.openPanel setCanChooseFiles:NO];
+		[self.openPanel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
+	
+		}];
+	
+	
 	/*[[NSApplication sharedApplication] beginSheet:self.constantsPanel
 								   modalForWindow:[[NSApp delegate] mainWindow]
 									modalDelegate:self
@@ -1476,21 +1490,52 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	}
 }
 
+- (IBAction)contextMenuItemSelection:(id)sender
+{
+	NSMenuItem *contextMenuItem = sender;
+	
+	if ([contextMenuItem.title isEqualToString:@"New Style"]) {
+	DPUIStyle *style = [self selectedNode];
+	DPUIStyle *newStyle = [[DPUIStyle alloc] init];
+	newStyle.isLeaf = YES;
+	if (style.parentNode) {
+		
+		[style.parentNode.children addObject:newStyle];
+		
+	} else {
+		[self.rootNode.children addObject:newStyle];
+	}
+	} else if ([contextMenuItem.title isEqualToString:@"New Group"]) {
+		DPUIStyle *style = [self selectedNode];
+		
+		DPUIStyle *folder = [[DPUIStyle alloc] init];
+		folder.isLeaf = NO;
+		folder.styleName = @"New Folder";
+        
+        if (style)
+            [style.parentNode.children addObject:folder];
+        else {
+            [self.rootNode.children addObject:folder];
+        }
+	}
+	
+}
+
 - (IBAction)styleSegTapped:(id)sender
 {
 	NSSegmentedControl *seg = (NSSegmentedControl*)sender;
 	
 	if (seg.selectedSegment == 0) {
-		DPUIStyle *style = [self selectedNode];
-		DPUIStyle *newStyle = [[DPUIStyle alloc] init];
-		newStyle.isLeaf = YES;
-        if (style.parentNode) {
-			
-			[style.parentNode.children addObject:newStyle];
-			
-        } else {
-			[self.rootNode.children addObject:newStyle];
-		}
+	
+		
+		NSPoint menuOrigin = [seg frame].origin;
+		menuOrigin.x = NSMaxX([seg frame]) - [seg widthForSegment:seg.selectedSegment];
+		
+		NSMenu *contextMenu = [[NSMenu alloc] init];
+		[contextMenu addItemWithTitle:@"New Style" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+		[contextMenu addItemWithTitle:@"New Group" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+		[contextMenu popUpMenuPositioningItem:nil atLocation:[NSEvent mouseLocation] inView:nil];
+		
 	} else if (seg.selectedSegment == 1) {
 		
         DPUIStyle *style = [self selectedNode];
@@ -1508,17 +1553,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
         }
         }
 	} else if (seg.selectedSegment == 3) {
-        DPUIStyle *style = [self selectedNode];
-
-		DPUIStyle *folder = [[DPUIStyle alloc] init];
-		folder.isLeaf = NO;
-		folder.styleName = @"New Folder";
-        
-        if (style)
-            [style.parentNode.children addObject:folder];
-        else {
-            [self.rootNode.children addObject:folder];
-        }
+       
 	}
 
 	self.flatStylesArray = [self getFlatStylesArray];

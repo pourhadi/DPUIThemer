@@ -21,9 +21,28 @@
 		44099D71175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D69175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m */; };
 		44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
+		443BE603175F0A7000244333 /* DPUI in Resources */ = {isa = PBXBuildFile; fileRef = 44C1098D175F0958005C3275 /* DPUI */; };
 		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
 		44528A60173230200006166F /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A5F173230200006166F /* NSColor+Hex.m */; };
+		44C108DB175F05D7005C3275 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44C108B2175F05D6005C3275 /* InfoPlist.strings */; };
+		44C108DC175F05D7005C3275 /* XcodeEditor-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44C108B4175F05D6005C3275 /* XcodeEditor-Info.plist */; };
+		44C108DD175F05D7005C3275 /* XCKeyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108B9175F05D6005C3275 /* XCKeyBuilder.m */; };
+		44C108DE175F05D7005C3275 /* XCAbstractDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108BC175F05D6005C3275 /* XCAbstractDefinition.m */; };
+		44C108DF175F05D7005C3275 /* XCBuildConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108BE175F05D6005C3275 /* XCBuildConfiguration.m */; };
+		44C108E0175F05D7005C3275 /* XCClassDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108C0175F05D6005C3275 /* XCClassDefinition.m */; };
+		44C108E1175F05D7005C3275 /* XCFileOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108C2175F05D6005C3275 /* XCFileOperationQueue.m */; };
+		44C108E2175F05D7005C3275 /* XCFrameworkDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108C4175F05D6005C3275 /* XCFrameworkDefinition.m */; };
+		44C108E3175F05D7005C3275 /* XCGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108C6175F05D6005C3275 /* XCGroup.m */; };
+		44C108E4175F05D7005C3275 /* XcodeMemberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108CA175F05D6005C3275 /* XcodeMemberType.m */; };
+		44C108E5175F05D7005C3275 /* XcodeSourceFileType.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108CC175F05D6005C3275 /* XcodeSourceFileType.m */; };
+		44C108E6175F05D7005C3275 /* XCProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108CE175F05D6005C3275 /* XCProject.m */; };
+		44C108E7175F05D7005C3275 /* XCProject+SubProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D0175F05D6005C3275 /* XCProject+SubProject.m */; };
+		44C108E8175F05D7005C3275 /* XCSourceFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D2175F05D6005C3275 /* XCSourceFile.m */; };
+		44C108E9175F05D7005C3275 /* XCSourceFileDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D4175F05D6005C3275 /* XCSourceFileDefinition.m */; };
+		44C108EA175F05D7005C3275 /* XCSubProjectDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D6175F05D7005C3275 /* XCSubProjectDefinition.m */; };
+		44C108EB175F05D7005C3275 /* XCTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D8175F05D7005C3275 /* XCTarget.m */; };
+		44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108DA175F05D7005C3275 /* XCXibDefinition.m */; };
 		44E94CA81734AB410064D41D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E94CA71734AB400064D41D /* QuartzCore.framework */; };
 		44E94CAB1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */; };
 		44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB01735F5CF0064D41D /* DPUITextStyle.m */; };
@@ -109,6 +128,46 @@
 		44528A5E173230200006166F /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
 		44528A5F173230200006166F /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
 		44737CD7173A2D0E00EF9672 /* DPUIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPUIDefines.h; sourceTree = "<group>"; };
+		44C108B3175F05D6005C3275 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		44C108B4175F05D6005C3275 /* XcodeEditor-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "XcodeEditor-Info.plist"; sourceTree = "<group>"; };
+		44C108B5175F05D6005C3275 /* XcodeEditor-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XcodeEditor-Prefix.pch"; sourceTree = "<group>"; };
+		44C108B7175F05D6005C3275 /* XCEnumUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCEnumUtils.h; sourceTree = "<group>"; };
+		44C108B8175F05D6005C3275 /* XCKeyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCKeyBuilder.h; sourceTree = "<group>"; };
+		44C108B9175F05D6005C3275 /* XCKeyBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCKeyBuilder.m; sourceTree = "<group>"; };
+		44C108BA175F05D6005C3275 /* XCMemoryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCMemoryUtils.h; sourceTree = "<group>"; };
+		44C108BB175F05D6005C3275 /* XCAbstractDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCAbstractDefinition.h; sourceTree = "<group>"; };
+		44C108BC175F05D6005C3275 /* XCAbstractDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCAbstractDefinition.m; sourceTree = "<group>"; };
+		44C108BD175F05D6005C3275 /* XCBuildConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCBuildConfiguration.h; sourceTree = "<group>"; };
+		44C108BE175F05D6005C3275 /* XCBuildConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCBuildConfiguration.m; sourceTree = "<group>"; };
+		44C108BF175F05D6005C3275 /* XCClassDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCClassDefinition.h; sourceTree = "<group>"; };
+		44C108C0175F05D6005C3275 /* XCClassDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCClassDefinition.m; sourceTree = "<group>"; };
+		44C108C1175F05D6005C3275 /* XCFileOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCFileOperationQueue.h; sourceTree = "<group>"; };
+		44C108C2175F05D6005C3275 /* XCFileOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCFileOperationQueue.m; sourceTree = "<group>"; };
+		44C108C3175F05D6005C3275 /* XCFrameworkDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCFrameworkDefinition.h; sourceTree = "<group>"; };
+		44C108C4175F05D6005C3275 /* XCFrameworkDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCFrameworkDefinition.m; sourceTree = "<group>"; };
+		44C108C5175F05D6005C3275 /* XCGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCGroup.h; sourceTree = "<group>"; };
+		44C108C6175F05D6005C3275 /* XCGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCGroup.m; sourceTree = "<group>"; };
+		44C108C7175F05D6005C3275 /* XcodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeEditor.h; sourceTree = "<group>"; };
+		44C108C8175F05D6005C3275 /* XcodeGroupMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeGroupMember.h; sourceTree = "<group>"; };
+		44C108C9175F05D6005C3275 /* XcodeMemberType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeMemberType.h; sourceTree = "<group>"; };
+		44C108CA175F05D6005C3275 /* XcodeMemberType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeMemberType.m; sourceTree = "<group>"; };
+		44C108CB175F05D6005C3275 /* XcodeSourceFileType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeSourceFileType.h; sourceTree = "<group>"; };
+		44C108CC175F05D6005C3275 /* XcodeSourceFileType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeSourceFileType.m; sourceTree = "<group>"; };
+		44C108CD175F05D6005C3275 /* XCProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCProject.h; sourceTree = "<group>"; };
+		44C108CE175F05D6005C3275 /* XCProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCProject.m; sourceTree = "<group>"; };
+		44C108CF175F05D6005C3275 /* XCProject+SubProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCProject+SubProject.h"; sourceTree = "<group>"; };
+		44C108D0175F05D6005C3275 /* XCProject+SubProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCProject+SubProject.m"; sourceTree = "<group>"; };
+		44C108D1175F05D6005C3275 /* XCSourceFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCSourceFile.h; sourceTree = "<group>"; };
+		44C108D2175F05D6005C3275 /* XCSourceFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCSourceFile.m; sourceTree = "<group>"; };
+		44C108D3175F05D6005C3275 /* XCSourceFileDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCSourceFileDefinition.h; sourceTree = "<group>"; };
+		44C108D4175F05D6005C3275 /* XCSourceFileDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCSourceFileDefinition.m; sourceTree = "<group>"; };
+		44C108D5175F05D7005C3275 /* XCSubProjectDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCSubProjectDefinition.h; sourceTree = "<group>"; };
+		44C108D6175F05D7005C3275 /* XCSubProjectDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCSubProjectDefinition.m; sourceTree = "<group>"; };
+		44C108D7175F05D7005C3275 /* XCTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCTarget.h; sourceTree = "<group>"; };
+		44C108D8175F05D7005C3275 /* XCTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCTarget.m; sourceTree = "<group>"; };
+		44C108D9175F05D7005C3275 /* XCXibDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCXibDefinition.h; sourceTree = "<group>"; };
+		44C108DA175F05D7005C3275 /* XCXibDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCXibDefinition.m; sourceTree = "<group>"; };
+		44C1098D175F0958005C3275 /* DPUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DPUI; path = ../../DPUI/DPUI/DPUI; sourceTree = "<group>"; };
 		44E94CA71734AB400064D41D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		44E94CA91734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.h"; sourceTree = "<group>"; };
 		44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.m"; sourceTree = "<group>"; };
@@ -230,6 +289,68 @@
 			path = CNSplitView;
 			sourceTree = "<group>";
 		};
+		44C108B0175F05C7005C3275 /* XCEditor */ = {
+			isa = PBXGroup;
+			children = (
+				44C108B1175F05D6005C3275 /* Resources */,
+				44C108B6175F05D6005C3275 /* Utils */,
+				44C108BB175F05D6005C3275 /* XCAbstractDefinition.h */,
+				44C108BC175F05D6005C3275 /* XCAbstractDefinition.m */,
+				44C108BD175F05D6005C3275 /* XCBuildConfiguration.h */,
+				44C108BE175F05D6005C3275 /* XCBuildConfiguration.m */,
+				44C108BF175F05D6005C3275 /* XCClassDefinition.h */,
+				44C108C0175F05D6005C3275 /* XCClassDefinition.m */,
+				44C108C1175F05D6005C3275 /* XCFileOperationQueue.h */,
+				44C108C2175F05D6005C3275 /* XCFileOperationQueue.m */,
+				44C108C3175F05D6005C3275 /* XCFrameworkDefinition.h */,
+				44C108C4175F05D6005C3275 /* XCFrameworkDefinition.m */,
+				44C108C5175F05D6005C3275 /* XCGroup.h */,
+				44C108C6175F05D6005C3275 /* XCGroup.m */,
+				44C108C7175F05D6005C3275 /* XcodeEditor.h */,
+				44C108C8175F05D6005C3275 /* XcodeGroupMember.h */,
+				44C108C9175F05D6005C3275 /* XcodeMemberType.h */,
+				44C108CA175F05D6005C3275 /* XcodeMemberType.m */,
+				44C108CB175F05D6005C3275 /* XcodeSourceFileType.h */,
+				44C108CC175F05D6005C3275 /* XcodeSourceFileType.m */,
+				44C108CD175F05D6005C3275 /* XCProject.h */,
+				44C108CE175F05D6005C3275 /* XCProject.m */,
+				44C108CF175F05D6005C3275 /* XCProject+SubProject.h */,
+				44C108D0175F05D6005C3275 /* XCProject+SubProject.m */,
+				44C108D1175F05D6005C3275 /* XCSourceFile.h */,
+				44C108D2175F05D6005C3275 /* XCSourceFile.m */,
+				44C108D3175F05D6005C3275 /* XCSourceFileDefinition.h */,
+				44C108D4175F05D6005C3275 /* XCSourceFileDefinition.m */,
+				44C108D5175F05D7005C3275 /* XCSubProjectDefinition.h */,
+				44C108D6175F05D7005C3275 /* XCSubProjectDefinition.m */,
+				44C108D7175F05D7005C3275 /* XCTarget.h */,
+				44C108D8175F05D7005C3275 /* XCTarget.m */,
+				44C108D9175F05D7005C3275 /* XCXibDefinition.h */,
+				44C108DA175F05D7005C3275 /* XCXibDefinition.m */,
+			);
+			name = XCEditor;
+			sourceTree = "<group>";
+		};
+		44C108B1175F05D6005C3275 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				44C108B2175F05D6005C3275 /* InfoPlist.strings */,
+				44C108B4175F05D6005C3275 /* XcodeEditor-Info.plist */,
+				44C108B5175F05D6005C3275 /* XcodeEditor-Prefix.pch */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		44C108B6175F05D6005C3275 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				44C108B7175F05D6005C3275 /* XCEnumUtils.h */,
+				44C108B8175F05D6005C3275 /* XCKeyBuilder.h */,
+				44C108B9175F05D6005C3275 /* XCKeyBuilder.m */,
+				44C108BA175F05D6005C3275 /* XCMemoryUtils.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		D779DF7B173045A4007AC130 = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +394,8 @@
 		D779DF8D173045A4007AC130 /* DPUIThemer */ = {
 			isa = PBXGroup;
 			children = (
+				44C1098D175F0958005C3275 /* DPUI */,
+				44C108B0175F05C7005C3275 /* XCEditor */,
 				44099D5E175DE5E70080FD8E /* CNSplitView */,
 				44099D54175D80B80080FD8E /* ACTGradient */,
 				D7914283174E9B08008FCC58 /* Resources */,
@@ -473,6 +596,9 @@
 				D7914295174EB09C008FCC58 /* folder_button.png in Resources */,
 				D7914296174EB09C008FCC58 /* folder_button@2x.png in Resources */,
 				4403A8DF1751CA8B00BE3A39 /* icons.json in Resources */,
+				44C108DB175F05D7005C3275 /* InfoPlist.strings in Resources */,
+				44C108DC175F05D7005C3275 /* XcodeEditor-Info.plist in Resources */,
+				443BE603175F0A7000244333 /* DPUI in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,6 +668,22 @@
 				44099D70175DE5E80080FD8E /* CNSplitViewToolbarButton.m in Sources */,
 				44099D71175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m in Sources */,
 				44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */,
+				44C108DD175F05D7005C3275 /* XCKeyBuilder.m in Sources */,
+				44C108DE175F05D7005C3275 /* XCAbstractDefinition.m in Sources */,
+				44C108DF175F05D7005C3275 /* XCBuildConfiguration.m in Sources */,
+				44C108E0175F05D7005C3275 /* XCClassDefinition.m in Sources */,
+				44C108E1175F05D7005C3275 /* XCFileOperationQueue.m in Sources */,
+				44C108E2175F05D7005C3275 /* XCFrameworkDefinition.m in Sources */,
+				44C108E3175F05D7005C3275 /* XCGroup.m in Sources */,
+				44C108E4175F05D7005C3275 /* XcodeMemberType.m in Sources */,
+				44C108E5175F05D7005C3275 /* XcodeSourceFileType.m in Sources */,
+				44C108E6175F05D7005C3275 /* XCProject.m in Sources */,
+				44C108E7175F05D7005C3275 /* XCProject+SubProject.m in Sources */,
+				44C108E8175F05D7005C3275 /* XCSourceFile.m in Sources */,
+				44C108E9175F05D7005C3275 /* XCSourceFileDefinition.m in Sources */,
+				44C108EA175F05D7005C3275 /* XCSubProjectDefinition.m in Sources */,
+				44C108EB175F05D7005C3275 /* XCTarget.m in Sources */,
+				44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +706,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		44C108B2175F05D6005C3275 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44C108B3175F05D6005C3275 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		D779DF90173045A4007AC130 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
