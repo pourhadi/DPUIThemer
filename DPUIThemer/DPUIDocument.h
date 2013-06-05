@@ -17,6 +17,7 @@
 #import"DPUICustomSetting.h"
 #import "ACTGradientEditor.h"
 #import "CNSplitView.h"
+#import "XcodeEditor.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -259,5 +260,13 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @property (nonatomic, weak) IBOutlet CNSplitView *mainSplitView;
 @property (nonatomic, weak) IBOutlet CNSplitView *sourceSplitView;
+
+@property (nonatomic, strong) NSString *dynUILibraryPath;
+@property (nonatomic, strong) NSString *projectPath;
+
+@property (nonatomic, strong) NSArray *projectTargets;
+@property (nonatomic, strong) IBOutlet NSArrayController *projectTargetsController;
+
+@property (nonatomic, strong) IBOutlet NSPanel *selectTargetsPanel;
 
 @end

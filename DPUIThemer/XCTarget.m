@@ -52,6 +52,7 @@
         _name = [name copy];
         _productName = [productName copy];
         _productReference = [productReference copy];
+        self.includeDynUI = @(NO);
     }
     return self;
 }

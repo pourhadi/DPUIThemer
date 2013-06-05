@@ -48,6 +48,7 @@
 		44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB01735F5CF0064D41D /* DPUITextStyle.m */; };
 		44E94CB4173602580064D41D /* DPUITextStyleExampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB3173602570064D41D /* DPUITextStyleExampleView.m */; };
 		44EBB270175B1196004650BB /* DYNClassStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EBB26F175B1196004650BB /* DYNClassStyle.m */; };
+		D738E668175FE04D00BA1880 /* Xcode_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D738E667175FE04D00BA1880 /* Xcode_icon.png */; };
 		D779DF88173045A4007AC130 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D779DF87173045A4007AC130 /* Cocoa.framework */; };
 		D779DF92173045A4007AC130 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D779DF90173045A4007AC130 /* InfoPlist.strings */; };
 		D779DF94173045A5007AC130 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D779DF93173045A4007AC130 /* main.m */; };
@@ -177,6 +178,7 @@
 		44E94CB3173602570064D41D /* DPUITextStyleExampleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPUITextStyleExampleView.m; sourceTree = "<group>"; };
 		44EBB26E175B1196004650BB /* DYNClassStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNClassStyle.h; sourceTree = "<group>"; };
 		44EBB26F175B1196004650BB /* DYNClassStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNClassStyle.m; sourceTree = "<group>"; };
+		D738E667175FE04D00BA1880 /* Xcode_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Xcode_icon.png; sourceTree = "<group>"; };
 		D779DF84173045A4007AC130 /* DPUIThemer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DPUIThemer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D779DF87173045A4007AC130 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D779DF8A173045A4007AC130 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -460,6 +462,7 @@
 		D7914283174E9B08008FCC58 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D738E667175FE04D00BA1880 /* Xcode_icon.png */,
 				D7914293174EB09B008FCC58 /* folder_button.png */,
 				D7914294174EB09C008FCC58 /* folder_button@2x.png */,
 				D791428F174EB00F008FCC58 /* dupe.png */,
@@ -599,6 +602,7 @@
 				44C108DB175F05D7005C3275 /* InfoPlist.strings in Resources */,
 				44C108DC175F05D7005C3275 /* XcodeEditor-Info.plist in Resources */,
 				443BE603175F0A7000244333 /* DPUI in Resources */,
+				D738E668175FE04D00BA1880 /* Xcode_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

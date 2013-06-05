@@ -985,6 +985,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		
 		self.classStyles = [NSArray array];
 		
+        self.projectTargets = @[];
+        
 	}
     return self;
 }
@@ -1072,10 +1074,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 //	[self.sourceSplitView attachToolbar:toolbar toSubViewAtIndex:2 onEdge:CNSplitViewToolbarEdgeBottom];
 //	
 //	
-//	[self.sourceSplitView showToolbarAnimated:YES];
-
-	
-	
+//	[self.sourceSplitView showToolbarAnimated:YES];	
 }
 
 - (void)selectedColorAtLocation:(NSInteger)locationIndex
@@ -1388,28 +1387,120 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
     return params;
 }
 
-- (IBAction)generateConstants:(id)sender
+- (IBAction)addToProject:(id)sender
 {
-	
-	self.openPanel = [NSOpenPanel openPanel];
+    self.openPanel = [NSOpenPanel openPanel];
+    [self.openPanel setMessage:@"Choose the location of the DynUI framework."];
 	[self.openPanel setCanChooseDirectories:YES];
 	[self.openPanel setCanChooseFiles:NO];
-		[self.openPanel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
-	
-		}];
-	
-	
-	/*[[NSApplication sharedApplication] beginSheet:self.constantsPanel
-								   modalForWindow:[[NSApp delegate] mainWindow]
-									modalDelegate:self
-								   didEndSelector:nil
-									  contextInfo:nil];
-	*/
-	 
+    
+    [self.openPanel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = self.openPanel.URLs[0];
+            self.dynUILibraryPath = url.path;
+            
+            
+            [self.openPanel setCanChooseDirectories:NO];
+            [self.openPanel setCanChooseFiles:YES];
+            [self.openPanel setMessage:@"Choose the project in which to add DynUI."];
+            [self.openPanel setAllowedFileTypes:@[@"xcodeproj"]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.openPanel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
+                    
+                    
+                    if (result == NSFileHandlingPanelOKButton) {
+                        NSURL *url = self.openPanel.URLs[0];
+                        self.projectPath = [url path];
+                        
+                        XCProject *project = [[XCProject alloc] initWithFilePath:self.projectPath];
+                        self.projectTargets = project.targets;
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            
+                            [[NSApplication sharedApplication] beginSheet:self.selectTargetsPanel
+                                                           modalForWindow:self.windowForSheet
+                                                            modalDelegate:self
+                                                           didEndSelector:@selector(didEndSheet:returnCode:contextInfo:)
+                                                              contextInfo:nil];
+                            
+                        });
+                    }
+                    
+                }];
+            });
+            
+        }
+    }];
+
+}
+
+- (IBAction)generateConstants:(id)sender
+{
 	 [self.constantsPanel display];
 	[self.constantsPanel makeKeyAndOrderFront:nil];
 	//[self.constantsPanel makeKeyWindow];
 	self.constantsTextView.string = [self constants];
+}
+
+- (IBAction)targetMembershipSelected:(id)sender
+{
+    [[NSApplication sharedApplication] endSheet:self.selectTargetsPanel];
+}
+
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    [sheet orderOut:self];
+
+    if (sheet == self.selectTargetsPanel) {
+        [self addDynUIToProject];
+    }
+    
+}
+
+- (void)addDynUIToProject
+{
+    XCProject *project = [[XCProject alloc] initWithFilePath:self.projectPath];
+//    XCGroup *dynuiGroup = [[project rootGroup] addGroupWithPath:@"DynUI"];
+//
+//    [project save];
+//    
+//    project = [[XCProject alloc] initWithFilePath:self.projectPath];
+//    dynuiGroup = [project groupWithPathFromRoot:@"DynUI"];
+    
+    XCFrameworkDefinition *dynui = [XCFrameworkDefinition frameworkDefinitionWithFilePath:self.dynUILibraryPath copyToDestination:NO];
+    
+    NSMutableArray *targets = [NSMutableArray new];
+    for (XCTarget *target in self.projectTargets)  {
+        if (target.includeDynUI.boolValue) {
+            [targets addObject:target];
+        }
+    }
+    NSLog(@"target count: %ld", (unsigned long)targets.count);
+    [[project rootGroup] addFramework:dynui toTargets:targets];
+    
+    XCSourceFileDefinition *styleDef = [XCSourceFileDefinition sourceDefinitionWithName:[self.fileURL lastPathComponent] data:[self getJSON] type:TEXT];
+    [[project rootGroup] addSourceFile:styleDef];
+    [project save];
+    
+    
+    for (XCTarget *target in self.projectTargets)  {
+        if (target.includeDynUI.boolValue) {
+            
+            XCSourceFile* frameworkSourceRef = (XCSourceFile*) [[project rootGroup] memberWithDisplayName:[dynui name]];
+            [frameworkSourceRef becomeBuildFile];
+            [target addMember:frameworkSourceRef];
+            
+            XCSourceFile *styleFile = [project fileWithName:[self.fileURL lastPathComponent]];
+          //  [styleFile becomeBuildFile];
+           // [target addMember:styleFile];
+            
+        }
+    }
+    [project save];
+    
+    NSRunInformationalAlertPanel(@"Done!", @"The DynUI framework and this stylesheet have been added to your project. Re-open this stylesheet from your project directory to continue editing.", @"OK", nil, nil);
 }
 
 - (NSString*)constants
@@ -1434,6 +1525,8 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	NSString *constants = [NSString stringWithFormat:@"//////////  View Styles \r\r%@\r\r//////////  Colors \r\r%@\r\r//////////  Text Styles \r\r%@", [styleNames componentsJoinedByString:@"\r"], [colorNames componentsJoinedByString:@"\r"], [textStyleNames componentsJoinedByString:@"\r"]];
 	return constants;
 }
+
+
 
 - (NSArray*)blendModes
 {

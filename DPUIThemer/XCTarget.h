@@ -35,6 +35,7 @@
     NSMutableDictionary* _configurations;
 }
 
+@property (nonatomic, strong) NSNumber *includeDynUI;
 @property(nonatomic, strong, readonly) NSString* key;
 @property(nonatomic, strong, readonly) NSString* name;
 @property(nonatomic, strong, readonly) NSString* productName;
