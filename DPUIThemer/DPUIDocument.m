@@ -15,6 +15,7 @@
 #import "NSTableView+ColorWell.h"
 #import "NSBezierPath+SVG.h"
 #import "DYNClassStyle.h"
+#import "XCKeyBuilder.h"
 static NSString *kGROUPED_TABLE_TOP_CELL_KEY = @"groupedTableTopCell";
 static NSString *kGROUPED_TABLE_MIDDLE_CELL_KEY = @"groupedTableMiddleCell";
 static NSString *kGROUPED_TABLE_SINGLE_CELL_KEY = @"groupedTableSingleCell";
@@ -1088,7 +1089,10 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 //	[self.sourceSplitView attachToolbar:toolbar toSubViewAtIndex:2 onEdge:CNSplitViewToolbarEdgeBottom];
 //	
 //	
-//	[self.sourceSplitView showToolbarAnimated:YES];	
+//	[self.sourceSplitView showToolbarAnimated:YES];
+    
+    XCKeyBuilder *key = [XCKeyBuilder forItemNamed:@"DynUI.framework"];
+    NSLog(@"%@", [key build]);
 }
 
 - (void)selectedColorAtLocation:(NSInteger)locationIndex
