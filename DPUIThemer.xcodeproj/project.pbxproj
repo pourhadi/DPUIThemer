@@ -22,6 +22,7 @@
 		44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
 		443BE603175F0A7000244333 /* DPUI in Resources */ = {isa = PBXBuildFile; fileRef = 44C1098D175F0958005C3275 /* DPUI */; };
+		443BE6091760407C00244333 /* KGNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BE6081760407C00244333 /* KGNoise.m */; };
 		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
 		44528A60173230200006166F /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A5F173230200006166F /* NSColor+Hex.m */; };
@@ -122,6 +123,8 @@
 		44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+CNSplitViewToolbar.m"; sourceTree = "<group>"; };
 		443BB98B1730E6C300A94E21 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		443BB98C1730E6C300A94E21 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
+		443BE6071760407C00244333 /* KGNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGNoise.h; sourceTree = "<group>"; };
+		443BE6081760407C00244333 /* KGNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGNoise.m; sourceTree = "<group>"; };
 		443D2E04173F43FA008F4162 /* DYNSliderStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNSliderStyle.h; sourceTree = "<group>"; };
 		443D2E05173F43FA008F4162 /* DYNSliderStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNSliderStyle.m; sourceTree = "<group>"; };
 		44528A55173229530006166F /* ColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTransformer.h; sourceTree = "<group>"; };
@@ -396,6 +399,8 @@
 		D779DF8D173045A4007AC130 /* DPUIThemer */ = {
 			isa = PBXGroup;
 			children = (
+				443BE6071760407C00244333 /* KGNoise.h */,
+				443BE6081760407C00244333 /* KGNoise.m */,
 				44C1098D175F0958005C3275 /* DPUI */,
 				44C108B0175F05C7005C3275 /* XCEditor */,
 				44099D5E175DE5E70080FD8E /* CNSplitView */,
@@ -518,9 +523,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D779DF83173045A4007AC130 /* DPUIThemer */ = {
+		D779DF83173045A4007AC130 /* DynUI Editor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D779DFB8173045A5007AC130 /* Build configuration list for PBXNativeTarget "DPUIThemer" */;
+			buildConfigurationList = D779DFB8173045A5007AC130 /* Build configuration list for PBXNativeTarget "DynUI Editor" */;
 			buildPhases = (
 				D779DF80173045A4007AC130 /* Sources */,
 				D779DF81173045A4007AC130 /* Frameworks */,
@@ -530,7 +535,7 @@
 			);
 			dependencies = (
 			);
-			name = DPUIThemer;
+			name = "DynUI Editor";
 			productName = DPUIThemer;
 			productReference = D779DF84173045A4007AC130 /* DPUIThemer.app */;
 			productType = "com.apple.product-type.application";
@@ -576,7 +581,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D779DF83173045A4007AC130 /* DPUIThemer */,
+				D779DF83173045A4007AC130 /* DynUI Editor */,
 				D779DFA6173045A5007AC130 /* DPUIThemerTests */,
 			);
 		};
@@ -688,6 +693,7 @@
 				44C108EA175F05D7005C3275 /* XCSubProjectDefinition.m in Sources */,
 				44C108EB175F05D7005C3275 /* XCTarget.m in Sources */,
 				44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */,
+				443BE6091760407C00244333 /* KGNoise.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,7 +710,7 @@
 /* Begin PBXTargetDependency section */
 		D779DFAC173045A5007AC130 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D779DF83173045A4007AC130 /* DPUIThemer */;
+			target = D779DF83173045A4007AC130 /* DynUI Editor */;
 			targetProxy = D779DFAB173045A5007AC130 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -886,7 +892,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D779DFB8173045A5007AC130 /* Build configuration list for PBXNativeTarget "DPUIThemer" */ = {
+		D779DFB8173045A5007AC130 /* Build configuration list for PBXNativeTarget "DynUI Editor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D779DFB9173045A5007AC130 /* Debug */,

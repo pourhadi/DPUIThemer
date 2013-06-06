@@ -143,6 +143,13 @@ NSDictionary *bg = [style objectForKey:@"background"];
 
 new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         
+		if ([bg objectForKey:@"noiseOpacity"])
+			new.noiseOpacity = [bg objectForKey:@"noiseOpacity"];
+		
+		if ([bg objectForKey:@"noiseBlendMode"]) {
+			new.noiseBlendMode = [bg objectForKey:@"noiseBlendMode"];
+		}
+		
 		NSArray *colors = [bg objectForKey:@"colors"];
 		NSMutableArray *tmp = [NSMutableArray new];
 		
@@ -311,6 +318,13 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	//        [bg setObject:@(style.endY) forKey:@"endPointY"];
 	//
 	[bg setObject:@(style.gradientAngle) forKey:@"gradientAngle"];
+	
+	if (style.noiseOpacity)	 {
+		[bg setObject:style.noiseOpacity forKey:@"noiseOpacity"];
+	}
+	if (style.noiseBlendMode) {
+		[bg setObject:style.noiseBlendMode forKey:@"noiseBlendMode"];
+	}
 	
 	[dictionary setObject:bg forKey:@"background"];
 	
@@ -1469,7 +1483,7 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 //    project = [[XCProject alloc] initWithFilePath:self.projectPath];
 //    dynuiGroup = [project groupWithPathFromRoot:@"DynUI"];
     
-    XCFrameworkDefinition *dynui = [XCFrameworkDefinition frameworkDefinitionWithFilePath:self.dynUILibraryPath copyToDestination:NO];
+    XCFrameworkDefinition *dynui = [XCFrameworkDefinition frameworkDefinitionWithFilePath:self.dynUILibraryPath copyToDestination:YES];
     
     NSMutableArray *targets = [NSMutableArray new];
     for (XCTarget *target in self.projectTargets)  {
@@ -1481,16 +1495,20 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
     [[project rootGroup] addFramework:dynui toTargets:targets];
     
     XCSourceFileDefinition *styleDef = [XCSourceFileDefinition sourceDefinitionWithName:[self.fileURL lastPathComponent] data:[self getJSON] type:TEXT];
-    [[project rootGroup] addSourceFile:styleDef];
-    [project save];
-    
+	//   [[project rootGroup] addSourceFile:styleDef];
+    //[project save];
+	for (XCTarget *target in self.projectTargets) {
+		for (XCSourceFile *file in target.members) {
+			NSLog(@"%@", file.name);
+		}
+	}
     
     for (XCTarget *target in self.projectTargets)  {
         if (target.includeDynUI.boolValue) {
             
             XCSourceFile* frameworkSourceRef = (XCSourceFile*) [[project rootGroup] memberWithDisplayName:[dynui name]];
             [frameworkSourceRef becomeBuildFile];
-            [target addMember:frameworkSourceRef];
+			//    [target addMember:frameworkSourceRef];
             
             XCSourceFile *styleFile = [project fileWithName:[self.fileURL lastPathComponent]];
           //  [styleFile becomeBuildFile];
@@ -1499,8 +1517,24 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
         }
     }
     [project save];
+	
+	for (XCTarget *target in self.projectTargets) {
+		for (XCSourceFile *file in target.members) {
+			NSLog(@"%@", file.name);
+		}
+	}
     
     NSRunInformationalAlertPanel(@"Done!", @"The DynUI framework and this stylesheet have been added to your project. Re-open this stylesheet from your project directory to continue editing.", @"OK", nil, nil);
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[project save];
+		
+		for (XCTarget *target in self.projectTargets) {
+			for (XCSourceFile *file in target.members) {
+				NSLog(@"%@", file.name);
+			}
+		}
+	});
 }
 
 - (NSString*)constants

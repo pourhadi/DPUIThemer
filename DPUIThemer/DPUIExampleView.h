@@ -10,8 +10,9 @@
 #import "DPViewStyle.h"
 #import "DPUIDefines.h"
 #import "DYNSliderStyle.h"
+#import "KGNoise.h"
 @class DPUIStyle;
-@interface DPUIExampleView : NSView
+@interface DPUIExampleView : KGNoiseView
 @property (nonatomic, strong) NSColor *containerColor;
 @property (nonatomic, strong) DYNSliderStyle *sliderStyle;
 @property (nonatomic, strong) DPUIStyle *style;

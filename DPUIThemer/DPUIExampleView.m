@@ -49,6 +49,7 @@
 	_style = style;
 	
 	[self setNeedsDisplay:YES];
+
 }
 
 //- (void)viewDidMoveToSuperview
@@ -1035,6 +1036,11 @@
 		[self.style.strokeColor.color setStroke];
 		[strokePath stroke];
 	}
+		
+		if (self.style.noiseOpacity.floatValue > 0) {
+			[KGNoise drawNoiseWithOpacity:self.style.noiseOpacity.floatValue andBlendMode:self.style.noiseBlendMode.intValue];
+		}
+		
     [NSGraphicsContext restoreGraphicsState];
     
     

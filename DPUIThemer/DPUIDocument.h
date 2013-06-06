@@ -147,6 +147,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 // Custom settings
 @property (nonatomic, strong) NSMutableArray *customSettings;
 
+@property (nonatomic) NSNumber *noiseBlendMode;
+@property (nonatomic) NSNumber *noiseOpacity;
+
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 - (id)jsonValue;
 

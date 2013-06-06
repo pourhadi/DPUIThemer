@@ -136,9 +136,9 @@
     NSDictionary* target = [[_project objects] objectForKey:_key];
 
     for (NSString* buildPhaseKey in [target objectForKey:@"buildPhases"]) {
+		NSLog(@"%@", buildPhaseKey);
         NSMutableDictionary* buildPhase = [[_project objects] objectForKey:buildPhaseKey];
         if ([[buildPhase valueForKey:@"isa"] asMemberType] == [member buildPhase]) {
-
             NSMutableArray* files = [buildPhase objectForKey:@"files"];
             if (![files containsObject:[member buildFileKey]]) {
                 [files addObject:[member buildFileKey]];
