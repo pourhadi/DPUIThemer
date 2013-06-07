@@ -20,6 +20,7 @@
 #import "XcodeEditor.h"
 #import "ACTGradientView.h"
 #import "GradientViewViewController.h"
+#import "DYNGradient.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -64,6 +65,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @interface DPUIStyle : NSObject <NSCopying, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
+@property (nonatomic, strong) DYNGradient *bgGradient;
 @property (nonatomic, weak) DPUIStyle *parentNode;
 @property (nonatomic) NSInteger count;
 @property (nonatomic) BOOL isLeaf;
@@ -159,7 +161,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate, GradientEditorDelegate, GradientViewControllerDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate, GradientEditorDelegate, GradientViewControllerDelegate, NSPopoverDelegate>
 {
 }
 
@@ -279,5 +281,14 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet GradientViewViewController *gradientController;
 
 @property (nonatomic, strong) NSPopover *gradientPopover;
+
+@property (nonatomic, weak) IBOutlet NSImageView *gradientImageView;
+
+@property (nonatomic, strong) NSImage *gradientImage;
+
+@property (nonatomic, strong) NSArray *gradientArray;
+@property (nonatomic, strong) NSArrayController *gradientArrayController;
+
+@property (nonatomic, strong) IBOutlet NSTableView *gradientTable;
 
 @end

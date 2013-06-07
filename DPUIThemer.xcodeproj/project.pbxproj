@@ -73,6 +73,7 @@
 		D7914295174EB09C008FCC58 /* folder_button.png in Resources */ = {isa = PBXBuildFile; fileRef = D7914293174EB09B008FCC58 /* folder_button.png */; };
 		D7914296174EB09C008FCC58 /* folder_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7914294174EB09C008FCC58 /* folder_button@2x.png */; };
 		D7A7151A17612F7E00D91B57 /* DYNXcodeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A7151917612F7E00D91B57 /* DYNXcodeEditor.m */; };
+		D7A7151D176264B700D91B57 /* DYNGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A7151C176264B700D91B57 /* DYNGradient.m */; };
 		D7B02D1817305F1200330394 /* DPImageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0417305F1200330394 /* DPImageStyle.m */; };
 		D7B02D1917305F1200330394 /* DPStyleBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0717305F1200330394 /* DPStyleBackground.m */; };
 		D7B02D1A17305F1200330394 /* DPStyleInnerBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B02D0917305F1200330394 /* DPStyleInnerBorder.m */; };
@@ -221,6 +222,8 @@
 		D7914294174EB09C008FCC58 /* folder_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder_button@2x.png"; sourceTree = "<group>"; };
 		D7A7151817612F7E00D91B57 /* DYNXcodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNXcodeEditor.h; sourceTree = "<group>"; };
 		D7A7151917612F7E00D91B57 /* DYNXcodeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNXcodeEditor.m; sourceTree = "<group>"; };
+		D7A7151B176264B700D91B57 /* DYNGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNGradient.h; sourceTree = "<group>"; };
+		D7A7151C176264B700D91B57 /* DYNGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNGradient.m; sourceTree = "<group>"; };
 		D7B02D0317305F1200330394 /* DPImageStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPImageStyle.h; sourceTree = "<group>"; };
 		D7B02D0417305F1200330394 /* DPImageStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPImageStyle.m; sourceTree = "<group>"; };
 		D7B02D0517305F1200330394 /* DPStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPStyle.h; sourceTree = "<group>"; };
@@ -442,6 +445,8 @@
 				44CC009317618C9D00722C72 /* GradientViewViewController.h */,
 				44CC009417618C9D00722C72 /* GradientViewViewController.m */,
 				44CC009517618C9D00722C72 /* GradientViewViewController.xib */,
+				D7A7151B176264B700D91B57 /* DYNGradient.h */,
+				D7A7151C176264B700D91B57 /* DYNGradient.m */,
 			);
 			path = DPUIThemer;
 			sourceTree = "<group>";
@@ -710,6 +715,7 @@
 				443BE6091760407C00244333 /* KGNoise.m in Sources */,
 				D7A7151A17612F7E00D91B57 /* DYNXcodeEditor.m in Sources */,
 				44CC009617618C9D00722C72 /* GradientViewViewController.m in Sources */,
+				D7A7151D176264B700D91B57 /* DYNGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -64,6 +64,15 @@
     return nil;
 }
 
+- (void)setGradients:(NSArray *)gradients
+{
+    [self willChangeValueForKey:@"gradients"];
+    _gradients = gradients;
+    [self didChangeValueForKey:@"gradients"];
+    
+    self.gradientNames = [gradients valueForKeyPath:@"gradientName"];
+}
+
 - (void)setSliderStyles:(NSMutableArray *)sliderStyles
 {
 	_sliderStyles = sliderStyles;

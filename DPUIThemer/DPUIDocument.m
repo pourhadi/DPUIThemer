@@ -173,6 +173,10 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 			
 			new.bgLocations = locs;
 		}
+        
+        if ([bg objectForKey:@"gradient"]) {
+            new.bgGradient = [[DYNGradient alloc] initWithDictionary:[bg objectForKey:@"gradient"]];
+        }
 		
 		tmp = [NSMutableArray new];
 		NSArray *top = [style objectForKey:@"topInnerBorders"];
@@ -297,6 +301,22 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
 	return self;
 }
+
+- (void)setBgColors:(NSMutableArray *)bgColors
+{
+    self.bgGradient.colors = bgColors;
+}
+
+- (void)setBgLocations:(NSMutableArray *)bgLocations
+{
+    self.bgGradient.locations = bgLocations;
+}
+
+- (void)setGradientAngle:(CGFloat)gradientAngle
+{
+    self.bgGradient.gradientAngle = @(gradientAngle);
+}
+
 - (id)jsonValue
 {
 	DPUIStyle *style = self;
@@ -341,6 +361,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	if (style.noiseBlendMode) {
 		[bg setObject:style.noiseBlendMode forKey:@"noiseBlendMode"];
 	}
+    
+    [bg setObject:style.bgGradient.jsonValue forKey:@"gradient"];
 	
 	[dictionary setObject:bg forKey:@"background"];
 	
@@ -610,6 +632,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.isLeaf = YES;
 		self.children = [NSMutableArray new];
 		self.customSettings = [NSMutableArray new];
+        self.bgGradient = [[DYNGradient alloc] init];
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -618,6 +641,20 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	return self;
 }
 
+- (NSArray*)bgColors
+{
+    return self.bgGradient.colors;
+}
+
+- (NSArray*)bgLocations
+{
+    return self.bgGradient.locations;
+}
+
+- (CGFloat)gradientAngle
+{
+    return self.bgGradient.gradientAngle.floatValue;
+}
 
 - (NSMutableArray*)children
 {
@@ -812,7 +849,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     
     [self gradientChanged: self];
 
-	
+	[self.gradientTable setDoubleAction:@selector(gradientRowClicked:)];
 }
 
 - (IBAction)gradientChanged: (id)sender
@@ -857,6 +894,34 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
 }
 
+- (IBAction)gradientRowClicked:(id)sender
+{
+    NSTableView *button = sender;
+    NSInteger clickedRow = button.clickedRow;
+    if (clickedRow < self.gradientArray.count) {
+    DYNGradient *gradient = self.gradientArray[clickedRow];
+    
+    
+	self.gradientController.colorVariables = self.colorVars;
+	self.gradientController.delegate = gradient;
+
+	[self.gradientController setGradientColors:gradient.colors andLocations:gradient.locations andAngle:gradient.gradientAngle.floatValue];
+	if (!self.gradientPopover) {
+		self.gradientPopover = [[NSPopover alloc] init];
+		self.gradientPopover.appearance = NSPopoverAppearanceMinimal;
+		self.gradientPopover.behavior = NSPopoverBehaviorSemitransient;
+		self.gradientPopover.contentViewController = self.gradientController;
+        self.gradientPopover.delegate = self;
+	}
+	
+	[self.gradientPopover showRelativeToRect:[button rectOfRow:clickedRow] ofView:button preferredEdge:CGRectMaxYEdge];
+	dispatch_async(dispatch_get_main_queue(), ^{
+        [self.gradientController setGradientColors:gradient.colors andLocations:gradient.locations andAngle:gradient.gradientAngle.floatValue];
+		[self.gradientController selectKnobAtIndex:0];
+	});
+    }
+}
+
 - (IBAction)gradientButtonHit:(id)sender
 {
 	ACTGradientView *button = sender;
@@ -869,6 +934,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.gradientPopover.appearance = NSPopoverAppearanceMinimal;
 		self.gradientPopover.behavior = NSPopoverBehaviorSemitransient;
 		self.gradientPopover.contentViewController = self.gradientController;
+        self.gradientPopover.delegate = self;
+
 	}
 	
 	[self.gradientPopover showRelativeToRect:button.bounds ofView:button preferredEdge:CGRectMaxYEdge];
@@ -878,12 +945,17 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	});
 }
 
+- (void)popoverDidClose:(NSNotification *)notification
+{
+    self.gradientController.delegate = nil;
+}
+
 - (void)updateColors:(NSArray*)colors andLocations:(NSArray*)locations andAngle:(CGFloat)angle
 {
 	DPUIStyle *style = self.stylesController.selectedObjects[0];
-	style.bgColors = [colors mutableCopy];
-	style.bgLocations = [locations mutableCopy];
-	style.gradientAngle = angle;
+	style.bgGradient.colors = [colors mutableCopy];
+	style.bgGradient.locations = [locations mutableCopy];
+	style.bgGradient.gradientAngle = @(angle);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -1051,6 +1123,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.classStyles = [NSArray array];
 		
         self.projectTargets = @[];
+        
+        self.gradientArray = @[];
         
 	}
     return self;
@@ -1286,17 +1360,38 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     return set;
 }
 
+- (NSImage*)gradientImageForStyle:(DPUIStyle*)style
+{
+    return [NSImage imageWithSize:self.gradientImageView.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+       
+        NSArray *colors = [style.bgColors valueForKeyPath:@"color"];
+        CGFloat locs[style.bgLocations.count];
+        int x= 0;
+        for (NSNumber *loc in style.bgLocations) {
+            locs[x] = loc.floatValue;
+            x ++;
+        }
+        
+        NSGradient *grad = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
+        [grad drawInRect:dstRect angle:style.gradientAngle+90];
+        
+        return YES;
+    }];
+}
+
 - (IBAction)styleChanged
 {
 	if (self.isKey) {
 		//	self.flatStylesArray = [self getFlatStylesArray];
 
+        
 		self.exampleView.scale = self.scale.floatValue;
 	self.exampleView.containerColor = self.exampleContainerBgColor;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];
 	[[DPStyleManager sharedInstance] setStyles:[[self getFlatStylesArray] mutableCopy]];
 	[[DPStyleManager sharedInstance] setSliderStyles:self.sliderStyles];
 	[[DPStyleManager sharedInstance] setImageStyles:self.imageStyles];
+        [[DPStyleManager sharedInstance] setGradients:self.gradientArray];
 
 	if (self.stylesController.selectedObjects && self.stylesController.selectedObjects.count > 0) {
 		[self.iconPopup setHidden:YES];
@@ -1304,6 +1399,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.exampleView.sliderStyle = nil;
 		[[DPStyleManager sharedInstance] setCurrentStyle:self.stylesController.selectedObjects[0]];
 		self.exampleView.style = self.stylesController.selectedObjects[0];
+        
+        self.gradientImage = [self gradientImageForStyle:self.exampleView.style];
+        
 		self.exampleView.imageStyle = nil;
 		[self.bottomInnerBorderTable reloadData];
 		[self.topInnerBorderTable reloadData];
