@@ -44,6 +44,8 @@
 		44C108EA175F05D7005C3275 /* XCSubProjectDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D6175F05D7005C3275 /* XCSubProjectDefinition.m */; };
 		44C108EB175F05D7005C3275 /* XCTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108D8175F05D7005C3275 /* XCTarget.m */; };
 		44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108DA175F05D7005C3275 /* XCXibDefinition.m */; };
+		44CC009617618C9D00722C72 /* GradientViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CC009417618C9D00722C72 /* GradientViewViewController.m */; };
+		44CC009717618C9D00722C72 /* GradientViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44CC009517618C9D00722C72 /* GradientViewViewController.xib */; };
 		44E94CA81734AB410064D41D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E94CA71734AB400064D41D /* QuartzCore.framework */; };
 		44E94CAB1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */; };
 		44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB01735F5CF0064D41D /* DPUITextStyle.m */; };
@@ -173,6 +175,9 @@
 		44C108D9175F05D7005C3275 /* XCXibDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCXibDefinition.h; sourceTree = "<group>"; };
 		44C108DA175F05D7005C3275 /* XCXibDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCXibDefinition.m; sourceTree = "<group>"; };
 		44C1098D175F0958005C3275 /* DPUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DPUI; path = ../../DPUI/DPUI/DPUI; sourceTree = "<group>"; };
+		44CC009317618C9D00722C72 /* GradientViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientViewViewController.h; sourceTree = "<group>"; };
+		44CC009417618C9D00722C72 /* GradientViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientViewViewController.m; sourceTree = "<group>"; };
+		44CC009517618C9D00722C72 /* GradientViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GradientViewViewController.xib; sourceTree = "<group>"; };
 		44E94CA71734AB400064D41D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		44E94CA91734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.h"; sourceTree = "<group>"; };
 		44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.m"; sourceTree = "<group>"; };
@@ -434,6 +439,9 @@
 				4403A8C4174F273E00BE3A39 /* NSTableView+ColorWell.m */,
 				D7A7151817612F7E00D91B57 /* DYNXcodeEditor.h */,
 				D7A7151917612F7E00D91B57 /* DYNXcodeEditor.m */,
+				44CC009317618C9D00722C72 /* GradientViewViewController.h */,
+				44CC009417618C9D00722C72 /* GradientViewViewController.m */,
+				44CC009517618C9D00722C72 /* GradientViewViewController.xib */,
 			);
 			path = DPUIThemer;
 			sourceTree = "<group>";
@@ -613,6 +621,7 @@
 				44C108DC175F05D7005C3275 /* XcodeEditor-Info.plist in Resources */,
 				443BE603175F0A7000244333 /* DPUI in Resources */,
 				D738E668175FE04D00BA1880 /* Xcode_icon.png in Resources */,
+				44CC009717618C9D00722C72 /* GradientViewViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +709,7 @@
 				44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */,
 				443BE6091760407C00244333 /* KGNoise.m in Sources */,
 				D7A7151A17612F7E00D91B57 /* DYNXcodeEditor.m in Sources */,
+				44CC009617618C9D00722C72 /* GradientViewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

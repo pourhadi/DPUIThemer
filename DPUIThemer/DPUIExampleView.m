@@ -679,7 +679,12 @@
 				[colors addObject:color.color];
             }
 			
-			NSGradient *grad = [[NSGradient alloc] initWithColors:colors];
+			CGFloat locs[self.style.bgLocations.count];
+			for (int x = 0; x < self.style.bgLocations.count; x++) {
+				locs[x] = [self.style.bgLocations[x] floatValue];
+			}
+			
+			NSGradient *grad = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
 			[grad drawInBezierPath:path angle:self.style.gradientAngle+90];
 			
 			/*

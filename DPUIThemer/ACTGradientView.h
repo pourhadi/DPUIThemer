@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ACTGradientView : NSView
+@interface ACTGradientView : NSButton
 {
     NSGradient* gradient;
     CGFloat angle;

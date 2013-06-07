@@ -18,6 +18,8 @@
 #import "ACTGradientEditor.h"
 #import "CNSplitView.h"
 #import "XcodeEditor.h"
+#import "ACTGradientView.h"
+#import "GradientViewViewController.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -157,7 +159,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @end
 
-@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate, GradientEditorDelegate>
+@interface DPUIDocument : NSDocument <NSTableViewDataSource, NSTableViewDelegate, ManagerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSSplitViewDelegate, NSMenuDelegate, GradientEditorDelegate, GradientViewControllerDelegate>
 {
 }
 
@@ -271,5 +273,11 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) IBOutlet NSArrayController *projectTargetsController;
 
 @property (nonatomic, strong) IBOutlet NSPanel *selectTargetsPanel;
+
+@property (nonatomic, strong) IBOutlet ACTGradientView *bgGradientButton;
+
+@property (nonatomic, strong) IBOutlet GradientViewViewController *gradientController;
+
+@property (nonatomic, strong) NSPopover *gradientPopover;
 
 @end

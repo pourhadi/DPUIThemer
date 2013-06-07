@@ -24,6 +24,7 @@
     return self;
 }
 
+
 - (void)drawRect: (NSRect)dirtyRect
 {
     if (self.gradient) {

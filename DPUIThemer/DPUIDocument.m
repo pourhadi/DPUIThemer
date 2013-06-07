@@ -150,6 +150,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		if ([bg objectForKey:@"noiseBlendMode"]) {
 			new.noiseBlendMode = [bg objectForKey:@"noiseBlendMode"];
 		}
+
 		
 		NSArray *colors = [bg objectForKey:@"colors"];
 		NSMutableArray *tmp = [NSMutableArray new];
@@ -158,6 +159,20 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 			[tmp addObject:[[DPStyleColor alloc] initWithDictionary:color]];
 		}
 		new.bgColors = tmp;
+		
+		if ([bg objectForKey:@"locations"]) {
+			new.bgLocations = [bg objectForKey:@"locations"];
+		} else {
+			float div = 1 / (float)(new.bgColors.count-1);
+			NSMutableArray *locs = [NSMutableArray new];
+			float current = 0;
+			for (int x = 0; x < new.bgColors.count; x++) {
+				[locs addObject:@(current)];
+				current += div;
+			}
+			
+			new.bgLocations = locs;
+		}
 		
 		tmp = [NSMutableArray new];
 		NSArray *top = [style objectForKey:@"topInnerBorders"];
@@ -511,7 +526,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
+    DPUIStyle* theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
     
     [theCopy setGradientAngle:self.gradientAngle];
     [theCopy setStyleName:[self.styleName copy]];
@@ -842,8 +857,43 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
 }
 
+- (IBAction)gradientButtonHit:(id)sender
+{
+	ACTGradientView *button = sender;
+	self.gradientController.colorVariables = self.colorVars;
+	self.gradientController.delegate = self;
+	DPUIStyle *style = self.stylesController.selectedObjects[0];
+	[self.gradientController setGradientColors:style.bgColors andLocations:style.bgLocations andAngle:style.gradientAngle];
+	if (!self.gradientPopover) {
+		self.gradientPopover = [[NSPopover alloc] init];
+		self.gradientPopover.appearance = NSPopoverAppearanceMinimal;
+		self.gradientPopover.behavior = NSPopoverBehaviorSemitransient;
+		self.gradientPopover.contentViewController = self.gradientController;
+	}
+	
+	[self.gradientPopover showRelativeToRect:button.bounds ofView:button preferredEdge:CGRectMaxYEdge];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self.gradientController setGradientColors:style.bgColors andLocations:style.bgLocations andAngle:style.gradientAngle];
+		[self.gradientController selectKnobAtIndex:0];
+	});
+}
+
+- (void)updateColors:(NSArray*)colors andLocations:(NSArray*)locations andAngle:(CGFloat)angle
+{
+	DPUIStyle *style = self.stylesController.selectedObjects[0];
+	style.bgColors = [colors mutableCopy];
+	style.bgLocations = [locations mutableCopy];
+	style.gradientAngle = angle;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	if (object == self.stylesController) {
+		DPUIStyle *style = self.stylesController.selectedObjects[0];
+		[self.gradientController setGradientColors:style.bgColors andLocations:style.bgLocations andAngle:style.gradientAngle];
+
+	}
+	
 	if ([keyPath isEqualToString:@"currentlySelectedColor.color"]) {
 		
 		[self.gradientEditor setColorForCurrentKnob:self.currentlySelectedColor.color];
@@ -1093,6 +1143,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     
     XCKeyBuilder *key = [XCKeyBuilder forItemNamed:@"DynUI.framework"];
     NSLog(@"%@", [key build]);
+	
+	
 }
 
 - (void)selectedColorAtLocation:(NSInteger)locationIndex

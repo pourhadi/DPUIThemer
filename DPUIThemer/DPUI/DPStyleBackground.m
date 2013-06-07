@@ -195,7 +195,7 @@
 
 - (void)setColor:(NSColor *)color
 {
-    //color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+    color = [color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
 
     self.colorVar = nil;
     
@@ -275,6 +275,8 @@
         }
         
         self.parameter = [[dict objectForKey:@"definedAtRuntime"] boolValue];
+		
+		
     }
     
     return self;

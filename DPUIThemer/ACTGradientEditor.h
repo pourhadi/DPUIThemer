@@ -12,7 +12,9 @@
 @protocol GradientEditorDelegate <NSObject>
 
 - (void)selectedColorAtLocation:(NSInteger)locationIndex;
-
+- (void)locationsChanged:(NSArray*)locations;
+- (void)newColor:(NSColor*)color atLocation:(CGFloat)location atIndex:(NSInteger)index;
+- (void)removedColorAtIndex:(NSInteger)index;
 @end
 
 /* TODO: 
@@ -28,26 +30,27 @@
 #define kSelectedTopKnobColor [NSColor alternateSelectedControlColor]
 #define kSelectedBottomKnobColor [[NSColor alternateSelectedControlColor] shadowWithLevel: 0.35]
 
-#define kKnobBorderColor [[NSColor blackColor] colorWithAlphaComponent: 0.56]
-#define kKnobInsideBorderColor [[NSColor blackColor] colorWithAlphaComponent: 0.56]
-#define kViewBorderColor [[NSColor blackColor] colorWithAlphaComponent: 0.56]
+#define kKnobBorderColor [[NSColor blackColor] colorWithAlphaComponent: 1]
+#define kKnobInsideBorderColor [[NSColor blackColor] colorWithAlphaComponent: 1]
+#define kViewBorderColor [[NSColor blackColor] colorWithAlphaComponent: 1]
 
-#define kDefaultAddColor [NSColor whiteColor]
+#define kDefaultAddColor [[NSColor whiteColor] colorUsingColorSpace:[NSColorSpace sRGBColorSpace]]
+
 
 // Chessboard BG
 #define kChessboardBGWidth 5
 #define kChessboardBGColor1 [NSColor whiteColor]
 #define kChessboardBGColor2 [NSColor lightGrayColor]
 
+
 // Knob
 #define kKnobDiameter 16
-#define kKnobBorderWidth 1 // inner and outer borders alike
+#define kKnobBorderWidth 0.5 // inner and outer borders alike
 
 // Gradient 'view'
-#define kViewBorderWidth 1
-#define kViewCornerRoundness 3
+#define kViewBorderWidth 0.5
+#define kViewCornerRoundness 0
 #define kViewXOffset (kKnobDiameter/2 + kKnobBorderWidth) // how much to add to origin.x of the gradient rect
-
 // Other
 #define kArrowKeysMoveOffset 0.011 // color location in gradient
 
@@ -84,7 +87,7 @@
 
 - (void)setColorForCurrentKnob:(NSColor*)color;
 
-
+- (void)selectKnobAtIndex:(NSInteger)index;
 // -- this method that DWIS (does what it says :) - It's more for subclassing and cleaner code than to be called by others though.
 - (void)drawKnobForColor: (NSColor*)knobColor atPoint: (NSPoint)knobPoint selected: (BOOL)selected editing: (BOOL)editing;
 

@@ -39,7 +39,7 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
     if (self) {
         self.gradient = [[NSGradient alloc] initWithColorsAndLocations: [NSColor lightGrayColor], 0.2, [NSColor grayColor], 0.8, nil];
         self.editable = TRUE;
-        self.gradientHeight = kKnobDiameter + kKnobBorderWidth + 6;
+        self.gradientHeight = 40;
         self.drawsChessboardBackground = YES;
         
         _draggingKnobAtIndex = -1;
@@ -49,6 +49,14 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
     }
     
     return self;
+}
+
+- (void)selectKnobAtIndex:(NSInteger)index
+{
+	_editingKnobAtIndex = index;
+	[self setNeedsDisplay:YES];
+	[self.delegate selectedColorAtLocation:index];
+
 }
 
 - (void)drawRect: (NSRect)dirtyRect
@@ -162,6 +170,7 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
     NSMutableArray* newColors = [NSMutableArray arrayWithCapacity: [self.gradient numberOfColorStops] + 1];
     CGFloat locations[[self.gradient numberOfColorStops] + 1];
     
+	int index = -1;
     int i;
     int colorIndex = -1;
     for (i = 0; i < [self.gradient numberOfColorStops]; i++) {
@@ -171,6 +180,14 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
         [newColors addObject: color];
         locations[i] = location;
         
+		if (i > 0 && colorLocation > locations[i-1] && colorLocation < locations[i]) {
+			index = i;
+		} else if (i == [self.gradient numberOfColorStops]-1 && index == -1 && colorLocation > locations[i]) {
+			index = i+1;
+		} else if (i == [self.gradient numberOfColorStops]-1 && index == -1) {
+			index = 0;
+		}
+		
         if (colorLocation < location && colorIndex == -1) {
             colorIndex = MAX(i - 1, 0);
         }
@@ -188,8 +205,10 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
         _draggingKnobAtIndex++;
         [self setNeedsDisplay: YES];
     }
-    
+
     self.gradient = [[NSGradient alloc] initWithColors: newColors atLocations: locations colorSpace: [NSColorSpace genericRGBColorSpace]];
+	
+	[self.delegate newColor:kDefaultAddColor atLocation:colorLocation atIndex:index];
 }
 - (void)_setLocation: (CGFloat)newColorLocation forKnobAtIndex: (NSInteger)knobIndex
 {
@@ -264,8 +283,15 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
     // So we continue dragging the same color (and editing if we are editing any color)
     _editingKnobAtIndex += editingIndexOffset;
     _draggingKnobAtIndex += nColorsPassed;
-    
+	
     self.gradient = [[NSGradient alloc] initWithColors: newColors atLocations: locations colorSpace: [NSColorSpace genericRGBColorSpace]];
+	
+	NSMutableArray *tmp = [NSMutableArray new];
+	for (int x = 0; x < self.gradient.numberOfColorStops; x++) {
+		[tmp addObject:@(locations[x])];
+	}
+	
+	[self.delegate locationsChanged:tmp];
 }
 - (void)_setColor: (NSColor*)newColor forKnobAtIndex: (NSInteger)knobIndex
 {
@@ -316,6 +342,7 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
     else if (colorIndex == _draggingKnobAtIndex) { _draggingKnobAtIndex = -1; }
     
     self.gradient = [[NSGradient alloc] initWithColors: newColors atLocations: locations colorSpace: [self.gradient colorSpace]];
+	[self.delegate removedColorAtIndex:colorIndex];
 }
 
 - (void)mouseDown: (NSEvent*)theEvent
@@ -390,13 +417,13 @@ static BOOL pointsWithinDistance(NSPoint p1, NSPoint p2, CGFloat d) {
 
                 addKnob = NO;
                 
-                NSColorPanel* cp = [NSColorPanel sharedColorPanel];
-                [cp setContinuous: YES];
-                [cp setShowsAlpha: YES];
-                [cp setTarget: self];
-                [cp setAction: @selector(changeKnobColor:)];
-                [cp setColor: color];
-                [cp orderFront: nil];
+//                NSColorPanel* cp = [NSColorPanel sharedColorPanel];
+//                [cp setContinuous: YES];
+//                [cp setShowsAlpha: YES];
+//                [cp setTarget: self];
+//                [cp setAction: @selector(changeKnobColor:)];
+//                [cp setColor: color];
+//                [cp orderFront: nil];
             }
         }
         
