@@ -142,7 +142,7 @@ NSDictionary *bg = [style objectForKey:@"background"];
 //        new.endX = [[bg objectForKey:@"endPointX"] floatValue];
 //        new.endY = [[bg objectForKey:@"endPointY"] floatValue];
 
-new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
+		//new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         
 		if ([bg objectForKey:@"noiseOpacity"])
 			new.noiseOpacity = [bg objectForKey:@"noiseOpacity"];
@@ -150,8 +150,16 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		if ([bg objectForKey:@"noiseBlendMode"]) {
 			new.noiseBlendMode = [bg objectForKey:@"noiseBlendMode"];
 		}
-
 		
+		if ([bg objectForKey:@"fillColor"]) {
+			new.bgColor = [[DPStyleColor alloc] initWithDictionary:[bg objectForKey:@"fillColor"]];
+		}
+		
+		if ([bg objectForKey:@"fillType"]) {
+			new.fillType = [bg objectForKey:@"fillType"];
+		}
+
+		/*
 		NSArray *colors = [bg objectForKey:@"colors"];
 		NSMutableArray *tmp = [NSMutableArray new];
 		
@@ -173,12 +181,13 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 			
 			new.bgLocations = locs;
 		}
+		*/
         
         if ([bg objectForKey:@"gradient"]) {
             new.bgGradient = [[DYNGradient alloc] initWithDictionary:[bg objectForKey:@"gradient"]];
         }
 		
-		tmp = [NSMutableArray new];
+		NSMutableArray *tmp = [NSMutableArray new];
 		NSArray *top = [style objectForKey:@"topInnerBorders"];
 		for (NSDictionary *border in top) {
 			[tmp addObject:[[DPStyleInnerBorder alloc] initWithDictionary:border]];
@@ -302,6 +311,27 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	return self;
 }
 
+- (NSImage*)gradientImage
+{
+	DPUIStyle *style = self;
+
+	return [NSImage imageWithSize:NSMakeSize(109, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+        NSArray *colors = [style.bgColors valueForKeyPath:@"color"];
+        CGFloat locs[style.bgLocations.count];
+        int x= 0;
+        for (NSNumber *loc in style.bgLocations) {
+            locs[x] = loc.floatValue;
+            x ++;
+        }
+        
+        NSGradient *grad = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
+        [grad drawInRect:dstRect angle:style.gradientAngle+90];
+        
+        return YES;
+    }];
+}
+
+
 - (void)setBgColors:(NSMutableArray *)bgColors
 {
     self.bgGradient.colors = bgColors;
@@ -341,19 +371,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 
     
 	NSMutableDictionary *bg = [NSMutableDictionary new];
-	NSMutableArray *bgColors = [NSMutableArray new];
-	for (DPStyleColor *color in style.bgColors) {
-		[bgColors addObject:color.jsonValue];
-	}
-	// background
-	[bg setObject:bgColors forKey:@"colors"];
-	
-	//        [bg setObject:@(style.startX) forKey:@"startPointX"];
-	//        [bg setObject:@(style.startY) forKey:@"startPointY"];
-	//        [bg setObject:@(style.endX) forKey:@"endPointX"];
-	//        [bg setObject:@(style.endY) forKey:@"endPointY"];
+
 	//
-	[bg setObject:@(style.gradientAngle) forKey:@"gradientAngle"];
 	
 	if (style.noiseOpacity)	 {
 		[bg setObject:style.noiseOpacity forKey:@"noiseOpacity"];
@@ -363,6 +382,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	}
     
     [bg setObject:style.bgGradient.jsonValue forKey:@"gradient"];
+	[bg setObject:style.bgColor.jsonValue forKey:@"fillColor"];
+	[bg setObject:style.fillType forKey:@"fillType"];
+	
 	
 	[dictionary setObject:bg forKey:@"background"];
 	
@@ -633,6 +655,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.children = [NSMutableArray new];
 		self.customSettings = [NSMutableArray new];
         self.bgGradient = [[DYNGradient alloc] init];
+		self.fillType = @(0);
+		self.bgColor = [[DPStyleColor alloc] init];
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];
@@ -754,7 +778,16 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		
 	}
 	
-	return new;
+	NSMutableSet *set = new;
+	
+	if ([key isEqualToString:@"gradientImage"]) {
+		[set addObject:@"bgGradient.colors"];
+		[set addObject:@"bgGradient.locations"];
+		[set addObject:@"bgGradient.gradientAngle"];
+		[set addObject:@"fillType"];
+	}
+	
+	return set;
 }
 
 
@@ -1125,6 +1158,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
         self.projectTargets = @[];
         
         self.gradientArray = @[];
+		
+		
+		
         
 	}
     return self;
@@ -1182,7 +1218,8 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		self.updateTimer = nil;
 	}
 	self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(styleChanged) userInfo:nil repeats:YES];
-    
+    //self.variableUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateVariables) userInfo:nil repeats:YES];
+	
 	[self.stylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 	[self.sliderStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
 	[self.imageStylesController addObserver:self forKeyPath:@"selectedObjects" options:0 context:nil];
@@ -1274,6 +1311,15 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 	self.colorVars = tmp;
 	[[DPStyleManager sharedInstance] setColorVariables:self.colorVars];
 
+	
+	NSMutableArray *tmpGrads = [NSMutableArray new];
+	for (NSDictionary *grad in [dict objectForKey:@"gradients"]) {
+		[tmpGrads addObject:[[DYNGradient alloc] initWithDictionary:grad]];
+	}
+	
+	self.gradientArray = tmpGrads;
+	[[DPStyleManager sharedInstance] setGradients:self.gradientArray];
+	
 	tmp = [NSMutableArray new];
 	NSArray *textStyles = [dict objectForKey:@"textStyles"];
 	for (NSDictionary *textStyle in textStyles) {
@@ -1307,6 +1353,7 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
 		[tmpClassStyles addObject:[[DYNClassStyle alloc] initWithDictionary:classStyle]];
 	}
 	
+
 	self.classStyles = tmpClassStyles;
 	
 	
@@ -1325,6 +1372,9 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     if (self.styles.count > 0) {
         self.stylesController.selectedObjects = @[self.styles[0]];
     }
+	
+	
+
 }
 
 - (NSMutableArray*)controlStyles
@@ -1379,11 +1429,30 @@ new.gradientAngle = [[bg objectForKey:@"gradientAngle"] floatValue];
     }];
 }
 
+- (void)updateVariables
+{
+	NSMutableArray *fills = [NSMutableArray new];
+	[fills addObject:@"Gradients"];
+	[fills addObject:@"------"];
+	for (DYNGradient *grad in self.gradientArray) {
+		
+		[fills addObject:grad.gradientName];
+	}
+	[fills addObject:@""];
+	[fills addObject:@"Colors"];
+	[fills addObject:@"------"];
+	
+	for (DPStyleColor *color in self.colorVars) {
+		[fills addObject:color.colorName];
+	}
+	
+	self.fillVariables = fills;
+}
+
 - (IBAction)styleChanged
 {
 	if (self.isKey) {
-		//	self.flatStylesArray = [self getFlatStylesArray];
-
+		//	self.flatStylesArray = [self getFlatStylesArray]
         
 		self.exampleView.scale = self.scale.floatValue;
 	self.exampleView.containerColor = self.exampleContainerBgColor;
@@ -1472,12 +1541,12 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	
 	[container setObject:tmpImageStyles forKey:@"imageStyles"];
 	
-	NSMutableArray *tmpClassStyles = [NSMutableArray new];
-	for (DYNClassStyle *classStyle in self.classStyles) {
-		[tmpClassStyles addObject:classStyle.jsonValue];
+	NSMutableArray *tmpGrads = [NSMutableArray new];
+	for (DYNGradient *grad in self.gradientArray) {
+		[tmpGrads addObject:grad.jsonValue];
 	}
 	
-	[container setObject:tmpClassStyles forKey:@"classStyles"];
+	[container setObject:tmpGrads forKey:@"gradients"];
 	
 	NSError *error;
 	NSData *json = [NSJSONSerialization dataWithJSONObject:container options:NSJSONWritingPrettyPrinted error:&error];
@@ -1696,21 +1765,37 @@ if (self.textStylesController.selectedObjects && self.textStylesController.selec
 	NSMutableArray *styleNames = [NSMutableArray new];
 	NSMutableArray *colorNames = [NSMutableArray new];
 	NSMutableArray *textStyleNames = [NSMutableArray new];
+	NSMutableArray *imageStyles = [NSMutableArray new];
+	NSMutableArray *gradients = [NSMutableArray new];
 	
 	for (DPUIStyle *style in self.styles) {
-		[styleNames addObject:[NSString stringWithFormat:@"static NSString * const k%@ViewStyle = @\"%@\";", style.styleName, style.styleName]];
+		NSString *styleName = [style.styleName stringByReplacingOccurrencesOfString:@" " withString:@""];
+		[styleNames addObject:[NSString stringWithFormat:@"static NSString * const k%@ViewStyle = @\"%@\";", styleName, styleName]];
 	}
 	
 	for (DPStyleColor *color in self.colorVars) {
-		[colorNames addObject:[NSString stringWithFormat:@"static NSString * const k%@Color = @\"%@\";", color.colorName, color.colorName]];
+		NSString *colorName = [color.colorName stringByReplacingOccurrencesOfString:@" " withString:@""];
+		[colorNames addObject:[NSString stringWithFormat:@"static NSString * const k%@Color = @\"%@\";", colorName, colorName]];
 
 	}
 	
 	for (DPUITextStyle *style in self.textStyles) {
-		[textStyleNames addObject:[NSString stringWithFormat:@"static NSString * const k%@TextStyle = @\"%@\";", style.styleName, style.styleName]];
+		NSString *styleName = [style.styleName stringByReplacingOccurrencesOfString:@" " withString:@""];
+		[textStyleNames addObject:[NSString stringWithFormat:@"static NSString * const k%@TextStyle = @\"%@\";", styleName, styleName]];
 	}
 	
-	NSString *constants = [NSString stringWithFormat:@"//////////  View Styles \r\r%@\r\r//////////  Colors \r\r%@\r\r//////////  Text Styles \r\r%@", [styleNames componentsJoinedByString:@"\r"], [colorNames componentsJoinedByString:@"\r"], [textStyleNames componentsJoinedByString:@"\r"]];
+	for (DPUIStyle *style in self.imageStyles) {
+		NSString *styleName = [style.styleName stringByReplacingOccurrencesOfString:@" " withString:@""];
+		[imageStyles addObject:[NSString stringWithFormat:@"static NSString * const k%@ImageStyle = @\"%@\";", styleName, styleName]];
+	}
+	
+	for (DYNGradient *gradient in self.gradientArray) {
+		NSString *gradientname = [gradient.gradientName stringByReplacingOccurrencesOfString:@" " withString:@""];
+		[gradients addObject:[NSString stringWithFormat:@"static NSString * const k%@Gradient = @\"%@\";", gradientname, gradientname]];
+
+	}
+	
+	NSString *constants = [NSString stringWithFormat:@"//////////  View Styles \r\r%@\r\r//////////  Image Styles \r\r%@\r\r//////////  Text Styles \r\r%@\r\r//////////  Colors \r\r%@\r\r//////////  Gradients \r\r%@", [styleNames componentsJoinedByString:@"\r"], [imageStyles componentsJoinedByString:@"\r"], [textStyleNames componentsJoinedByString:@"\r"], [colorNames componentsJoinedByString:@"\r"], [gradients componentsJoinedByString:@"\r"]];
 	return constants;
 }
 
@@ -2382,13 +2467,129 @@ static NSTableView *lastSelectedTableView = nil;
 
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
+	id object = aTableView;
+	if (object == self.styleOutlineView) {
+		if (self.stylesController.selectedObjects.count > 0) {
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.viewStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.viewStyleTabs];
+			}
+		}
+		
+	} else if (object == self.sliderStylesTable) {
+		if (self.sliderStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.sliderStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
+			}
+		}
+		
+	} else if (object == self.imageStylesTable) {
+		if (self.imageStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			
+			if (!self.imageStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.imageStyleTabs];
+			}
+		}
+	} else if (object == self.classStylesListTable) {
+		if (self.classStylesListController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			
+			
+			if (!self.classStyleView.window) {
+				[self emptyPropertiesContainer];
+				
+				self.classStyleView.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.classStyleView];
+			}
+		}
+	}
 	
 	return YES;
 }
 
 - (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
 {
-
+	id object = tableView;
+	if (object == self.styleOutlineView) {
+		if (self.stylesController.selectedObjects.count > 0) {
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.viewStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.viewStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.viewStyleTabs];
+			}
+		}
+		
+	} else if (object == self.sliderStylesTable) {
+		if (self.sliderStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			if (!self.sliderStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.sliderStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.sliderStyleTabs];
+			}
+		}
+		
+	} else if (object == self.imageStylesTable) {
+		if (self.imageStylesController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.classStylesListController setSelectedObjects:nil];
+			
+			
+			if (!self.imageStyleTabs.window) {
+				[self emptyPropertiesContainer];
+				
+				self.imageStyleTabs.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.imageStyleTabs];
+			}
+		}
+	} else if (object == self.classStylesListTable) {
+		if (self.classStylesListController.selectedObjects.count > 0) {
+			[self.stylesController setSelectedObjects:nil];
+			[self.sliderStylesController setSelectedObjects:nil];
+			[self.imageStylesController setSelectedObjects:nil];
+			
+			
+			if (!self.classStyleView.window) {
+				[self emptyPropertiesContainer];
+				
+				self.classStyleView.frame = self.propertiesContainerView.bounds;
+				[self.propertiesContainerView addSubview:self.classStyleView];
+			}
+		}
+	}
+	
 	if (tableView != lastSelectedTableView) {
 		if ([[NSColorPanel sharedColorPanel] isVisible]) {
             if (![tableView.associatedColorWell isActive]) {

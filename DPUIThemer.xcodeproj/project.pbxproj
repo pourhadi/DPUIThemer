@@ -46,6 +46,9 @@
 		44C108EC175F05D7005C3275 /* XCXibDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C108DA175F05D7005C3275 /* XCXibDefinition.m */; };
 		44CC009617618C9D00722C72 /* GradientViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CC009417618C9D00722C72 /* GradientViewViewController.m */; };
 		44CC009717618C9D00722C72 /* GradientViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44CC009517618C9D00722C72 /* GradientViewViewController.xib */; };
+		44CC009A1762F59800722C72 /* DYNFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CC00991762F59800722C72 /* DYNFill.m */; };
+		44CC009E1765A56A00722C72 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CC009C1765A56900722C72 /* FilterViewController.m */; };
+		44CC009F1765A56A00722C72 /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44CC009D1765A56A00722C72 /* FilterViewController.xib */; };
 		44E94CA81734AB410064D41D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E94CA71734AB400064D41D /* QuartzCore.framework */; };
 		44E94CAB1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */; };
 		44E94CB11735F5CF0064D41D /* DPUITextStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E94CB01735F5CF0064D41D /* DPUITextStyle.m */; };
@@ -179,6 +182,11 @@
 		44CC009317618C9D00722C72 /* GradientViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientViewViewController.h; sourceTree = "<group>"; };
 		44CC009417618C9D00722C72 /* GradientViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientViewViewController.m; sourceTree = "<group>"; };
 		44CC009517618C9D00722C72 /* GradientViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GradientViewViewController.xib; sourceTree = "<group>"; };
+		44CC00981762F59800722C72 /* DYNFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNFill.h; sourceTree = "<group>"; };
+		44CC00991762F59800722C72 /* DYNFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNFill.m; sourceTree = "<group>"; };
+		44CC009B1765A56900722C72 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		44CC009C1765A56900722C72 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
+		44CC009D1765A56A00722C72 /* FilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
 		44E94CA71734AB400064D41D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		44E94CA91734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.h"; sourceTree = "<group>"; };
 		44E94CAA1734BC4A0064D41D /* NSBezierPath+GTMBezierPathRoundRectAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+GTMBezierPathRoundRectAdditions.m"; sourceTree = "<group>"; };
@@ -436,6 +444,9 @@
 				4403A8DB1751C72400BE3A39 /* NSBezierPath+SVG.h */,
 				4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */,
 				4403A8DE1751CA8B00BE3A39 /* icons.json */,
+				44CC009B1765A56900722C72 /* FilterViewController.h */,
+				44CC009C1765A56900722C72 /* FilterViewController.m */,
+				44CC009D1765A56A00722C72 /* FilterViewController.xib */,
 				D7B02D0217305F1200330394 /* DPUI */,
 				D779DF8E173045A4007AC130 /* Supporting Files */,
 				4403A8C3174F273E00BE3A39 /* NSTableView+ColorWell.h */,
@@ -447,6 +458,8 @@
 				44CC009517618C9D00722C72 /* GradientViewViewController.xib */,
 				D7A7151B176264B700D91B57 /* DYNGradient.h */,
 				D7A7151C176264B700D91B57 /* DYNGradient.m */,
+				44CC00981762F59800722C72 /* DYNFill.h */,
+				44CC00991762F59800722C72 /* DYNFill.m */,
 			);
 			path = DPUIThemer;
 			sourceTree = "<group>";
@@ -627,6 +640,7 @@
 				443BE603175F0A7000244333 /* DPUI in Resources */,
 				D738E668175FE04D00BA1880 /* Xcode_icon.png in Resources */,
 				44CC009717618C9D00722C72 /* GradientViewViewController.xib in Resources */,
+				44CC009F1765A56A00722C72 /* FilterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +730,8 @@
 				D7A7151A17612F7E00D91B57 /* DYNXcodeEditor.m in Sources */,
 				44CC009617618C9D00722C72 /* GradientViewViewController.m in Sources */,
 				D7A7151D176264B700D91B57 /* DYNGradient.m in Sources */,
+				44CC009A1762F59800722C72 /* DYNFill.m in Sources */,
+				44CC009E1765A56A00722C72 /* FilterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

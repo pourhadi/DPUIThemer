@@ -21,6 +21,7 @@
 #import "ACTGradientView.h"
 #import "GradientViewViewController.h"
 #import "DYNGradient.h"
+#import "DYNFill.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -65,6 +66,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @interface DPUIStyle : NSObject <NSCopying, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
+
+@property (nonatomic, strong) NSNumber *fillType;
+@property (nonatomic, strong) DPStyleColor *bgColor;
 @property (nonatomic, strong) DYNGradient *bgGradient;
 @property (nonatomic, weak) DPUIStyle *parentNode;
 @property (nonatomic) NSInteger count;
@@ -157,7 +161,7 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 - (id)jsonValue;
 
-
+@property (nonatomic, strong) NSImage *gradientImage;
 
 @end
 
@@ -290,5 +294,10 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 @property (nonatomic, strong) NSArrayController *gradientArrayController;
 
 @property (nonatomic, strong) IBOutlet NSTableView *gradientTable;
+
+@property (nonatomic, strong) NSArray *fillVariables;
+@property (nonatomic, strong) IBOutlet NSArrayController *fillVariablesController;
+
+@property (nonatomic, strong) NSTimer *variableUpdateTimer;
 
 @end

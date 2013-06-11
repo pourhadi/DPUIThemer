@@ -10,6 +10,7 @@
 #import "DPUIDocument.h"
 #import "NSBezierPath+GTMBezierPathRoundRectAdditions.h"
 #import "NSBezierPath+SVG.h"
+#import "DYNFill.h"
 @implementation DPUIExampleView
 
 - (id)initWithFrame:(NSRect)frame
@@ -260,9 +261,25 @@
 		[NSGraphicsContext restoreGraphicsState];
 	}
 	
+	if (self.imageStyle.fillType.intValue == DYNFillTypeGradient) {
+	CGFloat locs[self.imageStyle.bgGradient.locations.count];
+	for (int x = 0; x < self.imageStyle.bgGradient.locations.count; x++) {
+		locs[x] = [self.imageStyle.bgGradient.locations[x] floatValue];
+	}
 	
-	NSGradient *grad = [[NSGradient alloc] initWithColors:[self.imageStyle valueForKeyPath:@"bgColors.color"]];
+	NSGradient *grad = [[NSGradient alloc] initWithColors:[self.imageStyle valueForKeyPath:@"bgGradient.colors.color"] atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
 	[grad drawInBezierPath:starPath angle:self.imageStyle.gradientAngle+90];
+	} else {
+		[self.imageStyle.bgColor.color setFill];
+		[starPath fill];
+	}
+	
+	if (self.imageStyle.noiseOpacity.floatValue > 0) {
+		[NSGraphicsContext saveGraphicsState];
+		[starPath addClip];
+		[KGNoise drawNoiseWithOpacity:self.imageStyle.noiseOpacity.floatValue andBlendMode:self.imageStyle.noiseBlendMode.intValue];
+		[NSGraphicsContext restoreGraphicsState];
+	}
 	
 	NSBezierPath *path = starPath;
 	
@@ -666,22 +683,22 @@
 	
 	//CGContextTranslateCTM(context, 0.0f, size.height);
 	//CGContextScaleCTM(context, 1.0f, -1.0f);
-        if (self.style.bgColors.count > 1) {
+        if (self.style.fillType.intValue == DYNFillTypeGradient) {
 			
-			NSColor *fill = [self.style.bgColors[0] color];
+			NSColor *fill = [self.style.bgGradient.colors[0] color];
             [fill setFill];
             [path fill];
 			
 			
 			NSMutableArray *colors = [NSMutableArray new];
-			for (DPStyleColor *color in self.style.bgColors) {
+			for (DPStyleColor *color in self.style.bgGradient.colors) {
                 if (color.color)
 				[colors addObject:color.color];
             }
 			
-			CGFloat locs[self.style.bgLocations.count];
-			for (int x = 0; x < self.style.bgLocations.count; x++) {
-				locs[x] = [self.style.bgLocations[x] floatValue];
+			CGFloat locs[self.style.bgGradient.locations.count];
+			for (int x = 0; x < self.style.bgGradient.locations.count; x++) {
+				locs[x] = [self.style.bgGradient.locations[x] floatValue];
 			}
 			
 			NSGradient *grad = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
@@ -752,8 +769,8 @@
 			
 			*/
 			
-		} else if (self.style.bgColors.count > 0){
-            NSColor *fill = [self.style.bgColors[0] color];
+		} else {
+            NSColor *fill = [self.style.bgColor color];
             [fill setFill];
             [path fill];
         }
@@ -1118,20 +1135,26 @@
 	
 	//CGContextTranslateCTM(context, 0.0f, size.height);
 	//CGContextScaleCTM(context, 1.0f, -1.0f);
-	if (style.bgColors.count > 1) {
+	if (style.fillType.intValue == DYNFillTypeGradient) {
 		
-		NSColor *fill = [style.bgColors[0] color];
+		NSColor *fill = [style.bgGradient.colors[0] color];
 		[fill setFill];
 		[path fill];
 		
 		NSMutableArray *colors = [NSMutableArray new];
 		
 		
-		for (DPStyleColor *color in style.bgColors) {
+		for (DPStyleColor *color in style.bgGradient.colors) {
 			[colors addObject:color.color];
 		}
 		
-		NSGradient *grad = [[NSGradient alloc] initWithColors:colors];
+		CGFloat locs[style.bgGradient.locations.count];
+		
+		for (int x = 0; x < style.bgGradient.locations.count; x++) {
+			locs[x] = [style.bgGradient.locations[x] floatValue];
+		}
+		
+		NSGradient *grad = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:[NSColorSpace genericRGBColorSpace]];
 		[grad drawInBezierPath:path angle:style.gradientAngle+90];
 		
 		
@@ -1194,7 +1217,7 @@
 		
 		*/
 	} else if (style.bgColors.count > 0){
-		NSColor *fill = [style.bgColors[0] color];
+		NSColor *fill = [style.bgColor color];
 		[fill setFill];
 		[path fill];
 	}

@@ -35,6 +35,14 @@
     return self;
 }
 
+- (void)dealloc
+{
+	[self removeObserver:self forKeyPath:@"associatedGradient.colors"];
+	[self removeObserver:self forKeyPath:@"associatedGradient.locations"];
+	[self removeObserver:self forKeyPath:@"associatedGradient.gradientAngle"];
+
+}
+
 + (NSString*)newGradientName
 {
 	NSInteger x = 1;
