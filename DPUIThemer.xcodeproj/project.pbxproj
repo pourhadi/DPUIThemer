@@ -20,6 +20,7 @@
 		44099D70175DE5E80080FD8E /* CNSplitViewToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D67175DE5E80080FD8E /* CNSplitViewToolbarButton.m */; };
 		44099D71175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D69175DE5E80080FD8E /* CNSplitViewToolbarButtonCell.m */; };
 		44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */; };
+		440ABD811769F9DA00AE9E87 /* DYNInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 4406D3991769F73D00FE2E77 /* DYNInsets.m */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
 		443BE603175F0A7000244333 /* DPUI in Resources */ = {isa = PBXBuildFile; fileRef = 44C1098D175F0958005C3275 /* DPUI */; };
 		443BE6091760407C00244333 /* KGNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BE6081760407C00244333 /* KGNoise.m */; };
@@ -108,6 +109,8 @@
 		4403A8DB1751C72400BE3A39 /* NSBezierPath+SVG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+SVG.h"; sourceTree = "<group>"; };
 		4403A8DC1751C72400BE3A39 /* UIBezierPath+SVG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+SVG.m"; sourceTree = "<group>"; };
 		4403A8DE1751CA8B00BE3A39 /* icons.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = icons.json; sourceTree = "<group>"; };
+		4406D3981769F73D00FE2E77 /* DYNInsets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYNInsets.h; sourceTree = "<group>"; };
+		4406D3991769F73D00FE2E77 /* DYNInsets.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYNInsets.m; sourceTree = "<group>"; };
 		44099D55175D80D60080FD8E /* ACTGradientEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTGradientEditor.h; sourceTree = "<group>"; };
 		44099D56175D80D60080FD8E /* ACTGradientEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTGradientEditor.m; sourceTree = "<group>"; };
 		44099D57175D80D60080FD8E /* ACTGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTGradientView.h; sourceTree = "<group>"; };
@@ -427,6 +430,8 @@
 				D7914283174E9B08008FCC58 /* Resources */,
 				44528A55173229530006166F /* ColorTransformer.h */,
 				44528A56173229530006166F /* ColorTransformer.m */,
+				4406D3981769F73D00FE2E77 /* DYNInsets.h */,
+				4406D3991769F73D00FE2E77 /* DYNInsets.m */,
 				D779DF99173045A5007AC130 /* DPUIDocument.h */,
 				D779DF9A173045A5007AC130 /* DPUIDocument.m */,
 				D779DF9C173045A5007AC130 /* DPUIDocument.xib */,
@@ -702,6 +707,7 @@
 				4403A8DD1751C72400BE3A39 /* UIBezierPath+SVG.m in Sources */,
 				44EBB270175B1196004650BB /* DYNClassStyle.m in Sources */,
 				44099D5B175D80D60080FD8E /* ACTGradientEditor.m in Sources */,
+				440ABD811769F9DA00AE9E87 /* DYNInsets.m in Sources */,
 				44099D5C175D80D60080FD8E /* ACTGradientView.m in Sources */,
 				44099D5D175D80D60080FD8E /* NSColor+ChessboardColor.m in Sources */,
 				44099D6D175DE5E80080FD8E /* CNSplitView.m in Sources */,

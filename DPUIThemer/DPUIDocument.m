@@ -158,6 +158,10 @@ NSDictionary *bg = [style objectForKey:@"background"];
 		if ([bg objectForKey:@"fillType"]) {
 			new.fillType = [bg objectForKey:@"fillType"];
 		}
+		
+		if ([bg objectForKey:@"fillInsets"]) {
+			new.fillInsets = [[DYNInsets alloc] initWithDictionary:[style objectForKey:@"fillInsets"]];
+		}
 
 		/*
 		NSArray *colors = [bg objectForKey:@"colors"];
@@ -307,6 +311,11 @@ NSDictionary *bg = [style objectForKey:@"background"];
 		
 		new.drawAsynchronously = [[style objectForKey:@"drawAsynchronously"] boolValue];
 
+		if ([style objectForKey:@"useCustomTintColor"]) {
+			new.useCustomTintColor = [style objectForKey:@"useCustomTintColor"];
+			new.tintColor = [[DPStyleColor alloc] initWithDictionary:[style objectForKey:@"tintColor"]];
+		}
+		
 	}
 	return self;
 }
@@ -384,7 +393,7 @@ NSDictionary *bg = [style objectForKey:@"background"];
     [bg setObject:style.bgGradient.jsonValue forKey:@"gradient"];
 	[bg setObject:style.bgColor.jsonValue forKey:@"fillColor"];
 	[bg setObject:style.fillType forKey:@"fillType"];
-	
+	[bg setObject:style.fillInsets.jsonValue forKey:@"fillInsets"];
 	
 	[dictionary setObject:bg forKey:@"background"];
 	
@@ -501,6 +510,12 @@ NSDictionary *bg = [style objectForKey:@"background"];
 [dictionary setObject:tmpSettings forKey:@"customSettings"];
 	}
     
+	if (style.useCustomTintColor){
+		[dictionary setObject:self.useCustomTintColor forKey:@"useCustomTintColor"];
+		[dictionary setObject:style.tintColor.jsonValue forKey:@"tintColor"];
+	}
+	
+	
 	return dictionary;
 }
 //===========================================================
@@ -657,6 +672,9 @@ NSDictionary *bg = [style objectForKey:@"background"];
         self.bgGradient = [[DYNGradient alloc] init];
 		self.fillType = @(0);
 		self.bgColor = [[DPStyleColor alloc] init];
+		self.fillInsets = [[DYNInsets alloc] init];
+		self.tintColor = [[DPStyleColor alloc] init];
+		self.useCustomTintColor = @(NO);
 		//self.navBarTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellTitleTextStyle = [[DPUITextStyle alloc] init];
 		//self.tableCellDetailTextStyle = [[DPUITextStyle alloc] init];

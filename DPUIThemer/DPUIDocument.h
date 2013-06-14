@@ -22,6 +22,7 @@
 #import "GradientViewViewController.h"
 #import "DYNGradient.h"
 #import "DYNFill.h"
+#import "DYNInsets.h"
 static NSString * const kBackgroundTransparent = @"Transparent";
 static NSString *const kBackgroundPreviewColor = @"Use preview background color";
 static NSString *const kBackgroundCustomColor = @"Custom color:";
@@ -66,6 +67,9 @@ typedef NS_OPTIONS(NSUInteger, ViewCanvasBackgroundType) {
 
 @interface DPUIStyle : NSObject <NSCopying, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
+@property (nonatomic, strong) NSNumber *useCustomTintColor;
+@property (nonatomic, strong) DYNInsets *fillInsets;
+@property (nonatomic, strong) DPStyleColor *tintColor;
 
 @property (nonatomic, strong) NSNumber *fillType;
 @property (nonatomic, strong) DPStyleColor *bgColor;
