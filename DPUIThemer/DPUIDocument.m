@@ -1012,8 +1012,11 @@ NSDictionary *bg = [style objectForKey:@"background"];
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if (object == self.stylesController) {
+        
+        if (self.stylesController.selectedObjects.count > 0) {
 		DPUIStyle *style = self.stylesController.selectedObjects[0];
 		[self.gradientController setGradientColors:style.bgColors andLocations:style.bgLocations andAngle:style.gradientAngle];
+        }
 
 	}
 	
@@ -1177,7 +1180,8 @@ NSDictionary *bg = [style objectForKey:@"background"];
         
         self.gradientArray = @[];
 		
-		
+		self.rootNode = [[DPUIStyle alloc] init];
+        self.rootNode.isLeaf = NO;
 		
         
 	}

@@ -22,7 +22,6 @@
 		44099D72175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44099D6C175DE5E80080FD8E /* NSView+CNSplitViewToolbar.m */; };
 		440ABD811769F9DA00AE9E87 /* DYNInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 4406D3991769F73D00FE2E77 /* DYNInsets.m */; };
 		443BB98D1730E6C300A94E21 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BB98C1730E6C300A94E21 /* ColorCell.m */; };
-		443BE603175F0A7000244333 /* DPUI in Resources */ = {isa = PBXBuildFile; fileRef = 44C1098D175F0958005C3275 /* DPUI */; };
 		443BE6091760407C00244333 /* KGNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 443BE6081760407C00244333 /* KGNoise.m */; };
 		443D2E06173F43FA008F4162 /* DYNSliderStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 443D2E05173F43FA008F4162 /* DYNSliderStyle.m */; };
 		44528A57173229530006166F /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44528A56173229530006166F /* ColorTransformer.m */; };
@@ -181,7 +180,6 @@
 		44C108D8175F05D7005C3275 /* XCTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCTarget.m; sourceTree = "<group>"; };
 		44C108D9175F05D7005C3275 /* XCXibDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCXibDefinition.h; sourceTree = "<group>"; };
 		44C108DA175F05D7005C3275 /* XCXibDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCXibDefinition.m; sourceTree = "<group>"; };
-		44C1098D175F0958005C3275 /* DPUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DPUI; path = ../../DPUI/DPUI/DPUI; sourceTree = "<group>"; };
 		44CC009317618C9D00722C72 /* GradientViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientViewViewController.h; sourceTree = "<group>"; };
 		44CC009417618C9D00722C72 /* GradientViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientViewViewController.m; sourceTree = "<group>"; };
 		44CC009517618C9D00722C72 /* GradientViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GradientViewViewController.xib; sourceTree = "<group>"; };
@@ -200,7 +198,7 @@
 		44EBB26E175B1196004650BB /* DYNClassStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYNClassStyle.h; sourceTree = "<group>"; };
 		44EBB26F175B1196004650BB /* DYNClassStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYNClassStyle.m; sourceTree = "<group>"; };
 		D738E667175FE04D00BA1880 /* Xcode_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Xcode_icon.png; sourceTree = "<group>"; };
-		D779DF84173045A4007AC130 /* DPUIThemer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DPUIThemer.app; path = "DynUI Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D779DF84173045A4007AC130 /* DynUI Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DynUI Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D779DF87173045A4007AC130 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D779DF8A173045A4007AC130 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D779DF8B173045A4007AC130 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -392,7 +390,7 @@
 		D779DF85173045A4007AC130 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D779DF84173045A4007AC130 /* DPUIThemer.app */,
+				D779DF84173045A4007AC130 /* DynUI Editor.app */,
 				D779DFA7173045A5007AC130 /* DPUIThemerTests.octest */,
 			);
 			name = Products;
@@ -423,7 +421,6 @@
 			children = (
 				443BE6071760407C00244333 /* KGNoise.h */,
 				443BE6081760407C00244333 /* KGNoise.m */,
-				44C1098D175F0958005C3275 /* DPUI */,
 				44C108B0175F05C7005C3275 /* XCEditor */,
 				44099D5E175DE5E70080FD8E /* CNSplitView */,
 				44099D54175D80B80080FD8E /* ACTGradient */,
@@ -573,7 +570,7 @@
 			);
 			name = "DynUI Editor";
 			productName = DPUIThemer;
-			productReference = D779DF84173045A4007AC130 /* DPUIThemer.app */;
+			productReference = D779DF84173045A4007AC130 /* DynUI Editor.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D779DFA6173045A5007AC130 /* DPUIThemerTests */ = {
@@ -642,7 +639,6 @@
 				4403A8DF1751CA8B00BE3A39 /* icons.json in Resources */,
 				44C108DB175F05D7005C3275 /* InfoPlist.strings in Resources */,
 				44C108DC175F05D7005C3275 /* XcodeEditor-Info.plist in Resources */,
-				443BE603175F0A7000244333 /* DPUI in Resources */,
 				D738E668175FE04D00BA1880 /* Xcode_icon.png in Resources */,
 				44CC009717618C9D00722C72 /* GradientViewViewController.xib in Resources */,
 				44CC009F1765A56A00722C72 /* FilterViewController.xib in Resources */,
