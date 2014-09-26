@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "NSColor+Hex.h"
 
+
+@interface ParameterTransformer : NSValueTransformer
+
+@end
+
 @interface VariableTransformer : NSValueTransformer
 
 @end

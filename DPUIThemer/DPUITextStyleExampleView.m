@@ -47,7 +47,8 @@ static NSString *kExampleText = @"Aa Bb Cc Dd Ee Ff";
 		shadow.shadowOffset = NSSizeFromCGSize(self.style.shadowOffset);
 		shadow.shadowBlurRadius = 0;
 		
-		[kExampleText drawAtPoint:NSMakePoint(x, y) withAttributes:@{NSFontAttributeName:self.style.font, NSForegroundColorAttributeName:self.style.textColor.color, NSShadowAttributeName:shadow}];
+		if (self.style && self.style.textColor.color && self.style.font)
+			[kExampleText drawAtPoint:NSMakePoint(x, y) withAttributes:@{NSFontAttributeName:self.style.font, NSForegroundColorAttributeName:self.style.textColor.color, NSShadowAttributeName:shadow}];
 		
 	}
 	

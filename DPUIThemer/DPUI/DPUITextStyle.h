@@ -9,11 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "DPStyleBackground.h"
 
+typedef NS_ENUM(NSUInteger, DYNFontSizeType){
+	DYNFontSizeTypeAbsolute,
+	DYNFontSizeTypeRelative,
+};
+
 @interface TextStyleTransformer : NSValueTransformer
 
 @end
 
-@interface DPUITextStyle : NSObject
+@interface DPUITextStyle : NSObject <NSCopying, NSCoding>
 
 
 @property (nonatomic, strong) NSString *styleName;
@@ -22,17 +27,16 @@
 @property (nonatomic) CGSize shadowOffset;
 @property (nonatomic, strong) DPStyleColor *shadowColor;
 @property (nonatomic) NSTextAlignment alignment;
-
-
-
-
 @property (nonatomic) CGFloat xShadowOffset;
 @property (nonatomic) CGFloat yShadowOffset;
-
 @property (nonatomic) NSInteger fontSize;
-
 @property (nonatomic, strong) NSString *fontString;
 
+@property (nonatomic, strong) NSString *fontSizeString;
+@property (nonatomic) DYNFontSizeType fontSizeType;
+
+@property (nonatomic, strong) NSNumber *inheritFontSize;
+@property (nonatomic, strong) NSNumber *inheritAlignment;
 
 - (id)jsonValue;
 - (id)initWithDictionary:(NSDictionary*)dict;

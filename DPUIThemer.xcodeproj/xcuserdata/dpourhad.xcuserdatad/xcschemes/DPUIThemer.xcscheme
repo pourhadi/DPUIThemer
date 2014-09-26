@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D779DF83173045A4007AC130"
-               BuildableName = "DPUIThemer.app"
-               BlueprintName = "DPUIThemer"
+               BuildableName = "DynUI Editor.app"
+               BlueprintName = "DynUI Editor"
                ReferencedContainer = "container:DPUIThemer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D779DF83173045A4007AC130"
-            BuildableName = "DPUIThemer.app"
-            BlueprintName = "DPUIThemer"
+            BuildableName = "DynUI Editor.app"
+            BlueprintName = "DynUI Editor"
             ReferencedContainer = "container:DPUIThemer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D779DF83173045A4007AC130"
-            BuildableName = "DPUIThemer.app"
-            BlueprintName = "DPUIThemer"
+            BuildableName = "DynUI Editor.app"
+            BlueprintName = "DynUI Editor"
             ReferencedContainer = "container:DPUIThemer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -80,8 +80,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D779DF83173045A4007AC130"
-            BuildableName = "DPUIThemer.app"
-            BlueprintName = "DPUIThemer"
+            BuildableName = "DynUI Editor.app"
+            BlueprintName = "DynUI Editor"
             ReferencedContainer = "container:DPUIThemer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

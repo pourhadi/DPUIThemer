@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface DPStyleColor : NSObject <NSCopying>
 @property (nonatomic, strong) NSString *colorName;
 @property (nonatomic, strong) NSColor *color;
@@ -16,9 +18,25 @@
 
 @property (nonatomic, strong) NSString *colorDisplayString;
 @property (nonatomic, strong) NSString *colorVariableName;
+
+@property (nonatomic, strong) NSString *parameterName;
+
+@property (nonatomic, strong) NSNumber *location;
+
+@property (nonatomic) BOOL parameter;
+
+@property (nonatomic, strong) NSImage *imageRep;
+
+@property (nonatomic) BOOL isLeaf;
+@property (nonatomic, strong) NSMutableArray *children;
+@property (nonatomic, weak) DPStyleColor *parentNode;
+
 - (id)jsonValue;
 - (id)initWithColorString:(NSString *)color;
 - (id)initWithDictionary:(NSDictionary*)dict;
+
+- (void)drawSwatchInRect:(NSRect)rect;
+
 @end
 @interface DPStyleBackground : NSObject
 

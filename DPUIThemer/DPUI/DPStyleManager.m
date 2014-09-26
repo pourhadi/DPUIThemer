@@ -14,7 +14,7 @@
 }
 @end
 @implementation DPStyleManager
-
+@synthesize colorVariables=_colorVariables;
 + (DPStyleManager*)sharedInstance
 {
     static dispatch_once_t onceQueue;
@@ -54,7 +54,7 @@
 
 - (DPStyleObject*)styleForName:(NSString*)name
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@", name];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"styleName == %@", name];
     NSArray *filtered = [self.styles filteredArrayUsingPredicate:pred];
     if (filtered) {
         if (filtered.count > 0) {
@@ -62,6 +62,27 @@
         }
     }
     return nil;
+}
+
+- (void)setGradients:(NSArray *)gradients
+{
+    [self willChangeValueForKey:@"gradients"];
+    _gradients = gradients;
+    [self didChangeValueForKey:@"gradients"];
+    
+    self.gradientNames = [gradients valueForKeyPath:@"gradientName"];
+}
+
+- (void)setSliderStyles:(NSMutableArray *)sliderStyles
+{
+	_sliderStyles = sliderStyles;
+	
+	self.sliderStyleNames = [sliderStyles valueForKeyPath:@"name"];
+}
+
+- (NSArray*)colorVariables
+{
+   return [self.delegate colorVarArray];
 }
 
 - (void)setColorVariables:(NSArray *)colorVariables
@@ -82,5 +103,27 @@
 	self.textStyleNames = [self.textStyles valueForKeyPath:@"styleName"];
 }
 
+- (void)setImageStyles:(NSArray *)imageStyles
+{
+	_imageStyles = imageStyles;
+	
+	self.imageStyleNames = [self.imageStyles valueForKeyPath:@"styleName"];
+}
 
+- (NSArray*)parameters
+{
+    return [self.delegate parameters];
+}
+
+- (id)valueForStyleParameter:(NSString *)parameter
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@", parameter];
+    NSArray *filtered = [self.parameters filteredArrayUsingPredicate:pred];
+    if (filtered) {
+        if (filtered.count > 0) {
+            return [(DPUIParameter*)filtered[0] value];
+        }
+    }
+    return nil;
+}
 @end

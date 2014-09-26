@@ -21,6 +21,11 @@
 
 @implementation DPStyleColor
 
+- (CGFloat)alphaComponent
+{
+    return self.color.alphaComponent;
+}
+
 - (NSMutableArray*)observing
 {
     if (!_observing) {
@@ -36,6 +41,9 @@
         if (_colorName)
             [copy setColorName:[self.colorName copyWithZone:zone]];
         [copy setColor:[self.color copyWithZone:zone]];
+		[copy setIsLeaf:self.isLeaf];
+		[copy setChildren:[self.children copyWithZone:zone]];
+		[copy setParentNode:self.parentNode];
 	}
 	return copy;
 }
@@ -73,16 +81,27 @@
 
 - (void)unobserve
 {
-    if (self.observing.count > 0) {
-        [self.observing[0] removeObserver:self forKeyPath:@"color"];
-        [self.observing removeAllObjects];
+    for (DPStyleColor *color in self.observing) {
+        [color removeObserver:self forKeyPath:@"color"];
+        [color removeObserver:self forKeyPath:@"parameter"];
+        [color removeObserver:self forKeyPath:@"colorName"];
     }
+
+        [self.observing removeAllObjects];
+
+}
+
+- (void)dealloc
+{
+	[self unobserve];
 }
 
 - (void)setColorVar:(NSString *)colorVar
 {
+    [self unobserve];
+    
+    self.parameterName = nil;
     if (colorVar && ![colorVar hasPrefix:@"#"]) {
-        
         NSArray *colors = [[DPStyleManager sharedInstance] colorVariables];
         NSPredicate *pred= [NSPredicate predicateWithFormat:@"colorName == %@", colorVar];
         NSArray *filters = [colors filteredArrayUsingPredicate:pred];
@@ -90,10 +109,12 @@
             DPStyleColor *styleColor = filters[0];
             self.color = [styleColor color];
             [styleColor addObserver:self forKeyPath:@"color" options:0 context:nil];
+            [styleColor addObserver:self forKeyPath:@"parameter" options:0 context:nil];
+            [styleColor addObserver:self forKeyPath:@"colorName" options:0 context:nil];
             [self.observing addObject:styleColor];
+			
+			self.parameter = styleColor.parameter;
         }
-    } else if (!colorVar) {
-        [self unobserve];
     }
     
     [self willChangeValueForKey:@"colorVar"];
@@ -103,12 +124,26 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    [self willChangeValueForKey:@"color"];
-    _color = [object color];
-    [self didChangeValueForKey:@"color"];
-    
-    _colorString = [object colorString];
+    if ([keyPath isEqualToString:@"color"]) {
+        self.colorVar = [object colorName];
+    } else if ([keyPath isEqualToString:@"colorName"]) {
+        self.colorVar = [object colorName];
+    } else {
+        self.parameter = [object parameter];
+    }
+}
+
+- (NSImage*)imageRep
+{
 	
+	NSImage *image = [NSImage imageWithSize:NSMakeSize(40, 20) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+	
+		[self.color setFill];
+		NSRectFill(dstRect);
+		
+		return YES;
+	}];
+	return image;
 }
 
 - (NSString*)colorVariableName
@@ -147,19 +182,26 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key NS_AVAILABLE(10_5, 2_0)
 {
 	NSSet *paths = [super keyPathsForValuesAffectingValueForKey:key];
-	if ([key isEqualToString:@"colorName"] || [key isEqualToString:@"colorString"] || [key isEqualToString:@"colorVariableName"] || [key isEqualToString:@"colorDisplayString"]) {
+	if ([key isEqualToString:@"colorName"] || [key isEqualToString:@"colorString"] || [key isEqualToString:@"colorVariableName"] || [key isEqualToString:@"colorDisplayString"] || [key isEqualToString:@"imageRep"]) {
 		
 		NSMutableSet *mpaths = [paths mutableCopy];
 		if (![mpaths containsObject:@"color"]) {
 			[mpaths addObject:@"color"];
 		}
+        
+        if (![mpaths containsObject:@"colorVar"]) {
+            [mpaths addObject:@"colorVar"];
+        }
 	paths = mpaths;
 	}
+
 	return paths;
 }
 
 - (void)setColor:(NSColor *)color
 {
+    color = [color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
+
     self.colorVar = nil;
     
 	[self willChangeValueForKey:@"color"];
@@ -189,8 +231,21 @@
 
 - (id)jsonValue
 {
-	NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":(self.colorVar ? self.colorVar : @""), @"colorName":(_colorName ? _colorName :@"")};
-    return dict;
+		
+		NSMutableDictionary *muteDict = [NSMutableDictionary new];
+
+	if (self.colorString) {
+		[muteDict setObject:self.colorString forKey:@"colorString"];
+	}
+	
+	[muteDict setObject:(self.colorVar ? self.colorVar : @"") forKey:@"colorVar"];
+	[muteDict setObject:(_colorName ? _colorName :@"") forKey:@"colorName"];
+	[muteDict setObject:@(self.parameter) forKey:@"definedAtRuntime"];
+	
+	//NSDictionary *dict = @{@"colorString":self.colorString, @"colorVar":, @"colorName":(_colorName ? _colorName :@""), @"definedAtRuntime":@(self.parameter)};
+	
+	//	[muteDict addEntriesFromDictionary:dict];
+    return muteDict;
 }
 
 - (id)initWithColorString:(NSString *)color
@@ -198,14 +253,19 @@
 	self = [super init];
 	if (self) {
 		self.color = [ColorTransformer colorFromString:color];
+		self.isLeaf = YES;
 	}
 	return self;
 }
+
+
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
     self = [super init];
     if (self) {
+		
+
         
         NSString *colorVar = [dict objectForKey:@"colorVar"];
         if (![colorVar isEqualToString:@""]) {
@@ -218,9 +278,18 @@
                 self.colorName = colorName;
             }
         }
+        
+        self.parameter = [[dict objectForKey:@"definedAtRuntime"] boolValue];
+		
+		
     }
     
     return self;
+}
+
+- (void)drawSwatchInRect:(NSRect)rect
+{
+	[self.color drawSwatchInRect:rect];
 }
 
 @end

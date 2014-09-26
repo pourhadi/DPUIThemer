@@ -9,5 +9,24 @@
 #import "DPImageStyle.h"
 
 @implementation DPImageStyle
+- (id)init
+{
 
+}
+
+- (id)initWithDictionary:(NSDictionary*)dictionary
+{
+	self = [super init];
+	if (self) {
+		
+		
+		
+		
+	}
+	return self;
+}
+- (id)jsonValue
+{
+	
+}
 @end

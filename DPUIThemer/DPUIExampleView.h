@@ -8,7 +8,28 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DPViewStyle.h"
+#import "DPUIDefines.h"
+#import "DYNSliderStyle.h"
+#import "KGNoise.h"
 @class DPUIStyle;
-@interface DPUIExampleView : NSView
+@interface DPUIExampleView : KGNoiseView
+@property (nonatomic, strong) NSColor *containerColor;
+@property (nonatomic, strong) DYNSliderStyle *sliderStyle;
 @property (nonatomic, strong) DPUIStyle *style;
+@property (nonatomic, strong) DPUIStyle *imageStyle;
+@property (nonatomic) CGFloat xScale;
+@property (nonatomic) CGFloat yScale;
+
+@property (nonatomic) CGFloat scale;
+
+@property (nonatomic) CGFloat height;
+@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat frameWidth;
+@property (nonatomic) CGFloat frameHeight;
+
+@property (nonatomic) CGRect drawRect;
+
+@property (nonatomic, strong) NSString *iconKey;
+
+@property (nonatomic, strong) NSDictionary *iconDictionary;
 @end

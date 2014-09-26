@@ -28,7 +28,62 @@
 
 @implementation DPUITextStyle
 @synthesize alignment=_alignment;
+@synthesize fontSizeString=_fontSizeString;
 
+//===========================================================
+//  Keyed Archiving
+//
+//===========================================================
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.styleName forKey:@"styleName"];
+    [encoder encodeObject:self.textColor forKey:@"textColor"];
+    [encoder encodeObject:self.font forKey:@"font"];
+	//  [encoder encodeCGSize:self.shadowOffset forKey:@"shadowOffset"];
+    [encoder encodeObject:self.shadowColor forKey:@"shadowColor"];
+    [encoder encodeInteger:self.alignment forKey:@"alignment"];
+    [encoder encodeFloat:self.xShadowOffset forKey:@"xShadowOffset"];
+    [encoder encodeFloat:self.yShadowOffset forKey:@"yShadowOffset"];
+    [encoder encodeInteger:self.fontSize forKey:@"fontSize"];
+    [encoder encodeObject:self.fontString forKey:@"fontString"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if (self) {
+        self.styleName = [decoder decodeObjectForKey:@"styleName"];
+        self.textColor = [decoder decodeObjectForKey:@"textColor"];
+        self.font = [decoder decodeObjectForKey:@"font"];
+		//   self.shadowOffset = [decoder decodeCGSizeForKey:@"shadowOffset"];
+        self.shadowColor = [decoder decodeObjectForKey:@"shadowColor"];
+        self.alignment = [decoder decodeIntegerForKey:@"alignment"];
+        self.xShadowOffset = [decoder decodeFloatForKey:@"xShadowOffset"];
+        self.yShadowOffset = [decoder decodeFloatForKey:@"yShadowOffset"];
+        self.fontSize = [decoder decodeIntegerForKey:@"fontSize"];
+        self.fontString = [decoder decodeObjectForKey:@"fontString"];
+		
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id theCopy = [[[self class] allocWithZone:zone] init];  // use designated initializer
+	
+    [theCopy setStyleName:[self.styleName copy]];
+    [theCopy setTextColor:[self.textColor copy]];
+    [theCopy setFont:[self.font copy]];
+    [theCopy setShadowOffset:self.shadowOffset];
+    [theCopy setShadowColor:(__bridge CGColorRef)([self.shadowColor copy])];
+    [theCopy setAlignment:self.alignment];
+    [theCopy setXShadowOffset:self.xShadowOffset];
+    [theCopy setYShadowOffset:self.yShadowOffset];
+    [theCopy setFontSize:self.fontSize];
+    [theCopy setFontString:[self.fontString copy]];
+	
+    return theCopy;
+}
 - (id)init
 {
 	self = [super init];
@@ -38,6 +93,8 @@
 		self.textColor = [[DPStyleColor alloc] init];
 		self.shadowColor = [[DPStyleColor alloc] init];
 		self.shadowOffset = CGSizeZero;
+		self.inheritFontSize = @(NO);
+		self.inheritAlignment = @(NO);
 	}
 	return self;
 }
@@ -47,19 +104,24 @@
 	NSMutableDictionary *dict = [NSMutableDictionary new];
 	
 	[dict setObject:@(self.shadowOffset.width) forKey:@"shadowXOffset"];
-	[dict setObject:@(self.shadowOffset.width) forKey:@"shadowYOffset"];
+	[dict setObject:@(self.shadowOffset.height) forKey:@"shadowYOffset"];
 	[dict setObject:self.styleName forKey:@"styleName"];
 	[dict setObject:self.textColor.jsonValue forKey:@"textColor"];
 	[dict setObject:self.shadowColor.jsonValue forKey:@"shadowColor"];
 	[dict setObject:self.font.fontName forKey:@"fontName"];
 	[dict setObject:@(self.font.pointSize) forKey:@"fontSize"];
-	[dict setObject:@(_alignment) forKey:@"alignment"];
+	[dict setObject:@(self.alignment) forKey:@"alignment"];
+	[dict setObject:@(self.fontSizeType) forKey:@"fontSizeType"];
+	[dict setObject:self.fontSizeString forKey:@"fontSizeString"];
+	[dict setObject:self.inheritFontSize forKey:@"inheritFontSize"];
+	[dict setObject:self.inheritAlignment forKey:@"inheritAlignment"];
+	
 	return dict;
 }
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
-	self = [super init];
+	self = [self init];
 	if (self) {
 		
 		self.styleName = [dict objectForKey:@"styleName"];
@@ -67,10 +129,41 @@
 		self.textColor = [[DPStyleColor alloc] initWithDictionary:[dict objectForKey:@"textColor"]];
 		self.shadowColor = [[DPStyleColor alloc] initWithDictionary:[dict objectForKey:@"shadowColor"]];
 		self.shadowOffset = CGSizeMake([[dict objectForKey:@"shadowXoffset"] floatValue], [[dict objectForKey:@"shadowYOffset"] floatValue]);
-		_alignment = [[dict objectForKey:@"alignment"] intValue];
+		self.alignment = [[dict objectForKey:@"alignment"] intValue];
+		self.fontSizeString = [dict objectForKey:@"fontSizeString"];
+		self.fontSizeType = [[dict objectForKey:@"fontSizeType"] intValue];
+		
+		if ([dict objectForKey:@"inheritFontSize"]) {
+			self.inheritFontSize = [dict objectForKey:@"inheritFontSize"];
+		}
+		
+		if ([dict objectForKey:@"inheritAlignment"]) {
+			self.inheritAlignment = [dict objectForKey:@"inheritAlignment"];
+		}
 	}
 	
 	return self;
+}
+
+- (void)setFontSizeString:(NSString *)fontSizeString
+{
+	if ([fontSizeString hasSuffix:@"%"]) {
+		self.fontSizeType = DYNFontSizeTypeRelative;
+	} else {
+		self.fontSizeType = DYNFontSizeTypeAbsolute;
+		self.fontSize = [fontSizeString integerValue];
+	}
+	
+	_fontSizeString = fontSizeString;
+}
+
+- (NSString*)fontSizeString
+{
+	if (self.fontSizeType == DYNFontSizeTypeAbsolute) {
+		return [NSString stringWithFormat:@"%d", (int)self.font.pointSize];
+	}
+	
+	return _fontSizeString;
 }
 
 + (NSString*)newStyleVariableName
@@ -151,7 +244,7 @@
 
 - (NSString*)fontString
 {
-	return [NSString stringWithFormat:@"%@ %d", self.font.fontName, (int)self.font.pointSize];
+	return [NSString stringWithFormat:@"%@", self.font.fontName];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
@@ -168,6 +261,11 @@
 	
 	if ([key isEqualToString:@"font"]) {
 		[mutable addObject:@"fontSize"];
+	}
+	
+	if ([key isEqualToString:@"fontSizeString"]) {
+		[mutable addObject:@"fontSize"];
+		[mutable addObject:@"font"];
 	}
 	
 	return mutable;
